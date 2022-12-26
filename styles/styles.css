@@ -1,0 +1,39 @@
+canvas {
+    background-color: lightgray;
+}
+
+body {
+    margin: 0;
+}
+
+.fullscreen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    background-color: red;
+}
+
+.bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+    width: 10vw;
+    background-color:  darkgray;
+}
+
+.button {
+    height: 7vw;
+    width: 7vw;
+    background-color: #888;
+    border: 3px solid black;
+    border-radius: 2vw;
+}
+
+.button:hover {
+    background-color: #444;
+    border: 3px solid white;
+    cursor: pointer;
+}
