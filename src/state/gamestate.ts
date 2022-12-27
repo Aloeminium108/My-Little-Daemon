@@ -5,7 +5,7 @@ import { Entity } from "../entity/entity.js";
 
 class GameState extends State {
     entities: Array<Entity> = []
-    ball: Ball = new Ball(50, 300, 300)
+    heldEntity: Entity | null = null
     width: number
     height: number
     mouse = {
@@ -61,11 +61,13 @@ class GameState extends State {
 
     mouseDown = (e: MouseEvent) => {
         this.mouse.pressed = true
-        this.entities.forEach((entity) => {
+        for (let entity of this.entities) {
             if (entity.inside(this.mouse.x, this.mouse.y)) {
                 entity.hold()
+                this.heldEntity = entity
+                break
             }
-        })
+        }
     }
     mouseUp = (e: MouseEvent) => {
         this.mouse.pressed = false
@@ -75,28 +77,31 @@ class GameState extends State {
             }
             entity.release()
         })
-        
+        this.heldEntity = null
     }
     mouseMove = (e: MouseEvent) => {
         this.mouse.x = e.offsetX
         this.mouse.y = e.offsetY
-        for (let entity of this.entities) {
-            if (entity.held) {
-                entity.moveTo(this.mouse.x, this.mouse.y)
-            } else if (entity.inside(this.mouse.x, this.mouse.y)) {
-                this.game.canvas.style.cursor = 'grab'
-                break
-            } else {
-                this.game.canvas.style.cursor = 'default'
+        
+        if (this.heldEntity != null) {
+            this.heldEntity.moveTo(this.mouse.x, this.mouse.y)
+        } else {
+            for (let entity of this.entities) {
+                if (entity.inside(this.mouse.x, this.mouse.y)) {
+                    this.game.canvas.style.cursor = 'grab'
+                    break
+                } else {
+                    this.game.canvas.style.cursor = 'default'
+                }
             }
         }
-        
     }
     mouseLeave = (e: MouseEvent) => {
         this.mouse.pressed = false
         this.entities.forEach((entity) => {
-            this.ball.release()
+            entity.release()
         })
+        this.heldEntity = null
     }
     
 }

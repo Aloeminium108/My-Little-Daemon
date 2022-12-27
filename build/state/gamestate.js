@@ -4,7 +4,7 @@ class GameState extends State {
     constructor(game) {
         super(game);
         this.entities = [];
-        this.ball = new Ball(50, 300, 300);
+        this.heldEntity = null;
         this.mouse = {
             pressed: false,
             x: 0,
@@ -39,11 +39,13 @@ class GameState extends State {
         };
         this.mouseDown = (e) => {
             this.mouse.pressed = true;
-            this.entities.forEach((entity) => {
+            for (let entity of this.entities) {
                 if (entity.inside(this.mouse.x, this.mouse.y)) {
                     entity.hold();
+                    this.heldEntity = entity;
+                    break;
                 }
-            });
+            }
         };
         this.mouseUp = (e) => {
             this.mouse.pressed = false;
@@ -53,28 +55,32 @@ class GameState extends State {
                 }
                 entity.release();
             });
+            this.heldEntity = null;
         };
         this.mouseMove = (e) => {
             this.mouse.x = e.offsetX;
             this.mouse.y = e.offsetY;
-            for (let entity of this.entities) {
-                if (entity.held) {
-                    entity.moveTo(this.mouse.x, this.mouse.y);
-                }
-                else if (entity.inside(this.mouse.x, this.mouse.y)) {
-                    this.game.canvas.style.cursor = 'grab';
-                    break;
-                }
-                else {
-                    this.game.canvas.style.cursor = 'default';
+            if (this.heldEntity != null) {
+                this.heldEntity.moveTo(this.mouse.x, this.mouse.y);
+            }
+            else {
+                for (let entity of this.entities) {
+                    if (entity.inside(this.mouse.x, this.mouse.y)) {
+                        this.game.canvas.style.cursor = 'grab';
+                        break;
+                    }
+                    else {
+                        this.game.canvas.style.cursor = 'default';
+                    }
                 }
             }
         };
         this.mouseLeave = (e) => {
             this.mouse.pressed = false;
             this.entities.forEach((entity) => {
-                this.ball.release();
+                entity.release();
             });
+            this.heldEntity = null;
         };
         this.width = game.canvas.width;
         this.height = game.canvas.height;
