@@ -1,9 +1,6 @@
 import { Entity } from "../entity/entity.js"
 
 class Ball extends Entity {
-    static vCap = 50
-    static friction = 0.99
-    static gravity = 2
 
     constructor(radius: number, x: number, y: number) {
         super(radius, x, y)
