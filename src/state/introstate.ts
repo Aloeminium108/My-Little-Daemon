@@ -1,11 +1,14 @@
+import { Game } from "../game.js"
 import { State } from "./state.js"
 
 class IntroState extends State {
     changeState() {}
 
-    constructor() {
-        super()
+    constructor(game: Game) {
+        super(game)
     }
+
+    init() {}
 
     addStateChange(fun: () => void) {
         this.changeState = fun

@@ -10,7 +10,7 @@ class Game {
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas
         this.ctx = canvas.getContext("2d")!!
-        this.currentState = new GameState(this.canvas)
+        this.currentState = new GameState(this)
 
         canvas.addEventListener('mousedown', (e) => {
             this.currentState.mouseDown(e)
@@ -36,7 +36,6 @@ class Game {
         
         window.requestAnimationFrame(this.animate)
     }
-
 
 }
 

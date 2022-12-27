@@ -8,7 +8,7 @@ class Game {
         };
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
-        this.currentState = new GameState(this.canvas);
+        this.currentState = new GameState(this);
         canvas.addEventListener('mousedown', (e) => {
             this.currentState.mouseDown(e);
         });

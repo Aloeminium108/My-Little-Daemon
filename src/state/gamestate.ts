@@ -1,78 +1,102 @@
 import { State } from "./state.js";
 import { Ball } from "./ball.js"
+import { Game } from "../game.js";
+import { Entity } from "../entity/entity.js";
 
 class GameState extends State {
+    entities: Array<Entity> = []
     ball: Ball = new Ball(50, 300, 300)
     width: number
     height: number
-    canvas: HTMLCanvasElement
     mouse = {
         pressed: false,
         x: 0,
         y: 0
     }
 
-    constructor(canvas: HTMLCanvasElement) {
-        super()
-        this.width = canvas.width
-        this. height = canvas.height
-        this.canvas = canvas
+    constructor(game: Game) {
+        super(game)
+        this.width = game.canvas.width
+        this.height = game.canvas.height
 
         var mouse = {
             x: 0,
             y: 0,
             pressed: false
         }
+        this.init()
     }
 
-    animate(ctx: CanvasRenderingContext2D): void {
-        this.ball.update()
-        if(this.ball.x - this.ball.radius < 0) {
-            this.ball.x = this.ball.radius
-            this.ball.dx *= -1
-        } else if (this.ball.x + this.ball.radius > this.width) {
-            this.ball.x = this.width - this.ball.radius
-            this.ball.dx *= -1
-        }
-
-        if(this.ball.y - this.ball.radius < 0) {
-            this.ball.y = this.ball.radius
-            this.ball.dy *= -1
-        } else if (this.ball.y + this.ball.radius > this.height) {
-            this.ball.y = this.height - this.ball.radius
-            this.ball.dy *= -1
-        }
-
-        this.ball.draw(ctx)
+    init = () => {
+        this.entities.push(new Ball(100, 500, 300))
+        this.entities.push(new Ball(30, 400, 300))
+        this.entities.push(new Ball(50, 300, 300))
     }
 
-    mouseDown(e: MouseEvent): void {
+    animate = (ctx: CanvasRenderingContext2D) => {
+
+        this.entities.forEach((entity) => {
+            entity.update()
+
+            if(entity.x - entity.radius < 0) {
+                entity.x = entity.radius
+                entity.dx *= -1
+            } else if (entity.x + entity.radius > this.width) {
+                entity.x = this.width - entity.radius
+                entity.dx *= -1
+            }
+
+            if(entity.y - entity.radius < 0) {
+                entity.y = entity.radius
+                entity.dy *= -1
+            } else if (entity.y + entity.radius > this.height) {
+                entity.y = this.height - entity.radius
+                entity.dy *= -1
+            }
+
+            entity.draw(ctx)
+        })
+        
+    }
+
+    mouseDown = (e: MouseEvent) => {
         this.mouse.pressed = true
-        if (this.ball.inside(this.mouse.x, this.mouse.y)) {
-            this.ball.hold()
-        }
+        this.entities.forEach((entity) => {
+            if (entity.inside(this.mouse.x, this.mouse.y)) {
+                entity.hold()
+            }
+        })
     }
-    mouseUp(e: MouseEvent): void {
+    mouseUp = (e: MouseEvent) => {
         this.mouse.pressed = false
-        if (this.ball.held) {
-            this.ball.moveTo(this.mouse.x, this.mouse.y)
-        }
-        this.ball.release()
+        this.entities.forEach((entity) => {
+            if (entity.held) {
+                entity.moveTo(this.mouse.x, this.mouse.y)
+            }
+            entity.release()
+        })
+        
     }
-    mouseMove(e: MouseEvent): void {
+    mouseMove = (e: MouseEvent) => {
         this.mouse.x = e.offsetX
         this.mouse.y = e.offsetY
-        if (this.ball.held) {
-            this.ball.moveTo(this.mouse.x, this.mouse.y)
-        } else if (this.ball.inside(this.mouse.x, this.mouse.y)) {
-            this.canvas.style.cursor = 'grab'
-        } else {
-            this.canvas.style.cursor = 'default'
+        for (let entity of this.entities) {
+            if (entity.held) {
+                entity.moveTo(this.mouse.x, this.mouse.y)
+            } else if (entity.inside(this.mouse.x, this.mouse.y)) {
+                this.game.canvas.style.cursor = 'grab'
+                break
+            } else {
+                this.game.canvas.style.cursor = 'default'
+            }
         }
+        
     }
-    mouseLeave(e: MouseEvent): void {
+    mouseLeave = (e: MouseEvent) => {
         this.mouse.pressed = false
-        this.ball.release()
+        this.entities.forEach((entity) => {
+            this.ball.release()
+        })
     }
     
 }

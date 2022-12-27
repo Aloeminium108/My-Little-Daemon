@@ -1,72 +1,89 @@
 import { State } from "./state.js";
 import { Ball } from "./ball.js";
 class GameState extends State {
-    constructor(canvas) {
-        super();
+    constructor(game) {
+        super(game);
+        this.entities = [];
         this.ball = new Ball(50, 300, 300);
         this.mouse = {
             pressed: false,
             x: 0,
             y: 0
         };
-        this.width = canvas.width;
-        this.height = canvas.height;
-        this.canvas = canvas;
+        this.init = () => {
+            this.entities.push(new Ball(100, 500, 300));
+            this.entities.push(new Ball(30, 400, 300));
+            this.entities.push(new Ball(50, 300, 300));
+        };
+        this.animate = (ctx) => {
+            this.entities.forEach((entity) => {
+                entity.update();
+                if (entity.x - entity.radius < 0) {
+                    entity.x = entity.radius;
+                    entity.dx *= -1;
+                }
+                else if (entity.x + entity.radius > this.width) {
+                    entity.x = this.width - entity.radius;
+                    entity.dx *= -1;
+                }
+                if (entity.y - entity.radius < 0) {
+                    entity.y = entity.radius;
+                    entity.dy *= -1;
+                }
+                else if (entity.y + entity.radius > this.height) {
+                    entity.y = this.height - entity.radius;
+                    entity.dy *= -1;
+                }
+                entity.draw(ctx);
+            });
+        };
+        this.mouseDown = (e) => {
+            this.mouse.pressed = true;
+            this.entities.forEach((entity) => {
+                if (entity.inside(this.mouse.x, this.mouse.y)) {
+                    entity.hold();
+                }
+            });
+        };
+        this.mouseUp = (e) => {
+            this.mouse.pressed = false;
+            this.entities.forEach((entity) => {
+                if (entity.held) {
+                    entity.moveTo(this.mouse.x, this.mouse.y);
+                }
+                entity.release();
+            });
+        };
+        this.mouseMove = (e) => {
+            this.mouse.x = e.offsetX;
+            this.mouse.y = e.offsetY;
+            for (let entity of this.entities) {
+                if (entity.held) {
+                    entity.moveTo(this.mouse.x, this.mouse.y);
+                }
+                else if (entity.inside(this.mouse.x, this.mouse.y)) {
+                    this.game.canvas.style.cursor = 'grab';
+                    break;
+                }
+                else {
+                    this.game.canvas.style.cursor = 'default';
+                }
+            }
+        };
+        this.mouseLeave = (e) => {
+            this.mouse.pressed = false;
+            this.entities.forEach((entity) => {
+                this.ball.release();
+            });
+        };
+        this.width = game.canvas.width;
+        this.height = game.canvas.height;
         var mouse = {
             x: 0,
             y: 0,
             pressed: false
         };
-    }
-    animate(ctx) {
-        this.ball.update();
-        if (this.ball.x - this.ball.radius < 0) {
-            this.ball.x = this.ball.radius;
-            this.ball.dx *= -1;
-        }
-        else if (this.ball.x + this.ball.radius > this.width) {
-            this.ball.x = this.width - this.ball.radius;
-            this.ball.dx *= -1;
-        }
-        if (this.ball.y - this.ball.radius < 0) {
-            this.ball.y = this.ball.radius;
-            this.ball.dy *= -1;
-        }
-        else if (this.ball.y + this.ball.radius > this.height) {
-            this.ball.y = this.height - this.ball.radius;
-            this.ball.dy *= -1;
-        }
-        this.ball.draw(ctx);
-    }
-    mouseDown(e) {
-        this.mouse.pressed = true;
-        if (this.ball.inside(this.mouse.x, this.mouse.y)) {
-            this.ball.hold();
-        }
-    }
-    mouseUp(e) {
-        this.mouse.pressed = false;
-        if (this.ball.held) {
-            this.ball.moveTo(this.mouse.x, this.mouse.y);
-        }
-        this.ball.release();
-    }
-    mouseMove(e) {
-        this.mouse.x = e.offsetX;
-        this.mouse.y = e.offsetY;
-        if (this.ball.held) {
-            this.ball.moveTo(this.mouse.x, this.mouse.y);
-        }
-        else if (this.ball.inside(this.mouse.x, this.mouse.y)) {
-            this.canvas.style.cursor = 'grab';
-        }
-        else {
-            this.canvas.style.cursor = 'default';
-        }
-    }
-    mouseLeave(e) {
-        this.mouse.pressed = false;
-        this.ball.release();
+        this.init();
     }
 }
 export { GameState };
