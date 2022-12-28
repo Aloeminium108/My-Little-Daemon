@@ -1,5 +1,23 @@
 class Entity {
     constructor(radius, x, y) {
+        this.boundaryCollision = (xBound, yBound) => {
+            if (this.x - this.radius < 0) {
+                this.x = this.radius;
+                this.dx *= -1;
+            }
+            else if (this.x + this.radius > xBound) {
+                this.x = xBound - this.radius;
+                this.dx *= -1;
+            }
+            if (this.y - this.radius < 0) {
+                this.y = this.radius;
+                this.dy *= -1;
+            }
+            else if (this.y + this.radius > yBound) {
+                this.y = yBound - this.radius;
+                this.dy *= -1;
+            }
+        };
         this.radius = radius;
         this.x = x;
         this.y = y;

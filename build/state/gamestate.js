@@ -18,22 +18,7 @@ class GameState extends State {
         this.animate = (ctx) => {
             this.entities.forEach((entity) => {
                 entity.update();
-                if (entity.x - entity.radius < 0) {
-                    entity.x = entity.radius;
-                    entity.dx *= -1;
-                }
-                else if (entity.x + entity.radius > this.width) {
-                    entity.x = this.width - entity.radius;
-                    entity.dx *= -1;
-                }
-                if (entity.y - entity.radius < 0) {
-                    entity.y = entity.radius;
-                    entity.dy *= -1;
-                }
-                else if (entity.y + entity.radius > this.height) {
-                    entity.y = this.height - entity.radius;
-                    entity.dy *= -1;
-                }
+                entity.boundaryCollision(this.width, this.height);
                 entity.draw(ctx);
             });
         };

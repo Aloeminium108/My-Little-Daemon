@@ -10,7 +10,4 @@ class Ball extends Entity {
         ctx.stroke();
     }
 }
-Ball.vCap = 50;
-Ball.friction = 0.99;
-Ball.gravity = 2;
 export { Ball };
