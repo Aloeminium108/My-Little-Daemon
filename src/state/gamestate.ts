@@ -1,5 +1,5 @@
 import { State } from "./state.js";
-import { Ball } from "./ball.js"
+import { Ball } from "../entity/ball.js"
 import { Game } from "../game.js";
 import { Entity } from "../entity/entity.js";
 

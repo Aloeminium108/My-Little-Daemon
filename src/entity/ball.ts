@@ -1,4 +1,4 @@
-import { Entity } from "../entity/entity.js"
+import { Entity } from "./entity.js"
 
 class Ball extends Entity {
 
