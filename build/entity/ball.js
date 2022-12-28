@@ -39,5 +39,9 @@ class Ball extends Entity {
             return false;
         }
     }
+    moveTo(newX, newY) {
+        this.x = newX;
+        this.y = newY;
+    }
 }
 export { Ball };

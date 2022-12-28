@@ -24,8 +24,8 @@ abstract class Entity {
     abstract draw(ctx: CanvasRenderingContext2D): void
 
     moveTo(newX: number, newY: number) {
-        this.x = newX
-        this.y = newY
+        this.x = Math.floor(newX - this.width/2)
+        this.y = Math.floor(newY - this.height/2)
     }
 
     hold() {

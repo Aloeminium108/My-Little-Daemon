@@ -27,8 +27,8 @@ class Entity {
         this.held = false;
     }
     moveTo(newX, newY) {
-        this.x = newX;
-        this.y = newY;
+        this.x = Math.floor(newX - this.width / 2);
+        this.y = Math.floor(newY - this.height / 2);
     }
     hold() {
         this.held = true;

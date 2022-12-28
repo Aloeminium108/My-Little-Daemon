@@ -45,6 +45,11 @@ class Ball extends Entity {
         }
     }
 
+    override moveTo(newX: number, newY: number) {
+        this.x = newX
+        this.y = newY
+    }
+
 }
 
 
