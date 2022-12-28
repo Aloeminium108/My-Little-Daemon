@@ -1,24 +1,25 @@
 class Entity {
-    constructor(radius, x, y) {
+    constructor(x, y, width, height) {
         this.boundaryCollision = (xBound, yBound) => {
-            if (this.x - this.radius < 0) {
-                this.x = this.radius;
+            if (this.x < 0) {
+                this.x = 0;
                 this.dx *= -1;
             }
-            else if (this.x + this.radius > xBound) {
-                this.x = xBound - this.radius;
+            else if (this.x + this.width > xBound) {
+                this.x = xBound - this.width;
                 this.dx *= -1;
             }
-            if (this.y - this.radius < 0) {
-                this.y = this.radius;
+            if (this.y < 0) {
+                this.y = 0;
                 this.dy *= -1;
             }
-            else if (this.y + this.radius > yBound) {
-                this.y = yBound - this.radius;
+            else if (this.y + this.height > yBound) {
+                this.y = yBound - this.height;
                 this.dy *= -1;
             }
         };
-        this.radius = radius;
+        this.width = width;
+        this.height = height;
         this.x = x;
         this.y = y;
         this.dx = 0;
@@ -55,10 +56,10 @@ class Entity {
         this.y += this.dy;
     }
     inside(x, y) {
-        const xDistance = this.x - x;
-        const yDistance = this.y - y;
-        const distance = Math.sqrt((Math.pow(xDistance, 2)) + (Math.pow(yDistance, 2)));
-        if (distance < this.radius) {
+        if (x > this.x
+            && x < this.x + this.width
+            && y > this.y
+            && y < this.y + this.height) {
             return true;
         }
         else {

@@ -28,9 +28,9 @@ class GameState extends State {
     }
 
     init = () => {
-        this.entities.push(new Ball(100, 500, 300))
-        this.entities.push(new Ball(30, 400, 300))
-        this.entities.push(new Ball(50, 300, 300))
+        this.entities.push(new Ball(500, 300, 100))
+        this.entities.push(new Ball(400, 300, 30))
+        this.entities.push(new Ball(300, 300, 50))
     }
 
     animate = (ctx: CanvasRenderingContext2D) => {
