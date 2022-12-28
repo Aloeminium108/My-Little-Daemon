@@ -5,10 +5,10 @@ abstract class Entity {
 
     radius: number
     protected x: number
-    y: number
-    dx: number
-    dy: number
-    held: boolean
+    protected y: number
+    protected dx: number
+    protected dy: number
+    protected held: boolean
 
     constructor(radius: number, x: number, y: number) {
         this.radius = radius

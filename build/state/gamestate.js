@@ -35,9 +35,6 @@ class GameState extends State {
         this.mouseUp = (e) => {
             this.mouse.pressed = false;
             this.entities.forEach((entity) => {
-                if (entity.held) {
-                    entity.moveTo(this.mouse.x, this.mouse.y);
-                }
                 entity.release();
             });
             this.heldEntity = null;
