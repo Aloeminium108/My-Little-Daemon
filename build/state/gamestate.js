@@ -1,5 +1,6 @@
 import { State } from "./state.js";
 import { Box } from "../entity/box.js";
+import { Pet } from "../entity/pet.js";
 class GameState extends State {
     constructor(game) {
         super(game);
@@ -12,6 +13,7 @@ class GameState extends State {
         };
         this.init = () => {
             this.entities.push(new Box(500, 300, 50, 50));
+            this.entities.push(new Pet());
         };
         this.animate = (ctx) => {
             this.entities.forEach((entity) => {

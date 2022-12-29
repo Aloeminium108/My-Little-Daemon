@@ -2,6 +2,7 @@ import { State } from "./state.js";
 import { Game } from "../game.js";
 import { Entity } from "../entity/entity.js";
 import { Box } from "../entity/box.js";
+import { Pet } from "../entity/pet.js";
 
 class GameState extends State {
     entities: Array<Entity> = []
@@ -29,6 +30,7 @@ class GameState extends State {
 
     init = () => {
         this.entities.push(new Box(500, 300, 50, 50))
+        this.entities.push(new Pet())
     }
 
     animate = (ctx: CanvasRenderingContext2D) => {
