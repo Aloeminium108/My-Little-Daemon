@@ -18,8 +18,7 @@ class Box extends Entity {
         }
     }
     
-    update = () => {
-        this.body.update()
+    updateSelf = () => {
     }
 
 }

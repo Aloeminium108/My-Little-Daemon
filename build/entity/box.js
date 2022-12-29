@@ -8,8 +8,7 @@ class Box extends Entity {
                 ctx.fillRect(x, y, this.width, this.height);
             };
         };
-        this.update = () => {
-            this.body.update();
+        this.updateSelf = () => {
         };
         this.width = width;
         this.height = height;

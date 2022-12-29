@@ -28,7 +28,7 @@ class Pet extends Entity {
         }
     }
 
-    update(): void {
+    updateSelf = () => {
     }
     
 }

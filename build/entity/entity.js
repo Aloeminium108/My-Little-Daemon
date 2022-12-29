@@ -1,5 +1,12 @@
 class Entity {
     constructor(body) {
+        this.update = () => {
+            this.updateSelf();
+            this.updateBody();
+        };
+        this.updateBody = () => {
+            this.body.update();
+        };
         this.draw = (ctx) => {
             this.body.draw(this.drawBody(ctx));
         };

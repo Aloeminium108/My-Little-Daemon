@@ -14,6 +14,8 @@ class Pet extends Entity {
                 return (x, y) => { };
             }
         };
+        this.updateSelf = () => {
+        };
         let image = new Image();
         image.onload = () => {
             Promise.all([
@@ -23,8 +25,6 @@ class Pet extends Entity {
             });
         };
         image.src = "../../assets/bird.png";
-    }
-    update() {
     }
 }
 export { Pet };
