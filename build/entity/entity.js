@@ -1,5 +1,8 @@
 class Entity {
     constructor(body) {
+        this.draw = (ctx) => {
+            this.body.draw(this.drawBody(ctx));
+        };
         this.moveTo = (newX, newY) => {
             this.body.moveTo(newX, newY);
         };

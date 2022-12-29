@@ -21,11 +21,8 @@ class Body {
                 this.dy *= -1;
             }
         };
-        this.getX = () => {
-            return this.x;
-        };
-        this.getY = () => {
-            return this.y;
+        this.draw = (callback) => {
+            callback(this.x, this.y);
         };
         this.width = width;
         this.height = height;

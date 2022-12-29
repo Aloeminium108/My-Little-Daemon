@@ -7,8 +7,13 @@ abstract class Entity {
         this.body = body
     }
 
-    abstract draw(ctx: CanvasRenderingContext2D): void
+    
     abstract update(): void;
+    abstract drawBody(ctx: CanvasRenderingContext2D): (x: number, y: number) => void
+
+    draw = (ctx: CanvasRenderingContext2D) => {
+        this.body.draw(this.drawBody(ctx))
+    }
 
     moveTo = (newX: number, newY: number) => {
         this.body.moveTo(newX, newY)

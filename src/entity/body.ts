@@ -79,12 +79,8 @@ class Body {
         }
     }
 
-    getX = () => {
-        return this.x
-    }
-
-    getY = () => {
-        return this.y
+    draw = (callback: (x: number, y: number) => void) => {
+        callback(this.x, this.y)
     }
 
 }
