@@ -3,10 +3,10 @@ class Body {
     private static friction = 0.99
     private static gravity = 2
 
-    width: number
-    height: number
-    x: number
-    y: number
+    private width: number
+    private height: number
+    private x: number
+    private y: number
     private dx: number = 0
     private dy: number = 0
     private held: boolean = false
