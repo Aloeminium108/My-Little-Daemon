@@ -1,88 +1,36 @@
-abstract class Entity {
-    static vCap = 50
-    static friction = 0.99
-    static gravity = 2
+import { Body } from "./body.js"
 
-    protected width: number
-    protected height: number
-    protected x: number
-    protected y: number
-    protected dx: number
-    protected dy: number
-    protected held: boolean
+abstract class Entity {
+    protected body: Body
 
     constructor(x: number, y: number, width: number, height: number) {
-        this.width = width
-        this.height = height
-        this.x = x
-        this.y = y
-        this.dx = 0
-        this.dy = 0
-        this.held = false
+        this.body = new Body(x, y, width, height)
     }
 
     abstract draw(ctx: CanvasRenderingContext2D): void
 
-    moveTo(newX: number, newY: number) {
-        this.x = Math.floor(newX - this.width/2)
-        this.y = Math.floor(newY - this.height/2)
+    moveTo = (newX: number, newY: number) => {
+        this.body.moveTo(newX, newY)
     }
 
-    hold() {
-        this.held = true
-        this.dx = 0
-        this.dy = 0
+    hold = () => {
+        this.body.hold()
     }
 
-    release() {
-        this.held = false
+    release = () => {
+        this.body.release()
     }
 
-    update() {
-        if(this.dx > Entity.vCap) this.dx = Entity.vCap
-        if(this.dy > Entity.vCap) this.dy = Entity.vCap
-        if(this.dx < -Entity.vCap) this.dx = -Entity.vCap
-        if(this.dy < -Entity.vCap) this.dy = -Entity.vCap
-
-        if (!this.held) {
-            this.dy += Entity.gravity
-        }
-
-        this.dx = Math.floor(Entity.friction * this.dx)
-        this.dy = Math.floor(Entity.friction * this.dy)
-
-        this.x += this.dx
-        this.y += this.dy
+    update = () => {
+        this.body.update()
     }
 
-    inside(x: number, y: number) {
-        if (x > this.x 
-            && x < this.x + this.width 
-            && y > this.y
-            && y < this.y + this.height
-        ) {
-            return true
-        } else {
-            return false
-        }
+    inside = (x: number, y: number) => {
+        return this.body.inside(x, y)
     }
 
     boundaryCollision = (xBound: number, yBound: number) => {
-        if(this.x < 0) {
-            this.x = 0
-            this.dx *= -1
-        } else if (this.x + this.width > xBound) {
-            this.x = xBound - this.width
-            this.dx *= -1
-        }
-
-        if(this.y < 0) {
-            this.y = 0
-            this.dy *= -1
-        } else if (this.y + this.height > yBound) {
-            this.y = yBound - this.height
-            this.dy *= -1
-        }
+        this.body.boundaryCollision(xBound, yBound)
     }
 }
 
