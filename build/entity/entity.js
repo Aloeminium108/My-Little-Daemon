@@ -9,9 +9,6 @@ class Entity {
         this.release = () => {
             this.body.release();
         };
-        this.update = () => {
-            this.body.update();
-        };
         this.inside = (x, y) => {
             return this.body.inside(x, y);
         };

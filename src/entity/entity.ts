@@ -8,6 +8,7 @@ abstract class Entity {
     }
 
     abstract draw(ctx: CanvasRenderingContext2D): void
+    abstract update(): void;
 
     moveTo = (newX: number, newY: number) => {
         this.body.moveTo(newX, newY)
@@ -19,10 +20,6 @@ abstract class Entity {
 
     release = () => {
         this.body.release()
-    }
-
-    update = () => {
-        this.body.update()
     }
 
     inside = (x: number, y: number) => {

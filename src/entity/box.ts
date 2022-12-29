@@ -20,6 +20,12 @@ class Box extends Entity {
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
     
+    update = () => {
+        this.body.update()
+        this.x = this.body.getX()
+        this.y = this.body.getY()
+    }
+
 }
 
 export { Box }
