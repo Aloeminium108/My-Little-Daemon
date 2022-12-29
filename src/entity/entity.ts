@@ -3,8 +3,8 @@ import { Body } from "./body.js"
 abstract class Entity {
     protected body: Body
 
-    constructor(x: number, y: number, width: number, height: number) {
-        this.body = new Body(x, y, width, height)
+    constructor(body: Body) {
+        this.body = body
     }
 
     abstract draw(ctx: CanvasRenderingContext2D): void

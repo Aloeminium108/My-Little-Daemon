@@ -1,5 +1,4 @@
 import { State } from "./state.js";
-import { Ball } from "../entity/ball.js";
 import { Box } from "../entity/box.js";
 class GameState extends State {
     constructor(game) {
@@ -12,7 +11,6 @@ class GameState extends State {
             y: 0
         };
         this.init = () => {
-            this.entities.push(new Ball(200, 300, 50));
             this.entities.push(new Box(500, 300, 50, 50));
         };
         this.animate = (ctx) => {

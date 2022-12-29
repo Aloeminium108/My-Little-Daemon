@@ -1,6 +1,5 @@
-import { Body } from "./body.js";
 class Entity {
-    constructor(x, y, width, height) {
+    constructor(body) {
         this.moveTo = (newX, newY) => {
             this.body.moveTo(newX, newY);
         };
@@ -19,7 +18,7 @@ class Entity {
         this.boundaryCollision = (xBound, yBound) => {
             this.body.boundaryCollision(xBound, yBound);
         };
-        this.body = new Body(x, y, width, height);
+        this.body = body;
     }
 }
 export { Entity };
