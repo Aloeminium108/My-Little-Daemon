@@ -5,6 +5,10 @@
         "preserveConstEnums": true,
         "strict": true,
         "target": "ES6",
-        "outDir": "./build"
+        "outDir": "./build",
+        "lib": [
+            "ES2019",
+            "DOM"
+        ]
     }
 }

@@ -4,7 +4,9 @@ import { Pet } from "../entity/pet.js";
 class GameState extends State {
     constructor(game) {
         super(game);
-        this.entities = [];
+        this.toys = [];
+        this.pet = [];
+        this.entities = [this.toys, this.pet];
         this.heldEntity = null;
         this.mouse = {
             pressed: false,
@@ -12,14 +14,14 @@ class GameState extends State {
             y: 0
         };
         this.init = () => {
-            this.entities.push(new Box(500, 300, 50, 50));
-            this.entities.push(new Box(700, 300, 100, 100));
-            this.entities.push(new Pet());
+            this.toys.push(new Box(500, 300, 50, 50));
+            this.toys.push(new Box(700, 300, 100, 100));
+            this.pet.push(new Pet());
         };
         this.animate = (ctx) => {
-            this.entities.forEach((entity, index) => {
-                for (let i = index + 1; i < this.entities.length; i++) {
-                    if (entity.detectCollision(this.entities[i])) {
+            this.entities.flat().forEach((entity, index) => {
+                for (let i = index + 1; i < this.entities.flat().length; i++) {
+                    if (entity.detectCollision(this.entities.flat()[i])) {
                         console.log("Collision detected");
                     }
                 }
@@ -30,7 +32,7 @@ class GameState extends State {
         };
         this.mouseDown = (e) => {
             this.mouse.pressed = true;
-            for (let entity of this.entities) {
+            for (let entity of this.entities.flat()) {
                 if (entity.inside(this.mouse.x, this.mouse.y)) {
                     entity.hold();
                     this.heldEntity = entity;
@@ -40,7 +42,7 @@ class GameState extends State {
         };
         this.mouseUp = (e) => {
             this.mouse.pressed = false;
-            this.entities.forEach((entity) => {
+            this.entities.flat().forEach((entity) => {
                 entity.release();
             });
             this.heldEntity = null;
@@ -52,7 +54,7 @@ class GameState extends State {
                 this.heldEntity.moveTo(this.mouse.x, this.mouse.y);
             }
             else {
-                for (let entity of this.entities) {
+                for (let entity of this.entities.flat()) {
                     if (entity.inside(this.mouse.x, this.mouse.y)) {
                         this.game.canvas.style.cursor = 'grab';
                         break;
@@ -65,7 +67,7 @@ class GameState extends State {
         };
         this.mouseLeave = (e) => {
             this.mouse.pressed = false;
-            this.entities.forEach((entity) => {
+            this.entities.flat().forEach((entity) => {
                 entity.release();
             });
             this.heldEntity = null;

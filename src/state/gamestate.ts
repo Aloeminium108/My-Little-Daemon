@@ -5,7 +5,9 @@ import { Box } from "../entity/box.js";
 import { Pet } from "../entity/pet.js";
 
 class GameState extends State {
-    entities: Array<Entity> = []
+    toys: Array<Entity> = []
+    pet: Array<Pet> = []
+    entities: Array<Array<Entity>> = [this.toys, this.pet]
     heldEntity: Entity | null = null
     width: number
     height: number
@@ -23,16 +25,16 @@ class GameState extends State {
     }
 
     init = () => {
-        this.entities.push(new Box(500, 300, 50, 50))
-        this.entities.push(new Box(700, 300, 100, 100))
-        this.entities.push(new Pet())
+        this.toys.push(new Box(500, 300, 50, 50))
+        this.toys.push(new Box(700, 300, 100, 100))
+        this.pet.push(new Pet())
     }
 
     animate = (ctx: CanvasRenderingContext2D) => {
 
-        this.entities.forEach((entity, index) => {
-            for (let i = index+1; i < this.entities.length; i++) {
-                if (entity.detectCollision(this.entities[i])) {
+        this.entities.flat().forEach((entity, index) => {
+            for (let i = index+1; i < this.entities.flat().length; i++) {
+                if (entity.detectCollision(this.entities.flat()[i])) {
                     console.log("Collision detected")
                 }
             }
@@ -48,7 +50,7 @@ class GameState extends State {
 
     mouseDown = (e: MouseEvent) => {
         this.mouse.pressed = true
-        for (let entity of this.entities) {
+        for (let entity of this.entities.flat()) {
             if (entity.inside(this.mouse.x, this.mouse.y)) {
                 entity.hold()
                 this.heldEntity = entity
@@ -58,7 +60,7 @@ class GameState extends State {
     }
     mouseUp = (e: MouseEvent) => {
         this.mouse.pressed = false
-        this.entities.forEach((entity) => {
+        this.entities.flat().forEach((entity) => {
             entity.release()
         })
         this.heldEntity = null
@@ -70,7 +72,7 @@ class GameState extends State {
         if (this.heldEntity != null) {
             this.heldEntity.moveTo(this.mouse.x, this.mouse.y)
         } else {
-            for (let entity of this.entities) {
+            for (let entity of this.entities.flat()) {
                 if (entity.inside(this.mouse.x, this.mouse.y)) {
                     this.game.canvas.style.cursor = 'grab'
                     break
@@ -82,7 +84,7 @@ class GameState extends State {
     }
     mouseLeave = (e: MouseEvent) => {
         this.mouse.pressed = false
-        this.entities.forEach((entity) => {
+        this.entities.flat().forEach((entity) => {
             entity.release()
         })
         this.heldEntity = null
