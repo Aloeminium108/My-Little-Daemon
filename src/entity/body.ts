@@ -13,14 +13,33 @@ abstract class Body {
     }
 
     abstract update(): void
-    abstract draw(callback: (x: number, y: number) => void): void
-    abstract moveTo(x: number, y: number): void
     abstract boundaryCollision(xBound: number, yBound: number): void
     abstract hold(): void
-    abstract release(): void
-    abstract inside(x: number, y: number): boolean
 
+    draw = (callback: (x: number, y: number) => void) => {
+        callback(this.x, this.y)
+    }
 
+    moveTo(newX: number, newY: number) {
+        this.x = Math.floor(newX - this.width/2)
+        this.y = Math.floor(newY - this.height/2)
+    }
+    
+    inside(x: number, y: number) {
+        if (x > this.x 
+            && x < this.x + this.width 
+            && y > this.y
+            && y < this.y + this.height
+        ) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    release() {
+        this.held = false
+    }
 
 }
 
