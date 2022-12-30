@@ -66,11 +66,6 @@ class GameState extends State {
         };
         this.width = game.canvas.width;
         this.height = game.canvas.height;
-        var mouse = {
-            x: 0,
-            y: 0,
-            pressed: false
-        };
         this.init();
     }
 }
