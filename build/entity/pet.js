@@ -1,8 +1,8 @@
 import { Entity } from "./entity.js";
-import { Body } from "./body.js";
+import { PhysicsBody } from "./physicsbody.js";
 class Pet extends Entity {
     constructor() {
-        super(new Body(300, 300, 200, 300));
+        super(new PhysicsBody(300, 300, 200, 300));
         this.image = null;
         this.drawBody = (ctx) => {
             if (this.image != null) {

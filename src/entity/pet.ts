@@ -1,11 +1,11 @@
 import { Entity } from "./entity.js"
-import { Body } from "./body.js"
+import { PhysicsBody } from "./physicsbody.js"
 
 class Pet extends Entity {
 
     image: ImageBitmap | null = null
     constructor() {
-        super(new Body(300, 300, 200, 300))
+        super(new PhysicsBody(300, 300, 200, 300))
         let image = new Image()
         image.onload = () => {
             Promise.all([

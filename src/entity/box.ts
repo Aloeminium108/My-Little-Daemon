@@ -1,4 +1,4 @@
-import { Body } from "./body.js";
+import { PhysicsBody } from "./physicsbody.js";
 import { Entity } from "./entity.js";
 
 class Box extends Entity {
@@ -7,7 +7,7 @@ class Box extends Entity {
     private height: number
 
     constructor(x: number, y: number, width: number, height: number) {
-        super(new Body(x, y, width, height))
+        super(new PhysicsBody(x, y, width, height))
         this.width = width
         this.height = height
     }
