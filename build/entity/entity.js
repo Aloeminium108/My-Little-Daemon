@@ -25,6 +25,9 @@ class Entity {
         this.boundaryCollision = (xBound, yBound) => {
             this.body.boundaryCollision(xBound, yBound);
         };
+        this.detectCollision = (otherEntity) => {
+            return this.body.detectCollision(otherEntity.body);
+        };
         this.body = body;
     }
 }

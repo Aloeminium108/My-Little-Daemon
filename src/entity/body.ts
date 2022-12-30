@@ -20,12 +20,12 @@ abstract class Body {
         callback(this.x, this.y)
     }
 
-    moveTo(newX: number, newY: number) {
+    moveTo = (newX: number, newY: number) => {
         this.x = Math.floor(newX - this.width/2)
         this.y = Math.floor(newY - this.height/2)
     }
     
-    inside(x: number, y: number) {
+    inside = (x: number, y: number) => {
         if (x > this.x 
             && x < this.x + this.width 
             && y > this.y
@@ -37,8 +37,20 @@ abstract class Body {
         }
     }
 
-    release() {
+    release = () => {
         this.held = false
+    }
+
+    detectCollision = (otherBody: Body) => {
+        if (this.x < otherBody.x + otherBody.width
+            && this.x + this.width > otherBody.x 
+            && this.y < otherBody.y + otherBody.height
+            && this.y + this.height > otherBody.y
+        ) {
+            return true
+        } else {
+            return false
+        }
     }
 
 }

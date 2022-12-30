@@ -42,6 +42,10 @@ abstract class Entity {
     boundaryCollision = (xBound: number, yBound: number) => {
         this.body.boundaryCollision(xBound, yBound)
     }
+
+    detectCollision = (otherEntity: Entity) => {
+        return this.body.detectCollision(otherEntity.body)
+    }
 }
 
 export { Entity }

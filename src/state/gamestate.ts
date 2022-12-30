@@ -24,12 +24,19 @@ class GameState extends State {
 
     init = () => {
         this.entities.push(new Box(500, 300, 50, 50))
+        this.entities.push(new Box(700, 300, 100, 100))
         this.entities.push(new Pet())
     }
 
     animate = (ctx: CanvasRenderingContext2D) => {
 
-        this.entities.forEach((entity) => {
+        this.entities.forEach((entity, index) => {
+            for (let i = index+1; i < this.entities.length; i++) {
+                if (entity.detectCollision(this.entities[i])) {
+                    console.log("Collision detected")
+                }
+            }
+
             entity.update()
 
             entity.boundaryCollision(this.width, this.height)
