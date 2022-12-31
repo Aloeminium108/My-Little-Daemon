@@ -1,12 +1,12 @@
-import { State } from "./state.js";
-import { Game } from "../game.js";
-import { Entity } from "../entity/entity.js";
-import { Box } from "../entity/box.js";
-import { Pet } from "../entity/pet.js";
+import { State } from "./state.js"
+import { Game } from "../game.js"
+import { Entity } from "../entity/entity.js"
+import { Box } from "../entity/box.js"
+import { PetEntity } from "../entity/petentity.js"
 
 class GameState extends State {
     toys: Array<Entity> = []
-    pet: Array<Pet> = []
+    pet: Array<PetEntity> = []
     entities: Array<Array<Entity>> = [this.toys, this.pet]
     heldEntity: Entity | null = null
     width: number
@@ -29,7 +29,7 @@ class GameState extends State {
     init = () => {
         this.toys.push(new Box(500, 300, 50, 50))
         this.toys.push(new Box(700, 300, 100, 100))
-        this.pet.push(new Pet())
+        this.pet.push(new PetEntity(this.game.pet))
     }
 
     animate = (ctx: CanvasRenderingContext2D) => {

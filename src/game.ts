@@ -1,20 +1,24 @@
 import { State, StateTransition } from "./state/state.js"
 import { GameState } from "./state/gamestate.js"
 import { MenuState } from "./state/menustate.js"
+import { Pet } from "./Pet/pet.js"
 
 class Game {
     canvas: HTMLCanvasElement
     ctx: CanvasRenderingContext2D
-    gameState: GameState
-    menuState: MenuState
 
-    stateMap: Map<StateTransition, State>
+    pet: Pet
 
-    currentState: State
+    private gameState: GameState
+    private menuState: MenuState
+    private stateMap: Map<StateTransition, State>
+    private currentState: State
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas
         this.ctx = canvas.getContext("2d")!!
+
+        this.pet = new Pet()
 
         this.gameState = new GameState(this)
         this.menuState = new MenuState(this)
@@ -25,26 +29,8 @@ class Game {
 
         this.currentState = this.gameState
 
-        canvas.addEventListener('mousedown', (e) => {
-            this.currentState.mouseDown(e)
-        })
-        
-        canvas.addEventListener('mouseup', (e) => {
-            this.currentState.mouseUp(e)
-        })
-        
-        canvas.addEventListener('mousemove', (e) => {
-            this.currentState.mouseMove(e)
-        })
-        
-        canvas.addEventListener('mouseleave', (e) => {
-            this.currentState.mouseLeave(e)
-        })
-
-        let buttons = document.querySelectorAll('.button')
-        buttons[0].addEventListener('click', (e) => {
-            this.changeState(StateTransition.MENU)
-        })
+        this.addCanvasListeners()
+        this.addButtonListeners()
     }
 
     animate = () => {
@@ -61,6 +47,31 @@ class Game {
             this.currentState = this.stateMap.get(state)!!
             this.currentState.resume()
         }
+    }
+
+    addCanvasListeners = () => {
+        this.canvas.addEventListener('mousedown', (e) => {
+            this.currentState.mouseDown(e)
+        })
+        
+        this.canvas.addEventListener('mouseup', (e) => {
+            this.currentState.mouseUp(e)
+        })
+        
+        this.canvas.addEventListener('mousemove', (e) => {
+            this.currentState.mouseMove(e)
+        })
+        
+        this.canvas.addEventListener('mouseleave', (e) => {
+            this.currentState.mouseLeave(e)
+        })
+    }
+
+    addButtonListeners = () => {
+        let buttons = document.querySelectorAll('.button')
+        buttons[0].addEventListener('click', (e) => {
+            this.changeState(StateTransition.MENU)
+        })
     }
 
 }

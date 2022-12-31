@@ -1,12 +1,15 @@
-import { Body } from "./body.js"
+import { Pet } from "../Pet/pet.js"
 import { Entity } from "./entity.js"
 import { PhysicsBody } from "./physicsbody.js"
 
-class Pet extends Entity {
-    body: PhysicsBody
-    image: ImageBitmap | null = null
-    constructor() {
+class PetEntity extends Entity {
+
+    private pet: Pet
+    protected body: PhysicsBody
+    private image: ImageBitmap | null = null
+    constructor(pet: Pet) {
         super()
+        this.pet = pet
         this.body = new PhysicsBody(300, 300, 200, 300)
         let image = new Image()
         image.onload = () => {
@@ -39,4 +42,4 @@ class Pet extends Entity {
     
 }
 
-export { Pet }
+export { PetEntity }
