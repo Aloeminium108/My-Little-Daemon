@@ -47,8 +47,8 @@ class PhysicsBody extends Body {
         }
         this.dx = PhysicsBody.friction * this.dx;
         this.dy = PhysicsBody.friction * this.dy;
-        this.x = Math.round(this.x + this.dx);
-        this.y = Math.round(this.y + this.dy);
+        this.x += this.dx;
+        this.y += this.dy;
     }
 }
 PhysicsBody.vCap = 50;

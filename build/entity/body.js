@@ -2,7 +2,7 @@ class Body {
     constructor(x, y, width, height) {
         this.held = false;
         this.draw = (callback) => {
-            callback(this.x, this.y);
+            callback(Math.round(this.x), Math.round(this.y));
         };
         this.moveTo = (newX, newY) => {
             this.x = Math.floor(newX - this.width / 2);

@@ -17,7 +17,7 @@ abstract class Body {
     abstract hold(): void
 
     draw = (callback: (x: number, y: number) => void) => {
-        callback(this.x, this.y)
+        callback(Math.round(this.x), Math.round(this.y))
     }
 
     moveTo = (newX: number, newY: number) => {

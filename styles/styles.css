@@ -1,5 +1,6 @@
 canvas {
     background-color: lightgray;
+    z-index: 0;
 }
 
 body {
@@ -36,4 +37,23 @@ body {
     background-color: #444;
     border: 3px solid white;
     cursor: pointer;
+}
+
+.game-screen {
+    position: relative;
+}
+
+#menu {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    background-color: aqua;
+    visibility: hidden;
+}
+
+#menu-exit {
+    height: 50px;
+    width: 50px;
+    background-color: red;
 }

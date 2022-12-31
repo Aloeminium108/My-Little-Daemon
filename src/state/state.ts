@@ -13,6 +13,7 @@ abstract class State {
     abstract mouseLeave(e: MouseEvent): void
 
     abstract init(): void
+    abstract resume(): void
 }
 
 export { State }

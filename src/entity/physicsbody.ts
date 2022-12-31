@@ -9,6 +9,7 @@ class PhysicsBody extends Body {
 
     private dx: number = 0
     private dy: number = 0
+
     constructor(x: number, y: number, width: number, height: number) {
         super(x, y, width, height)
     }
@@ -26,8 +27,8 @@ class PhysicsBody extends Body {
         this.dx = PhysicsBody.friction * this.dx
         this.dy = PhysicsBody.friction * this.dy
 
-        this.x = Math.round(this.x + this.dx)
-        this.y = Math.round(this.y + this.dy)
+        this.x += this.dx
+        this.y += this.dy
     }
 
     boundaryCollision = (xBound: number, yBound: number) => {

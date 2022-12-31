@@ -93,6 +93,8 @@ class GameState extends State {
         this.heldEntity?.release(0, 0)
         this.heldEntity = null
     }
+
+    resume = () => {}
     
 }
 
