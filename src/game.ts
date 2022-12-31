@@ -7,16 +7,22 @@ class Game {
     ctx: CanvasRenderingContext2D
     gameState: GameState
     menuState: MenuState
-    stateList: Array<State> = []
+
+    stateMap: Map<StateTransition, State>
+
     currentState: State
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas
         this.ctx = canvas.getContext("2d")!!
+
         this.gameState = new GameState(this)
-        this.stateList.push(this.gameState)
         this.menuState = new MenuState(this)
-        this.stateList.push(this.menuState)
+
+        this.stateMap = new Map<StateTransition, State>
+        this.stateMap.set(StateTransition.GAME, this.gameState)
+        this.stateMap.set(StateTransition.MENU, this.menuState)
+
         this.currentState = this.gameState
 
         canvas.addEventListener('mousedown', (e) => {
@@ -37,8 +43,7 @@ class Game {
 
         let buttons = document.querySelectorAll('.button')
         buttons[0].addEventListener('click', (e) => {
-            this.changeState(1)
-            this.currentState.resume()
+            this.changeState(StateTransition.MENU)
         })
     }
 
@@ -50,10 +55,18 @@ class Game {
         window.requestAnimationFrame(this.animate)
     }
 
-    changeState = (index: number) => {
-        this.currentState = this.stateList[index]
+    changeState = (state: StateTransition) => {
+        if (this.stateMap.has(state)) {
+            this.currentState.pause()
+            this.currentState = this.stateMap.get(state)!!
+            this.currentState.resume()
+        }
     }
 
 }
 
-export { Game }
+enum StateTransition {
+    MENU, GAME
+}
+
+export { Game, StateTransition }

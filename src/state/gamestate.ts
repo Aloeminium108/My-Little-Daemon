@@ -94,6 +94,7 @@ class GameState extends State {
         this.heldEntity = null
     }
 
+    pause = () => {}
     resume = () => {}
     
 }

@@ -1,5 +1,5 @@
 import { State } from "./state.js"
-import { Game } from "../game.js"
+import { Game, StateTransition } from "../game.js"
 
 class MenuState extends State {
 
@@ -20,9 +20,12 @@ class MenuState extends State {
     init = () => {
         let exitButton = document.getElementById('menu-exit')
         exitButton?.addEventListener('click', (e) => {
-            this.game.changeState(0)
-            this.menuHTML.style.visibility = 'hidden'
+            this.game.changeState(StateTransition.GAME)
         })
+    }
+
+    pause = () => {
+        this.menuHTML.style.visibility = 'hidden'
     }
 
     resume = () => {

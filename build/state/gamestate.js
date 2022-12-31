@@ -76,6 +76,7 @@ class GameState extends State {
             (_a = this.heldEntity) === null || _a === void 0 ? void 0 : _a.release(0, 0);
             this.heldEntity = null;
         };
+        this.pause = () => { };
         this.resume = () => { };
         this.width = game.canvas.width;
         this.height = game.canvas.height;
