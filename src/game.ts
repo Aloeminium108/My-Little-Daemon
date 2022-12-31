@@ -1,4 +1,4 @@
-import { State } from "./state/state.js"
+import { State, StateTransition } from "./state/state.js"
 import { GameState } from "./state/gamestate.js"
 import { MenuState } from "./state/menustate.js"
 
@@ -65,8 +65,4 @@ class Game {
 
 }
 
-enum StateTransition {
-    MENU, GAME
-}
-
-export { Game, StateTransition }
+export { Game }

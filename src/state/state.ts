@@ -17,4 +17,8 @@ abstract class State {
     abstract resume(): void
 }
 
-export { State }
+enum StateTransition {
+    MENU, GAME
+}
+
+export { State, StateTransition }

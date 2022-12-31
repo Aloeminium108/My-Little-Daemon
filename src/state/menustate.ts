@@ -1,5 +1,5 @@
-import { State } from "./state.js"
-import { Game, StateTransition } from "../game.js"
+import { State, StateTransition } from "./state.js"
+import { Game } from "../game.js"
 
 class MenuState extends State {
 

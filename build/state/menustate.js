@@ -1,5 +1,4 @@
-import { State } from "./state.js";
-import { StateTransition } from "../game.js";
+import { State, StateTransition } from "./state.js";
 class MenuState extends State {
     constructor(game) {
         super(game);

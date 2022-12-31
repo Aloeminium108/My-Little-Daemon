@@ -1,3 +1,4 @@
+import { StateTransition } from "./state/state.js";
 import { GameState } from "./state/gamestate.js";
 import { MenuState } from "./state/menustate.js";
 class Game {
@@ -40,9 +41,4 @@ class Game {
         });
     }
 }
-var StateTransition;
-(function (StateTransition) {
-    StateTransition[StateTransition["MENU"] = 0] = "MENU";
-    StateTransition[StateTransition["GAME"] = 1] = "GAME";
-})(StateTransition || (StateTransition = {}));
-export { Game, StateTransition };
+export { Game };
