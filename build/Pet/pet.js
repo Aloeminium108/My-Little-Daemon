@@ -7,7 +7,11 @@ class Pet {
         this.Feed = (nourishmentValue) => {
             this.hunger += nourishmentValue;
         };
-        this.imageSrc = "../../assets/bird.png";
+        this.imageSrc = '../../assets/bird.png';
+        this.name = 'FunkyBird';
+        this.gender = 'None';
+        this.age = 'Eternal';
+        this.weight = '83 trillion kilotons';
     }
 }
 export { Pet };
