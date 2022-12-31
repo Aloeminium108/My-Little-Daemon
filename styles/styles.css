@@ -54,7 +54,7 @@ body {
     justify-content: space-between;
 
     background-color: aqua;
-    visibility: visible;
+    visibility: hidden;
 }
 
 #menu-exit {
