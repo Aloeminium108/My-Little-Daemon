@@ -1,6 +1,7 @@
 class State {
     constructor(game) {
         this.game = game;
+        this.pet = game.pet;
     }
 }
 var StateTransition;

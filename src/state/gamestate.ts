@@ -6,8 +6,8 @@ import { PetEntity } from "../entity/petentity.js"
 
 class GameState extends State {
     toys: Array<Entity> = []
-    pet: Array<PetEntity> = []
-    entities: Array<Array<Entity>> = [this.toys, this.pet]
+    petEntity: Array<PetEntity> = []
+    entities: Array<Array<Entity>> = [this.toys, this.petEntity]
     heldEntity: Entity | null = null
     width: number
     height: number
@@ -29,7 +29,7 @@ class GameState extends State {
     init = () => {
         this.toys.push(new Box(500, 300, 50, 50))
         this.toys.push(new Box(700, 300, 100, 100))
-        this.pet.push(new PetEntity(this.game.pet))
+        this.petEntity.push(new PetEntity(this.pet))
     }
 
     animate = (ctx: CanvasRenderingContext2D) => {

@@ -5,8 +5,8 @@ class GameState extends State {
     constructor(game) {
         super(game);
         this.toys = [];
-        this.pet = [];
-        this.entities = [this.toys, this.pet];
+        this.petEntity = [];
+        this.entities = [this.toys, this.petEntity];
         this.heldEntity = null;
         this.mouse = {
             pressed: false,
@@ -18,7 +18,7 @@ class GameState extends State {
         this.init = () => {
             this.toys.push(new Box(500, 300, 50, 50));
             this.toys.push(new Box(700, 300, 100, 100));
-            this.pet.push(new PetEntity(this.game.pet));
+            this.petEntity.push(new PetEntity(this.pet));
         };
         this.animate = (ctx) => {
             this.entities.flat().forEach((entity, index) => {

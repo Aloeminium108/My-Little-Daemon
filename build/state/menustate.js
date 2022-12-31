@@ -7,6 +7,7 @@ class MenuState extends State {
             exitButton === null || exitButton === void 0 ? void 0 : exitButton.addEventListener('click', (e) => {
                 this.game.changeState(StateTransition.GAME);
             });
+            this.petImage.src = this.pet.imageSrc;
         };
         this.pause = () => {
             this.menuHTML.style.visibility = 'hidden';
@@ -15,6 +16,7 @@ class MenuState extends State {
             this.menuHTML.style.visibility = 'visible';
         };
         this.menuHTML = document.getElementById('menu');
+        this.petImage = document.getElementById('pet-image');
         this.init();
     }
     animate(ctx) { }

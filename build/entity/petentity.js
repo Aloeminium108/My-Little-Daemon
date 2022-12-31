@@ -29,7 +29,7 @@ class PetEntity extends Entity {
                 this.image = sprite[0];
             });
         };
-        image.src = "../../assets/bird.png";
+        image.src = this.pet.imageSrc;
     }
 }
 export { PetEntity };

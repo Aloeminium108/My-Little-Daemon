@@ -1,13 +1,16 @@
 import { State, StateTransition } from "./state.js"
 import { Game } from "../game.js"
+import { Pet } from "../Pet/pet.js"
 
 class MenuState extends State {
 
     menuHTML: HTMLElement
+    petImage: HTMLImageElement
 
     constructor(game: Game) {
         super(game)
         this.menuHTML = document.getElementById('menu')!!
+        this.petImage = document.getElementById('pet-image') as HTMLImageElement
         this.init()
     }
 
@@ -22,6 +25,7 @@ class MenuState extends State {
         exitButton?.addEventListener('click', (e) => {
             this.game.changeState(StateTransition.GAME)
         })
+        this.petImage.src = this.pet.imageSrc
     }
 
     pause = () => {

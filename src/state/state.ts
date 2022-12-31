@@ -1,9 +1,12 @@
 import { Game } from "../game.js"
+import { Pet } from "../Pet/pet.js"
 
 abstract class State {
     game: Game
+    pet: Pet
     constructor(game: Game) {
         this.game = game
+        this.pet = game.pet
     }
 
     abstract animate(ctx: CanvasRenderingContext2D) : void
