@@ -1,14 +1,11 @@
 import { Body } from "./body.js"
 
 abstract class Entity {
-    protected body: Body
-
-    constructor(body: Body) {
-        this.body = body
-    }
+    protected abstract body: Body
 
     abstract drawBody(ctx: CanvasRenderingContext2D): (x: number, y: number) => void
     abstract updateSelf(): void
+    abstract release(dx: number, dy: number): void
 
     update = () => {
         this.updateSelf()
@@ -29,10 +26,6 @@ abstract class Entity {
 
     hold = () => {
         this.body.hold()
-    }
-
-    release = () => {
-        this.body.release()
     }
 
     inside = (x: number, y: number) => {

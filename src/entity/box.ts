@@ -2,12 +2,13 @@ import { PhysicsBody } from "./physicsbody.js";
 import { Entity } from "./entity.js";
 
 class Box extends Entity {
-
+    protected body: PhysicsBody
     private width: number
     private height: number
 
     constructor(x: number, y: number, width: number, height: number) {
-        super(new PhysicsBody(x, y, width, height))
+        super()
+        this.body = new PhysicsBody(x, y, width, height)
         this.width = width
         this.height = height
     }
@@ -19,6 +20,10 @@ class Box extends Entity {
     }
     
     updateSelf = () => {
+    }
+
+    release(dx: number, dy: number) {
+        this.body.toss(dx, dy)
     }
 
 }

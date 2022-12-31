@@ -7,20 +7,30 @@ class PhysicsBody extends Body {
         this.boundaryCollision = (xBound, yBound) => {
             if (this.x < 0) {
                 this.x = 0;
-                this.dx *= -1;
+                this.dx *= -PhysicsBody.boundaryElasticity;
             }
             else if (this.x + this.width > xBound) {
                 this.x = xBound - this.width;
-                this.dx *= -1;
+                this.dx *= -PhysicsBody.boundaryElasticity;
             }
             if (this.y < 0) {
                 this.y = 0;
-                this.dy *= -1;
+                this.dy *= -PhysicsBody.boundaryElasticity;
             }
             else if (this.y + this.height > yBound) {
                 this.y = yBound - this.height;
-                this.dy *= -1;
+                this.dy *= -PhysicsBody.floorElasticity;
             }
+        };
+        this.hold = () => {
+            this.held = true;
+            this.dx = 0;
+            this.dy = 0;
+        };
+        this.toss = (dx, dy) => {
+            this.held = false;
+            this.dx = dx;
+            this.dy = dy;
         };
     }
     update() {
@@ -35,18 +45,15 @@ class PhysicsBody extends Body {
         if (!this.held) {
             this.dy += PhysicsBody.gravity;
         }
-        this.dx = Math.floor(PhysicsBody.friction * this.dx);
-        this.dy = Math.floor(PhysicsBody.friction * this.dy);
-        this.x += this.dx;
-        this.y += this.dy;
-    }
-    hold() {
-        this.held = true;
-        this.dx = 0;
-        this.dy = 0;
+        this.dx = PhysicsBody.friction * this.dx;
+        this.dy = PhysicsBody.friction * this.dy;
+        this.x = Math.round(this.x + this.dx);
+        this.y = Math.round(this.y + this.dy);
     }
 }
 PhysicsBody.vCap = 50;
 PhysicsBody.friction = 0.99;
-PhysicsBody.gravity = 2;
+PhysicsBody.gravity = 1;
+PhysicsBody.boundaryElasticity = 0.8;
+PhysicsBody.floorElasticity = 0.7;
 export { PhysicsBody };

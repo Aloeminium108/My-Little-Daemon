@@ -1,5 +1,5 @@
 class Entity {
-    constructor(body) {
+    constructor() {
         this.update = () => {
             this.updateSelf();
             this.updateBody();
@@ -16,9 +16,6 @@ class Entity {
         this.hold = () => {
             this.body.hold();
         };
-        this.release = () => {
-            this.body.release();
-        };
         this.inside = (x, y) => {
             return this.body.inside(x, y);
         };
@@ -28,7 +25,6 @@ class Entity {
         this.detectCollision = (otherEntity) => {
             return this.body.detectCollision(otherEntity.body);
         };
-        this.body = body;
     }
 }
 export { Entity };

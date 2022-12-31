@@ -14,7 +14,9 @@ class GameState extends State {
     mouse = {
         pressed: false,
         x: 0,
-        y: 0
+        y: 0,
+        dx: 0,
+        dy: 0
     }
 
     constructor(game: Game) {
@@ -60,14 +62,18 @@ class GameState extends State {
     }
     mouseUp = (e: MouseEvent) => {
         this.mouse.pressed = false
-        this.entities.flat().forEach((entity) => {
-            entity.release()
-        })
+        this.heldEntity?.release(this.mouse.dx, this.mouse.dy)
         this.heldEntity = null
     }
     mouseMove = (e: MouseEvent) => {
-        this.mouse.x = e.offsetX
-        this.mouse.y = e.offsetY
+        let newX = e.offsetX
+        let newY = e.offsetY
+
+        this.mouse.dx = newX - this.mouse.x
+        this.mouse.dy = newY - this.mouse.y
+
+        this.mouse.x = newX
+        this.mouse.y = newY
         
         if (this.heldEntity != null) {
             this.heldEntity.moveTo(this.mouse.x, this.mouse.y)
@@ -84,9 +90,7 @@ class GameState extends State {
     }
     mouseLeave = (e: MouseEvent) => {
         this.mouse.pressed = false
-        this.entities.flat().forEach((entity) => {
-            entity.release()
-        })
+        this.heldEntity?.release(0, 0)
         this.heldEntity = null
     }
     

@@ -11,7 +11,9 @@ class GameState extends State {
         this.mouse = {
             pressed: false,
             x: 0,
-            y: 0
+            y: 0,
+            dx: 0,
+            dy: 0
         };
         this.init = () => {
             this.toys.push(new Box(500, 300, 50, 50));
@@ -41,15 +43,18 @@ class GameState extends State {
             }
         };
         this.mouseUp = (e) => {
+            var _a;
             this.mouse.pressed = false;
-            this.entities.flat().forEach((entity) => {
-                entity.release();
-            });
+            (_a = this.heldEntity) === null || _a === void 0 ? void 0 : _a.release(this.mouse.dx, this.mouse.dy);
             this.heldEntity = null;
         };
         this.mouseMove = (e) => {
-            this.mouse.x = e.offsetX;
-            this.mouse.y = e.offsetY;
+            let newX = e.offsetX;
+            let newY = e.offsetY;
+            this.mouse.dx = newX - this.mouse.x;
+            this.mouse.dy = newY - this.mouse.y;
+            this.mouse.x = newX;
+            this.mouse.y = newY;
             if (this.heldEntity != null) {
                 this.heldEntity.moveTo(this.mouse.x, this.mouse.y);
             }
@@ -66,10 +71,9 @@ class GameState extends State {
             }
         };
         this.mouseLeave = (e) => {
+            var _a;
             this.mouse.pressed = false;
-            this.entities.flat().forEach((entity) => {
-                entity.release();
-            });
+            (_a = this.heldEntity) === null || _a === void 0 ? void 0 : _a.release(0, 0);
             this.heldEntity = null;
         };
         this.width = game.canvas.width;

@@ -3,7 +3,9 @@ import { Body } from "./body.js"
 class PhysicsBody extends Body {
     private static vCap = 50
     private static friction = 0.99
-    private static gravity = 2
+    private static gravity = 1
+    private static boundaryElasticity = 0.8
+    private static floorElasticity = 0.7
 
     private dx: number = 0
     private dy: number = 0
@@ -21,35 +23,41 @@ class PhysicsBody extends Body {
             this.dy += PhysicsBody.gravity
         }
 
-        this.dx = Math.floor(PhysicsBody.friction * this.dx)
-        this.dy = Math.floor(PhysicsBody.friction * this.dy)
+        this.dx = PhysicsBody.friction * this.dx
+        this.dy = PhysicsBody.friction * this.dy
 
-        this.x += this.dx
-        this.y += this.dy
+        this.x = Math.round(this.x + this.dx)
+        this.y = Math.round(this.y + this.dy)
     }
 
     boundaryCollision = (xBound: number, yBound: number) => {
         if(this.x < 0) {
             this.x = 0
-            this.dx *= -1
+            this.dx *= -PhysicsBody.boundaryElasticity
         } else if (this.x + this.width > xBound) {
             this.x = xBound - this.width
-            this.dx *= -1
+            this.dx *= -PhysicsBody.boundaryElasticity
         }
 
         if(this.y < 0) {
             this.y = 0
-            this.dy *= -1
+            this.dy *= -PhysicsBody.boundaryElasticity
         } else if (this.y + this.height > yBound) {
             this.y = yBound - this.height
-            this.dy *= -1
+            this.dy *= -PhysicsBody.floorElasticity
         }
     }
 
-    hold() {
+    hold = () => {
         this.held = true
         this.dx = 0
         this.dy = 0
+    }
+
+    toss = (dx: number, dy: number) => {
+        this.held = false
+        this.dx = dx
+        this.dy = dy
     }
 
 }

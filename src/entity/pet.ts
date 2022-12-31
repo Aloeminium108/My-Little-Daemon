@@ -1,11 +1,13 @@
+import { Body } from "./body.js"
 import { Entity } from "./entity.js"
 import { PhysicsBody } from "./physicsbody.js"
 
 class Pet extends Entity {
-
+    body: PhysicsBody
     image: ImageBitmap | null = null
     constructor() {
-        super(new PhysicsBody(300, 300, 200, 300))
+        super()
+        this.body = new PhysicsBody(300, 300, 200, 300)
         let image = new Image()
         image.onload = () => {
             Promise.all([
@@ -29,6 +31,10 @@ class Pet extends Entity {
     }
 
     updateSelf = () => {
+    }
+
+    release = (dx: number, dy: number) => {
+        this.body.toss(0, 0)
     }
     
 }

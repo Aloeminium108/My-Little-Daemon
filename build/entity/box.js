@@ -2,7 +2,7 @@ import { PhysicsBody } from "./physicsbody.js";
 import { Entity } from "./entity.js";
 class Box extends Entity {
     constructor(x, y, width, height) {
-        super(new PhysicsBody(x, y, width, height));
+        super();
         this.drawBody = (ctx) => {
             return (x, y) => {
                 ctx.fillRect(x, y, this.width, this.height);
@@ -10,8 +10,12 @@ class Box extends Entity {
         };
         this.updateSelf = () => {
         };
+        this.body = new PhysicsBody(x, y, width, height);
         this.width = width;
         this.height = height;
+    }
+    release(dx, dy) {
+        this.body.toss(dx, dy);
     }
 }
 export { Box };
