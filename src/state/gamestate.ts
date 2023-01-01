@@ -6,8 +6,9 @@ import { PetEntity } from "../entity/petentity.js"
 
 class GameState extends State {
     toys: Array<Entity> = []
+    food: Array<Entity> = []
     petEntity: Array<PetEntity> = []
-    entities: Array<Array<Entity>> = [this.toys, this.petEntity]
+    entities: Array<Array<Entity>> = [this.petEntity, this.toys, this.food]
     heldEntity: Entity | null = null
     width: number
     height: number
@@ -52,7 +53,7 @@ class GameState extends State {
 
     mouseDown = (e: MouseEvent) => {
         this.mouse.pressed = true
-        for (let entity of this.entities.flat()) {
+        for (let entity of this.entities.flat().reverse()) {
             if (entity.inside(this.mouse.x, this.mouse.y)) {
                 entity.hold()
                 this.heldEntity = entity
@@ -78,7 +79,7 @@ class GameState extends State {
         if (this.heldEntity != null) {
             this.heldEntity.moveTo(this.mouse.x, this.mouse.y)
         } else {
-            for (let entity of this.entities.flat()) {
+            for (let entity of this.entities.flat().reverse()) {
                 if (entity.inside(this.mouse.x, this.mouse.y)) {
                     this.game.canvas.style.cursor = 'grab'
                     break

@@ -14,6 +14,7 @@ class MenuState extends State {
         };
         this.resume = () => {
             this.menuHTML.style.visibility = 'visible';
+            this.updateMenu();
         };
         this.updateMenu = () => {
             this.petImage.src = this.pet.imageSrc;

@@ -5,8 +5,9 @@ class GameState extends State {
     constructor(game) {
         super(game);
         this.toys = [];
+        this.food = [];
         this.petEntity = [];
-        this.entities = [this.toys, this.petEntity];
+        this.entities = [this.petEntity, this.toys, this.food];
         this.heldEntity = null;
         this.mouse = {
             pressed: false,
@@ -34,7 +35,7 @@ class GameState extends State {
         };
         this.mouseDown = (e) => {
             this.mouse.pressed = true;
-            for (let entity of this.entities.flat()) {
+            for (let entity of this.entities.flat().reverse()) {
                 if (entity.inside(this.mouse.x, this.mouse.y)) {
                     entity.hold();
                     this.heldEntity = entity;
@@ -59,7 +60,7 @@ class GameState extends State {
                 this.heldEntity.moveTo(this.mouse.x, this.mouse.y);
             }
             else {
-                for (let entity of this.entities.flat()) {
+                for (let entity of this.entities.flat().reverse()) {
                     if (entity.inside(this.mouse.x, this.mouse.y)) {
                         this.game.canvas.style.cursor = 'grab';
                         break;
