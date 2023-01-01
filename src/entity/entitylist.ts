@@ -7,6 +7,7 @@ class EntityList {
     private toys: Array<Entity> = []
     private food: Array<Food> = []
     private entityList: Array<Array<Entity>>
+    private heldEntity: Entity | null = null
 
     constructor(petEntity: PetEntity) {
         this.petEntity = petEntity
@@ -33,6 +34,10 @@ class EntityList {
         return [this.toys, this.food].flat()
     }
 
+    getHeldEntity = () => {
+        return this.heldEntity
+    }
+
     addToy = (toy: Entity) => {
         this.toys.push(toy)
     }
@@ -53,6 +58,15 @@ class EntityList {
         }
     }
 
+    hold = (entity: Entity | null) => {
+        entity?.hold()
+        this.heldEntity = entity
+    }
+
+    release = (dx: number, dy: number) => {
+        this.heldEntity?.release(dx, dy)
+        this.heldEntity = null
+    }
 
 }
 

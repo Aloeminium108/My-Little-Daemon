@@ -30,6 +30,14 @@ class CollisionHandler {
                 }
             });
         };
+        this.detectMouseCollisions = (mouse) => {
+            for (let entity of this.entityList.fullList().reverse()) {
+                if (entity.inside(mouse.x, mouse.y)) {
+                    return entity;
+                }
+            }
+            return null;
+        };
         this.entityList = entityList;
         this.xBound = xBound;
         this.yBound = yBound;

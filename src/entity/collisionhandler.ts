@@ -1,3 +1,4 @@
+import { Mouse } from "../state/mouse.js"
 import { Entity } from "./entity.js"
 import { EntityList } from "./entitylist.js"
 import { Food } from "./food.js"
@@ -47,6 +48,15 @@ class CollisionHandler {
                 }
             }
         })
+    }
+
+    detectMouseCollisions = (mouse: Mouse) => {
+        for (let entity of this.entityList.fullList().reverse()) {
+            if (entity.inside(mouse.x, mouse.y)) {
+                return entity
+            }
+        }
+        return null
     }
 }
 

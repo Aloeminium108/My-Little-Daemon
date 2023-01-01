@@ -4,20 +4,11 @@ import { PetEntity } from "../entity/petentity.js";
 import { Food } from "../entity/food.js";
 import { EntityList } from "../entity/entitylist.js";
 import { CollisionHandler } from "../entity/collisionhandler.js";
+import { Mouse } from "./mouse.js";
 class GameState extends State {
     constructor(game) {
         super(game);
-        this.toys = [];
-        this.food = [];
-        this.heldEntity = null;
         this.floorHeight = 100;
-        this.mouse = {
-            pressed: false,
-            x: 0,
-            y: 0,
-            dx: 0,
-            dy: 0
-        };
         this.init = () => {
             this.entityList.addToy(new Box(500, 300, 50, 50));
             this.entityList.addToy(new Box(700, 300, 100, 100));
@@ -34,57 +25,34 @@ class GameState extends State {
         };
         this.mouseDown = (e) => {
             this.mouse.pressed = true;
-            for (let entity of this.entityList.fullList().reverse()) {
-                if (entity.inside(this.mouse.x, this.mouse.y)) {
-                    entity.hold();
-                    this.heldEntity = entity;
-                    break;
-                }
-            }
+            this.entityList.hold(this.collisionHandler.detectMouseCollisions(this.mouse));
         };
         this.mouseUp = (e) => {
-            var _a;
             this.mouse.pressed = false;
-            (_a = this.heldEntity) === null || _a === void 0 ? void 0 : _a.release(this.mouse.dx, this.mouse.dy);
-            this.heldEntity = null;
+            this.entityList.release(this.mouse.dx, this.mouse.dy);
         };
         this.mouseMove = (e) => {
-            let newX = e.offsetX;
-            let newY = e.offsetY;
-            this.mouse.dx = newX - this.mouse.x;
-            this.mouse.dy = newY - this.mouse.y;
-            this.mouse.x = newX;
-            this.mouse.y = newY;
-            if (this.heldEntity != null) {
-                this.heldEntity.moveTo(this.mouse.x, this.mouse.y);
-                this.game.canvas.style.cursor = this.heldEntity.getMouseHold();
+            this.mouse.move(e);
+            let heldEntity = this.entityList.getHeldEntity();
+            if (heldEntity != null) {
+                heldEntity.moveTo(this.mouse.x, this.mouse.y);
+                this.game.canvas.style.cursor = heldEntity.getMouseHold();
             }
             else {
-                for (let entity of this.entityList.fullList().reverse()) {
-                    if (entity.inside(this.mouse.x, this.mouse.y)) {
-                        this.game.canvas.style.cursor = entity.getMouseOver();
-                        break;
-                    }
-                    else {
-                        this.game.canvas.style.cursor = 'default';
-                    }
-                }
+                this.mouse.mouseOverEntity(this.collisionHandler.detectMouseCollisions(this.mouse));
             }
         };
         this.mouseLeave = (e) => {
-            var _a;
             this.mouse.pressed = false;
-            (_a = this.heldEntity) === null || _a === void 0 ? void 0 : _a.release(0, 0);
-            this.heldEntity = null;
+            this.entityList.release(0, 0);
         };
         this.pause = () => { };
         this.resume = () => { };
-        this.petEntity = new PetEntity(this.pet);
-        this.entityList = new EntityList(this.petEntity);
+        this.entityList = new EntityList(new PetEntity(this.pet));
         this.width = game.canvas.width;
         this.height = game.canvas.height;
         this.collisionHandler = new CollisionHandler(this.entityList, this.width, this.height - this.floorHeight);
-        this.entities = [[this.petEntity], this.toys, this.food];
+        this.mouse = new Mouse(game.canvas);
         this.init();
     }
 }

@@ -2,6 +2,7 @@ class EntityList {
     constructor(petEntity) {
         this.toys = [];
         this.food = [];
+        this.heldEntity = null;
         this.fullList = () => {
             return this.entityList.flat();
         };
@@ -16,6 +17,9 @@ class EntityList {
         };
         this.getSimpleEntities = () => {
             return [this.toys, this.food].flat();
+        };
+        this.getHeldEntity = () => {
+            return this.heldEntity;
         };
         this.addToy = (toy) => {
             this.toys.push(toy);
@@ -32,6 +36,15 @@ class EntityList {
             if (index > -1 && index < this.food.length) {
                 this.food.splice(index, 1);
             }
+        };
+        this.hold = (entity) => {
+            entity === null || entity === void 0 ? void 0 : entity.hold();
+            this.heldEntity = entity;
+        };
+        this.release = (dx, dy) => {
+            var _a;
+            (_a = this.heldEntity) === null || _a === void 0 ? void 0 : _a.release(dx, dy);
+            this.heldEntity = null;
         };
         this.petEntity = petEntity;
         this.entityList = [[petEntity], this.toys, this.food];
