@@ -3,6 +3,8 @@ import { Entity } from "./entity.js";
 class Box extends Entity {
     constructor(x, y, width, height) {
         super();
+        this.mouseOver = 'grab';
+        this.mouseGrab = 'grabbing';
         this.drawBody = (ctx) => {
             return (x, y) => {
                 ctx.fillRect(x, y, this.width, this.height);

@@ -4,6 +4,8 @@ class PetEntity extends Entity {
     constructor(pet) {
         super();
         this.image = null;
+        this.mouseOver = 'pointer';
+        this.mouseGrab = 'grab';
         this.drawBody = (ctx) => {
             if (this.image != null) {
                 return (x, y) => {

@@ -2,6 +2,8 @@ import { Body } from "./body.js"
 
 abstract class Entity {
     protected abstract body: Body
+    protected abstract mouseOver: string
+    protected abstract mouseGrab: string
 
     abstract drawBody(ctx: CanvasRenderingContext2D): (x: number, y: number) => void
     abstract updateSelf(): void
@@ -38,6 +40,14 @@ abstract class Entity {
 
     detectCollision = (otherEntity: Entity) => {
         return this.body.detectCollision(otherEntity.body)
+    }
+
+    getMouseOver = () => {
+        return this.mouseOver
+    }
+
+    getMouseHold = () => {
+        return this.mouseGrab
     }
 }
 

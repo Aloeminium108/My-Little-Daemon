@@ -7,6 +7,10 @@ class PetEntity extends Entity {
     private pet: Pet
     protected body: PhysicsBody
     private image: ImageBitmap | null = null
+
+    mouseOver = 'pointer'
+    mouseGrab = 'grab'
+
     constructor(pet: Pet) {
         super()
         this.pet = pet

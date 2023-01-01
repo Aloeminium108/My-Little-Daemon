@@ -58,11 +58,12 @@ class GameState extends State {
             this.mouse.y = newY;
             if (this.heldEntity != null) {
                 this.heldEntity.moveTo(this.mouse.x, this.mouse.y);
+                this.game.canvas.style.cursor = this.heldEntity.getMouseHold();
             }
             else {
                 for (let entity of this.entities.flat().reverse()) {
                     if (entity.inside(this.mouse.x, this.mouse.y)) {
-                        this.game.canvas.style.cursor = 'grab';
+                        this.game.canvas.style.cursor = entity.getMouseOver();
                         break;
                     }
                     else {

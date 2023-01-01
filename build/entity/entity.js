@@ -25,6 +25,12 @@ class Entity {
         this.detectCollision = (otherEntity) => {
             return this.body.detectCollision(otherEntity.body);
         };
+        this.getMouseOver = () => {
+            return this.mouseOver;
+        };
+        this.getMouseHold = () => {
+            return this.mouseGrab;
+        };
     }
 }
 export { Entity };

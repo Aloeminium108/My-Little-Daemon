@@ -5,6 +5,8 @@ class Box extends Entity {
     protected body: PhysicsBody
     private width: number
     private height: number
+    mouseOver = 'grab'
+    mouseGrab = 'grabbing'
 
     constructor(x: number, y: number, width: number, height: number) {
         super()
