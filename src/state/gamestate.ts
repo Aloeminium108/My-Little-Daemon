@@ -14,8 +14,6 @@ class GameState extends State {
     collisionHandler: CollisionHandler
     mouse: Mouse
 
-    width: number
-    height: number
     floorHeight: number = 100
 
     constructor(game: Game) {
@@ -23,10 +21,7 @@ class GameState extends State {
 
         this.entityList = new EntityList(new PetEntity(this.pet))
 
-        this.width = game.canvas.width
-        this.height = game.canvas.height
-
-        this.collisionHandler = new CollisionHandler(this.entityList, this.width, this.height - this.floorHeight)
+        this.collisionHandler = new CollisionHandler(this.entityList, game.canvas.width, game.canvas.height - this.floorHeight)
         this.mouse = new Mouse(game.canvas)
 
         this.init()
