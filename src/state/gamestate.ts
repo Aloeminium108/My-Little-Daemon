@@ -1,6 +1,5 @@
 import { State } from "./state.js"
 import { Game } from "../game.js"
-import { Entity } from "../entity/entity.js"
 import { Box } from "../entity/toy/box.js"
 import { PetEntity } from "../entity/petentity.js"
 import { Food } from "../entity/food.js"
