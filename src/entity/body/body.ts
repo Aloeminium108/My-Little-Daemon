@@ -41,11 +41,11 @@ abstract class Body {
         this.held = false
     }
 
-    detectCollision = (otherBody: Body) => {
-        if (this.x < otherBody.x + otherBody.width
-            && this.x + this.width > otherBody.x 
-            && this.y < otherBody.y + otherBody.height
-            && this.y + this.height > otherBody.y
+    static detectCollision = (body1: Body, body2: Body) => {
+        if (body1.x < body2.x + body2.width
+            && body1.x + body1.width > body2.x 
+            && body1.y < body2.y + body2.height
+            && body1.y + body1.height > body2.y
         ) {
             return true
         } else {

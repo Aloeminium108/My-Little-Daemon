@@ -1,3 +1,4 @@
+import { Body } from "./body/body.js";
 class Entity {
     constructor() {
         this.update = () => {
@@ -22,9 +23,6 @@ class Entity {
         this.boundaryCollision = (xBound, yBound) => {
             this.body.boundaryCollision(xBound, yBound);
         };
-        this.detectCollision = (otherEntity) => {
-            return this.body.detectCollision(otherEntity.body);
-        };
         this.getMouseOver = () => {
             return this.mouseOver;
         };
@@ -33,4 +31,7 @@ class Entity {
         };
     }
 }
+Entity.detectCollision = (entity1, entity2) => {
+    return Body.detectCollision(entity1.body, entity2.body);
+};
 export { Entity };

@@ -4,8 +4,8 @@ class Pet {
         this.getHunger = () => {
             return this.hunger;
         };
-        this.Feed = (nourishmentValue) => {
-            this.hunger += nourishmentValue;
+        this.feed = (food) => {
+            this.hunger += food.getNourishmentValue();
         };
         this.imageSrc = '../../assets/bird.png';
         this.name = 'FunkyBird';

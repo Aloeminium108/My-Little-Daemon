@@ -22,21 +22,21 @@ class Body {
         this.release = () => {
             this.held = false;
         };
-        this.detectCollision = (otherBody) => {
-            if (this.x < otherBody.x + otherBody.width
-                && this.x + this.width > otherBody.x
-                && this.y < otherBody.y + otherBody.height
-                && this.y + this.height > otherBody.y) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        };
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
     }
 }
+Body.detectCollision = (body1, body2) => {
+    if (body1.x < body2.x + body2.width
+        && body1.x + body1.width > body2.x
+        && body1.y < body2.y + body2.height
+        && body1.y + body1.height > body2.y) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
 export { Body };

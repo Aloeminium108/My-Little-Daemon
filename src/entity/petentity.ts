@@ -1,6 +1,7 @@
 import { Pet } from "../Pet/pet.js"
 import { Entity } from "./entity.js"
 import { PhysicsBody } from "./body/physicsbody.js"
+import { Food } from "./food.js"
 
 class PetEntity extends Entity {
 
@@ -42,6 +43,10 @@ class PetEntity extends Entity {
 
     release = (dx: number, dy: number) => {
         this.body.toss(0, 0)
+    }
+
+    feed = (food: Food) => {
+        this.pet.feed(food)
     }
     
 }

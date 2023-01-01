@@ -38,16 +38,16 @@ abstract class Entity {
         this.body.boundaryCollision(xBound, yBound)
     }
 
-    detectCollision = (otherEntity: Entity) => {
-        return this.body.detectCollision(otherEntity.body)
-    }
-
     getMouseOver = () => {
         return this.mouseOver
     }
 
     getMouseHold = () => {
         return this.mouseGrab
+    }
+
+    static detectCollision = (entity1: Entity, entity2: Entity) => {
+        return Body.detectCollision(entity1.body, entity2.body)
     }
 }
 

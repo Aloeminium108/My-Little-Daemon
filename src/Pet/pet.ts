@@ -1,3 +1,4 @@
+import { Food } from "../entity/food"
 
 
 class Pet {
@@ -22,8 +23,8 @@ class Pet {
         return this.hunger
     }
 
-    Feed = (nourishmentValue: number) => {
-        this.hunger += nourishmentValue
+    feed = (food: Food) => {
+        this.hunger += food.getNourishmentValue()
     }
 }
 

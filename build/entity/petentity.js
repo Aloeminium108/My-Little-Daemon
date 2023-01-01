@@ -21,6 +21,9 @@ class PetEntity extends Entity {
         this.release = (dx, dy) => {
             this.body.toss(0, 0);
         };
+        this.feed = (food) => {
+            this.pet.feed(food);
+        };
         this.pet = pet;
         this.body = new PhysicsBody(300, 300, 200, 300);
         let image = new Image();
