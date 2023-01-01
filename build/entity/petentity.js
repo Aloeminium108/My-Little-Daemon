@@ -1,5 +1,5 @@
 import { Entity } from "./entity.js";
-import { PhysicsBody } from "./physicsbody.js";
+import { PhysicsBody } from "./body/physicsbody.js";
 class PetEntity extends Entity {
     constructor(pet) {
         super();

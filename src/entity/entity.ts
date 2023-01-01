@@ -1,4 +1,4 @@
-import { Body } from "./body.js"
+import { Body } from "./body/body.js"
 
 abstract class Entity {
     protected abstract body: Body

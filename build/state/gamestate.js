@@ -1,5 +1,5 @@
 import { State } from "./state.js";
-import { Box } from "../entity/box.js";
+import { Box } from "../entity/toy/box.js";
 import { PetEntity } from "../entity/petentity.js";
 class GameState extends State {
     constructor(game) {

@@ -1,5 +1,5 @@
-import { PhysicsBody } from "./physicsbody.js";
-import { Entity } from "./entity.js";
+import { PhysicsBody } from "../body/physicsbody.js";
+import { Entity } from "../entity.js";
 
 class Box extends Entity {
     protected body: PhysicsBody
