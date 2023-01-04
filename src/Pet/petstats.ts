@@ -1,3 +1,5 @@
+import { Food } from "../entity/food"
+
 class PetStats {
 
     private hunger: number
@@ -7,8 +9,8 @@ class PetStats {
         this.hunger = hunger
     }
 
-    feed(nourishmentValue: number) {
-        this.hunger += nourishmentValue
+    feed(food: Food) {
+        this.hunger += food.getNourishmentValue()
         if (this.hunger > this.maxHunger) {
             this.hunger = this.maxHunger
         }

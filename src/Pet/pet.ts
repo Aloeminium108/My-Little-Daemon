@@ -1,4 +1,5 @@
-import { Food } from "../entity/food"
+import { Food } from "../entity/food.js"
+import { PetStats } from "./petstats.js"
 
 
 class Pet {
@@ -10,6 +11,8 @@ class Pet {
     gender: string
     age: string
     weight: string
+
+    stats: PetStats = new PetStats(100)
 
     constructor() {
         this.imageSrc = '../../assets/bird.png'
@@ -24,7 +27,7 @@ class Pet {
     }
 
     feed = (food: Food) => {
-        this.hunger += food.getNourishmentValue()
+        this.stats.feed(food)
     }
 }
 
