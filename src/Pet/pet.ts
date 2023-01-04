@@ -23,7 +23,7 @@ class Pet {
     }
 
     getHunger = () => {
-        return this.hunger
+        return this.stats.getHunger()
     }
 
     feed = (food: Food) => {

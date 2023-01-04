@@ -20,6 +20,10 @@ class PetStats {
         this.hunger--
     }
 
+    getHunger() {
+        return this.hunger
+    }
+
 }
 
 
