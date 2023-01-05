@@ -2,7 +2,7 @@ import { State, StateTransition } from "./state.js"
 import { Game } from "../game.js"
 import { Pet } from "../Pet/pet.js"
 
-class MenuState implements State {
+class StatMenuState implements State {
 
     menuHTML: HTMLElement
     petImage: HTMLImageElement
@@ -64,4 +64,4 @@ class MenuState implements State {
     
 }
 
-export { MenuState }
+export { StatMenuState as MenuState }

@@ -27,7 +27,7 @@ class Game {
 
         this.stateMap = new Map<StateTransition, State>
         this.stateMap.set(StateTransition.GAME, this.gameState)
-        this.stateMap.set(StateTransition.MENU, this.menuState)
+        this.stateMap.set(StateTransition.STATMENU, this.menuState)
 
         this.currentState = this.gameState
 
@@ -78,7 +78,7 @@ class Game {
     addButtonListeners = () => {
         let buttons = document.querySelectorAll('.button')
         buttons[0].addEventListener('click', (e) => {
-            this.changeState(StateTransition.MENU)
+            this.changeState(StateTransition.STATMENU)
         })
         buttons[1].addEventListener('click', (e) => {
             this.currentState.foodButton?.()

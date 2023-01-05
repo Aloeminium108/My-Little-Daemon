@@ -19,7 +19,7 @@ interface State {
 }
 
 enum StateTransition {
-    MENU, GAME
+    STATMENU, GAME
 }
 
 export { State, StateTransition }
