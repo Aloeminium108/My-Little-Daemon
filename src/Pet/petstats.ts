@@ -1,15 +1,12 @@
 import { Food } from "../entity/food.js"
-
-const SECOND = 1000
-const MINUTE = 60000
-const HOUR = 3600000
+import { Time } from "../time.js"
 
 class PetStats {
 
     private hunger: number
     private maxHunger: number = 1000
     private timeElapsed: number = 0
-    private updateInterval: number = 1000
+    private updateInterval: number = Time.MINUTE
 
     constructor(hunger: number) {
         this.hunger = hunger

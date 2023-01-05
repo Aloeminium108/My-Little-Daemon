@@ -1,8 +1,9 @@
+import { Time } from "../time.js";
 class PetStats {
     constructor(hunger) {
         this.maxHunger = 1000;
         this.timeElapsed = 0;
-        this.updateInterval = 1000;
+        this.updateInterval = Time.MINUTE;
         this.hunger = hunger;
     }
     feed(food) {
