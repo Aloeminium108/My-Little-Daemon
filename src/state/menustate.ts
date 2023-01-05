@@ -2,7 +2,7 @@ import { State, StateTransition } from "./state.js"
 import { Game } from "../game.js"
 import { Pet } from "../Pet/pet.js"
 
-class MenuState extends State {
+class MenuState implements State {
 
     menuHTML: HTMLElement
     petImage: HTMLImageElement
@@ -12,8 +12,12 @@ class MenuState extends State {
     petWeight: HTMLParagraphElement
     petHunger: HTMLParagraphElement
 
+    game: Game
+    pet: Pet
+
     constructor(game: Game) {
-        super(game)
+        this.game = game
+        this.pet = game.pet
 
         this.menuHTML = document.getElementById('menu')!!
         this.petImage = document.getElementById('pet-image') as HTMLImageElement

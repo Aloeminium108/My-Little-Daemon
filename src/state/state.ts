@@ -1,23 +1,21 @@
 import { Game } from "../game.js"
 import { Pet } from "../Pet/pet.js"
 
-abstract class State {
+interface State {
     game: Game
     pet: Pet
-    constructor(game: Game) {
-        this.game = game
-        this.pet = game.pet
-    }
 
-    abstract animate(ctx: CanvasRenderingContext2D, interval: number) : void
-    abstract mouseUp(e: MouseEvent): void
-    abstract mouseDown(e: MouseEvent): void
-    abstract mouseMove(e: MouseEvent): void
-    abstract mouseLeave(e: MouseEvent): void
+    animate(ctx: CanvasRenderingContext2D, interval: number): void
+    mouseUp(e: MouseEvent): void
+    mouseDown(e: MouseEvent): void
+    mouseMove(e: MouseEvent): void
+    mouseLeave(e: MouseEvent): void
 
-    abstract init(): void
-    abstract pause(): void
-    abstract resume(): void
+    init(): void
+    pause(): void
+    resume(): void
+
+    foodButton?(): void
 }
 
 enum StateTransition {

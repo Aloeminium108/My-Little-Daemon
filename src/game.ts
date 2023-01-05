@@ -80,6 +80,9 @@ class Game {
         buttons[0].addEventListener('click', (e) => {
             this.changeState(StateTransition.MENU)
         })
+        buttons[1].addEventListener('click', (e) => {
+            this.currentState.foodButton?.()
+        })
     }
 
 }

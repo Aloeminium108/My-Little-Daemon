@@ -1,7 +1,6 @@
-import { State, StateTransition } from "./state.js";
-class MenuState extends State {
+import { StateTransition } from "./state.js";
+class MenuState {
     constructor(game) {
-        super(game);
         this.init = () => {
             let exitButton = document.getElementById('menu-exit');
             exitButton === null || exitButton === void 0 ? void 0 : exitButton.addEventListener('click', (e) => {
@@ -24,6 +23,8 @@ class MenuState extends State {
             this.petWeight.textContent = this.pet.weight;
             this.petHunger.textContent = this.pet.stats.getHunger().toString();
         };
+        this.game = game;
+        this.pet = game.pet;
         this.menuHTML = document.getElementById('menu');
         this.petImage = document.getElementById('pet-image');
         this.petName = document.getElementById('pet-name');

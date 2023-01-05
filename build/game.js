@@ -41,6 +41,10 @@ class Game {
             buttons[0].addEventListener('click', (e) => {
                 this.changeState(StateTransition.MENU);
             });
+            buttons[1].addEventListener('click', (e) => {
+                var _a, _b;
+                (_b = (_a = this.currentState).foodButton) === null || _b === void 0 ? void 0 : _b.call(_a);
+            });
         };
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");

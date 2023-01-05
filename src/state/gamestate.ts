@@ -6,8 +6,9 @@ import { Food } from "../entity/food.js"
 import { EntityList } from "../entity/entitylist.js"
 import { CollisionHandler } from "../entity/collisionhandler.js"
 import { Mouse } from "./mouse.js"
+import { Pet } from "../Pet/pet.js"
 
-class GameState extends State {
+class GameState implements State {
 
     entityList: EntityList
 
@@ -15,9 +16,11 @@ class GameState extends State {
     mouse: Mouse
 
     floorHeight: number = 100
-
+    game: Game
+    pet: Pet
     constructor(game: Game) {
-        super(game)
+        this.game = game
+        this.pet = game.pet
 
         this.entityList = new EntityList(new PetEntity(this.pet))
 
@@ -25,6 +28,10 @@ class GameState extends State {
         this.mouse = new Mouse(game.canvas)
 
         this.init()
+    }
+    
+    foodButton = () => {
+        this.entityList.addFood(new Food(900, 300, 20))
     }
 
     init = () => {
