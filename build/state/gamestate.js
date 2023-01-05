@@ -15,14 +15,12 @@ class GameState {
             this.entityList.addToy(new Box(700, 300, 100, 100));
             this.entityList.addFood(new Food(900, 300, 20));
         };
-        this.animate = (ctx, interval) => {
-            this.entityList.fullList().forEach((entity) => {
-                entity.update(interval);
-            });
+        this.update = (interval) => {
+            this.entityList.fullList().forEach((entity) => entity.update(interval));
             this.collisionHandler.handleEntityCollisions();
-            this.entityList.fullList().forEach((entity) => {
-                entity.draw(ctx);
-            });
+        };
+        this.animate = (ctx) => {
+            this.entityList.fullList().forEach((entity) => entity.draw(ctx));
         };
         this.mouseDown = (e) => {
             this.mouse.pressed = true;

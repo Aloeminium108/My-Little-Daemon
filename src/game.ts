@@ -1,6 +1,6 @@
 import { State, StateTransition } from "./state/state.js"
 import { GameState } from "./state/gamestate.js"
-import { MenuState } from "./state/menustate.js"
+import { MenuState } from "./state/statmenustate.js"
 import { Pet } from "./Pet/pet.js"
 
 class Game {
@@ -12,7 +12,7 @@ class Game {
     lastFrameTimeStamp: DOMHighResTimeStamp | null = null
 
     private gameState: GameState
-    private menuState: MenuState
+    private statMenuState: MenuState
     private stateMap: Map<StateTransition, State>
     private currentState: State
 
@@ -23,11 +23,11 @@ class Game {
         this.pet = new Pet()
 
         this.gameState = new GameState(this)
-        this.menuState = new MenuState(this)
+        this.statMenuState = new MenuState(this)
 
         this.stateMap = new Map<StateTransition, State>
         this.stateMap.set(StateTransition.GAME, this.gameState)
-        this.stateMap.set(StateTransition.STATMENU, this.menuState)
+        this.stateMap.set(StateTransition.STATMENU, this.statMenuState)
 
         this.currentState = this.gameState
 
@@ -44,7 +44,8 @@ class Game {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
         this.pet.update(interval)
-        this.currentState.animate(this.ctx, interval)
+        this.currentState.update?.(interval)
+        this.currentState.animate?.(this.ctx)
         
         window.requestAnimationFrame(this.animate)
     }
@@ -58,21 +59,10 @@ class Game {
     }
 
     addCanvasListeners = () => {
-        this.canvas.addEventListener('mousedown', (e) => {
-            this.currentState.mouseDown(e)
-        })
-        
-        this.canvas.addEventListener('mouseup', (e) => {
-            this.currentState.mouseUp(e)
-        })
-        
-        this.canvas.addEventListener('mousemove', (e) => {
-            this.currentState.mouseMove(e)
-        })
-        
-        this.canvas.addEventListener('mouseleave', (e) => {
-            this.currentState.mouseLeave(e)
-        })
+        this.canvas.addEventListener('mousedown', (e) => this.currentState.mouseDown?.(e))
+        this.canvas.addEventListener('mouseup', (e) => this.currentState.mouseUp?.(e))
+        this.canvas.addEventListener('mousemove', (e) => this.currentState.mouseMove?.(e))
+        this.canvas.addEventListener('mouseleave', (e) => this.currentState.mouseLeave?.(e))
     }
 
     addButtonListeners = () => {

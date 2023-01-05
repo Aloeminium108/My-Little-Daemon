@@ -5,15 +5,18 @@ interface State {
     game: Game
     pet: Pet
 
-    animate(ctx: CanvasRenderingContext2D, interval: number): void
-    mouseUp(e: MouseEvent): void
-    mouseDown(e: MouseEvent): void
-    mouseMove(e: MouseEvent): void
-    mouseLeave(e: MouseEvent): void
-
+    
     init(): void
     pause(): void
     resume(): void
+
+    animate?(ctx: CanvasRenderingContext2D): void
+    update?(interval: number): void
+
+    mouseUp?(e: MouseEvent): void
+    mouseDown?(e: MouseEvent): void
+    mouseMove?(e: MouseEvent): void
+    mouseLeave?(e: MouseEvent): void
 
     foodButton?(): void
 }

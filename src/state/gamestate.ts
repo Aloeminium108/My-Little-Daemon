@@ -40,18 +40,13 @@ class GameState implements State {
         this.entityList.addFood(new Food(900, 300, 20))
     }
 
-    animate = (ctx: CanvasRenderingContext2D, interval: number) => {
-
-        this.entityList.fullList().forEach((entity) => {
-            entity.update(interval)
-        })
-
+    update = (interval: number) => {
+        this.entityList.fullList().forEach((entity) => entity.update(interval))
         this.collisionHandler.handleEntityCollisions()
+    }
 
-        this.entityList.fullList().forEach((entity) => {
-            entity.draw(ctx)
-        })
-        
+    animate = (ctx: CanvasRenderingContext2D) => {
+        this.entityList.fullList().forEach((entity) => entity.draw(ctx))
     }
 
     mouseDown = (e: MouseEvent) => {

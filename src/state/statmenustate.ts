@@ -30,11 +30,9 @@ class StatMenuState implements State {
         this.init()
     }
 
-    animate(ctx: CanvasRenderingContext2D, interval: number): void {}
-    mouseUp(e: MouseEvent): void {}
-    mouseDown(e: MouseEvent): void {}
-    mouseMove(e: MouseEvent): void {}
-    mouseLeave(e: MouseEvent): void {}
+    update = () => {
+
+    }
 
     init = () => {
         let exitButton = document.getElementById('menu-exit')

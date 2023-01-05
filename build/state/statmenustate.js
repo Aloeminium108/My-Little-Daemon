@@ -1,6 +1,8 @@
 import { StateTransition } from "./state.js";
 class StatMenuState {
     constructor(game) {
+        this.update = () => {
+        };
         this.init = () => {
             let exitButton = document.getElementById('menu-exit');
             exitButton === null || exitButton === void 0 ? void 0 : exitButton.addEventListener('click', (e) => {
@@ -34,10 +36,5 @@ class StatMenuState {
         this.petHunger = document.getElementById('pet-hunger');
         this.init();
     }
-    animate(ctx, interval) { }
-    mouseUp(e) { }
-    mouseDown(e) { }
-    mouseMove(e) { }
-    mouseLeave(e) { }
 }
 export { StatMenuState as MenuState };
