@@ -3,8 +3,6 @@ import { PetStats } from "./petstats.js"
 
 
 class Pet {
-    private hunger: number = 0
-
     imageSrc: string
 
     name: string
@@ -12,7 +10,7 @@ class Pet {
     age: string
     weight: string
 
-    stats: PetStats = new PetStats(100)
+    stats: PetStats = new PetStats(1000)
 
     constructor() {
         this.imageSrc = '../../assets/bird.png'

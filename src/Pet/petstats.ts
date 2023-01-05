@@ -1,9 +1,9 @@
-import { Food } from "../entity/food"
+import { Food } from "../entity/food.js"
 
 class PetStats {
 
     private hunger: number
-    private maxHunger: number = 100
+    private maxHunger: number = 1000
     private timeElapsed: number = 0
     private updateInterval: number = 1000
 
@@ -20,13 +20,16 @@ class PetStats {
 
     update(interval: number) {
         this.timeElapsed += interval
-        console.log("Time elapsed:", this.timeElapsed)
-        if (this.timeElapsed >= this.updateInterval) {
-            console.log("Update!")
+
+        if (this.timeElapsed < this.updateInterval) {
+            return
+        }
+
+        if (this.hunger > 0) {
             this.hunger--
-            this.timeElapsed -= this.updateInterval
         }
         
+        this.timeElapsed -= this.updateInterval
     }
 
     getHunger() {

@@ -1,8 +1,7 @@
 import { PetStats } from "./petstats.js";
 class Pet {
     constructor() {
-        this.hunger = 0;
-        this.stats = new PetStats(100);
+        this.stats = new PetStats(1000);
         this.getHunger = () => {
             return this.stats.getHunger();
         };

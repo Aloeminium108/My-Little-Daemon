@@ -1,6 +1,6 @@
 class PetStats {
     constructor(hunger) {
-        this.maxHunger = 100;
+        this.maxHunger = 1000;
         this.timeElapsed = 0;
         this.updateInterval = 1000;
         this.hunger = hunger;
@@ -13,12 +13,13 @@ class PetStats {
     }
     update(interval) {
         this.timeElapsed += interval;
-        console.log("Time elapsed:", this.timeElapsed);
-        if (this.timeElapsed >= this.updateInterval) {
-            console.log("Update!");
-            this.hunger--;
-            this.timeElapsed -= this.updateInterval;
+        if (this.timeElapsed < this.updateInterval) {
+            return;
         }
+        if (this.hunger > 0) {
+            this.hunger--;
+        }
+        this.timeElapsed -= this.updateInterval;
     }
     getHunger() {
         return this.hunger;
