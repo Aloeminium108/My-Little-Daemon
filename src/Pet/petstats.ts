@@ -1,5 +1,9 @@
 import { Food } from "../entity/food.js"
 
+const SECOND = 1000
+const MINUTE = 60000
+const HOUR = 3600000
+
 class PetStats {
 
     private hunger: number
