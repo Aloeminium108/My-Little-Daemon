@@ -14,9 +14,9 @@ class GameState extends State {
             this.entityList.addToy(new Box(700, 300, 100, 100));
             this.entityList.addFood(new Food(900, 300, 20));
         };
-        this.animate = (ctx) => {
+        this.animate = (ctx, interval) => {
             this.entityList.fullList().forEach((entity) => {
-                entity.update();
+                entity.update(interval);
             });
             this.collisionHandler.handleEntityCollisions();
             this.entityList.fullList().forEach((entity) => {
@@ -49,9 +49,7 @@ class GameState extends State {
         this.pause = () => { };
         this.resume = () => { };
         this.entityList = new EntityList(new PetEntity(this.pet));
-        this.width = game.canvas.width;
-        this.height = game.canvas.height;
-        this.collisionHandler = new CollisionHandler(this.entityList, this.width, this.height - this.floorHeight);
+        this.collisionHandler = new CollisionHandler(this.entityList, game.canvas.width, game.canvas.height - this.floorHeight);
         this.mouse = new Mouse(game.canvas);
         this.init();
     }

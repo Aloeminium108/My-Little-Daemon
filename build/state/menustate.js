@@ -22,7 +22,7 @@ class MenuState extends State {
             this.petGender.textContent = this.pet.gender;
             this.petAge.textContent = this.pet.age;
             this.petWeight.textContent = this.pet.weight;
-            this.petHunger.textContent = this.pet.getHunger().toString();
+            this.petHunger.textContent = this.pet.stats.getHunger().toString();
         };
         this.menuHTML = document.getElementById('menu');
         this.petImage = document.getElementById('pet-image');
@@ -33,7 +33,7 @@ class MenuState extends State {
         this.petHunger = document.getElementById('pet-hunger');
         this.init();
     }
-    animate(ctx) { }
+    animate(ctx, interval) { }
     mouseUp(e) { }
     mouseDown(e) { }
     mouseMove(e) { }

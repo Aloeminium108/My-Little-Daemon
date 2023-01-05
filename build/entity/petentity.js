@@ -16,7 +16,8 @@ class PetEntity extends Entity {
                 return (x, y) => { };
             }
         };
-        this.updateSelf = () => {
+        this.updateSelf = (interval) => {
+            this.pet.update(interval);
         };
         this.release = (dx, dy) => {
             this.body.toss(0, 0);

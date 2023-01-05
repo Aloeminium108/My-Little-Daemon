@@ -4,9 +4,15 @@ import { MenuState } from "./state/menustate.js";
 import { Pet } from "./Pet/pet.js";
 class Game {
     constructor(canvas) {
-        this.animate = () => {
+        this.lastFrameTimeStamp = null;
+        this.animate = (currentFrameTimeStamp) => {
+            var _a;
+            let lastFrameTimeStamp = (_a = this.lastFrameTimeStamp) !== null && _a !== void 0 ? _a : currentFrameTimeStamp;
+            let interval = currentFrameTimeStamp - lastFrameTimeStamp;
+            this.lastFrameTimeStamp = currentFrameTimeStamp;
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.currentState.animate(this.ctx);
+            this.pet.update(interval);
+            this.currentState.animate(this.ctx, interval);
             window.requestAnimationFrame(this.animate);
         };
         this.changeState = (state) => {

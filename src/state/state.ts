@@ -9,7 +9,7 @@ abstract class State {
         this.pet = game.pet
     }
 
-    abstract animate(ctx: CanvasRenderingContext2D) : void
+    abstract animate(ctx: CanvasRenderingContext2D, interval: number) : void
     abstract mouseUp(e: MouseEvent): void
     abstract mouseDown(e: MouseEvent): void
     abstract mouseMove(e: MouseEvent): void

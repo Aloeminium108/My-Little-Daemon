@@ -33,10 +33,10 @@ class GameState extends State {
         this.entityList.addFood(new Food(900, 300, 20))
     }
 
-    animate = (ctx: CanvasRenderingContext2D) => {
+    animate = (ctx: CanvasRenderingContext2D, interval: number) => {
 
         this.entityList.fullList().forEach((entity) => {
-            entity.update()
+            entity.update(interval)
         })
 
         this.collisionHandler.handleEntityCollisions()

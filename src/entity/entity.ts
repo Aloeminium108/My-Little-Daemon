@@ -6,11 +6,11 @@ abstract class Entity {
     protected abstract mouseGrab: string
 
     abstract drawBody(ctx: CanvasRenderingContext2D): (x: number, y: number) => void
-    abstract updateSelf(): void
+    abstract updateSelf(interval: number): void
     abstract release(dx: number, dy: number): void
 
-    update = () => {
-        this.updateSelf()
+    update = (interval: number) => {
+        this.updateSelf(interval)
         this.updateBody()
     }
 

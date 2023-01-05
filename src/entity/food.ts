@@ -22,7 +22,7 @@ class Food extends Entity {
         }
     }
 
-    updateSelf = () => {
+    updateSelf = (interval: number) => {
     }
 
     release = (dx: number, dy: number) => {

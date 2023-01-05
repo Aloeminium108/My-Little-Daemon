@@ -9,6 +9,8 @@ class Game {
 
     pet: Pet
 
+    lastFrameTimeStamp: DOMHighResTimeStamp | null = null
+
     private gameState: GameState
     private menuState: MenuState
     private stateMap: Map<StateTransition, State>
@@ -33,10 +35,16 @@ class Game {
         this.addButtonListeners()
     }
 
-    animate = () => {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    animate = (currentFrameTimeStamp: DOMHighResTimeStamp) => {
+
+        let lastFrameTimeStamp = this.lastFrameTimeStamp ?? currentFrameTimeStamp
+        let interval = currentFrameTimeStamp - lastFrameTimeStamp
+        this.lastFrameTimeStamp = currentFrameTimeStamp
         
-        this.currentState.animate(this.ctx)
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+        this.pet.update(interval)
+        this.currentState.animate(this.ctx, interval)
         
         window.requestAnimationFrame(this.animate)
     }

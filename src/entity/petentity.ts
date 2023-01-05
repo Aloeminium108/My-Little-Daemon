@@ -38,7 +38,8 @@ class PetEntity extends Entity {
         }
     }
 
-    updateSelf = () => {
+    updateSelf = (interval: number) => {
+        this.pet.update(interval)
     }
 
     release = (dx: number, dy: number) => {

@@ -12,7 +12,7 @@ class Food extends Entity {
                 ctx.fillStyle = 'black';
             };
         };
-        this.updateSelf = () => {
+        this.updateSelf = (interval) => {
         };
         this.release = (dx, dy) => {
             this.body.toss(dx, dy);

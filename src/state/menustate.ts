@@ -26,7 +26,7 @@ class MenuState extends State {
         this.init()
     }
 
-    animate(ctx: CanvasRenderingContext2D): void {}
+    animate(ctx: CanvasRenderingContext2D, interval: number): void {}
     mouseUp(e: MouseEvent): void {}
     mouseDown(e: MouseEvent): void {}
     mouseMove(e: MouseEvent): void {}
@@ -55,7 +55,7 @@ class MenuState extends State {
         this.petGender.textContent = this.pet.gender
         this.petAge.textContent = this.pet.age
         this.petWeight.textContent = this.pet.weight
-        this.petHunger.textContent = this.pet.getHunger().toString()
+        this.petHunger.textContent = this.pet.stats.getHunger().toString()
     }
     
 }

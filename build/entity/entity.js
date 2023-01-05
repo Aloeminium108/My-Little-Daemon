@@ -1,8 +1,8 @@
 import { Body } from "./body/body.js";
 class Entity {
     constructor() {
-        this.update = () => {
-            this.updateSelf();
+        this.update = (interval) => {
+            this.updateSelf(interval);
             this.updateBody();
         };
         this.updateBody = () => {

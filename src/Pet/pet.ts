@@ -29,6 +29,10 @@ class Pet {
     feed = (food: Food) => {
         this.stats.feed(food)
     }
+
+    update = (interval: number) => {
+        this.stats.update(interval)
+    }
 }
 
 export { Pet }
