@@ -1,9 +1,6 @@
 class Body {
     constructor(x, y, width, height) {
         this.held = false;
-        this.draw = (callback) => {
-            callback(Math.round(this.x), Math.round(this.y));
-        };
         this.moveTo = (newX, newY) => {
             this.x = Math.floor(newX - this.width / 2);
             this.y = Math.floor(newY - this.height / 2);
@@ -19,8 +16,11 @@ class Body {
                 return false;
             }
         };
-        this.release = () => {
-            this.held = false;
+        this.getX = () => {
+            return this.x;
+        };
+        this.getY = () => {
+            return this.y;
         };
         this.width = width;
         this.height = height;

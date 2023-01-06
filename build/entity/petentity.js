@@ -1,26 +1,9 @@
-import { Entity } from "./entity.js";
 import { PhysicsBody } from "./body/physicsbody.js";
-class PetEntity extends Entity {
+class PetEntity {
     constructor(pet) {
-        super();
         this.image = null;
         this.mouseOver = 'pointer';
-        this.mouseGrab = 'grab';
-        this.drawBody = (ctx) => {
-            if (this.image != null) {
-                return (x, y) => {
-                    ctx.drawImage(this.image, x, y);
-                };
-            }
-            else {
-                return (x, y) => { };
-            }
-        };
-        this.updateSelf = (interval) => {
-        };
-        this.release = (dx, dy) => {
-            this.body.toss(0, 0);
-        };
+        this.mouseHold = 'grab';
         this.feed = (food) => {
             this.pet.feed(food);
         };
@@ -35,6 +18,20 @@ class PetEntity extends Entity {
             });
         };
         image.src = this.pet.imageSrc;
+    }
+    getBody() {
+        return this.body;
+    }
+    draw(ctx) {
+        if (this.image === null)
+            return;
+        ctx.drawImage(this.image, this.body.getX(), this.body.getY());
+    }
+    getMouseOver() {
+        return this.mouseOver;
+    }
+    getMouseHold() {
+        return this.mouseHold;
     }
 }
 export { PetEntity };

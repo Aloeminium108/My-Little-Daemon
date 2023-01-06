@@ -38,12 +38,12 @@ class EntityList {
             }
         };
         this.hold = (entity) => {
-            entity === null || entity === void 0 ? void 0 : entity.hold();
+            entity === null || entity === void 0 ? void 0 : entity.getBody().hold();
             this.heldEntity = entity;
         };
         this.release = (dx, dy) => {
-            var _a;
-            (_a = this.heldEntity) === null || _a === void 0 ? void 0 : _a.release(dx, dy);
+            var _a, _b, _c;
+            (_c = (_a = this.heldEntity) === null || _a === void 0 ? void 0 : (_b = _a.getBody()).release) === null || _c === void 0 ? void 0 : _c.call(_b, dx, dy);
             this.heldEntity = null;
         };
         this.petEntity = petEntity;

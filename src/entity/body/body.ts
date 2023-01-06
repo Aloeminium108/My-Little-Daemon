@@ -15,10 +15,7 @@ abstract class Body {
     abstract update(): void
     abstract boundaryCollision(xBound: number, yBound: number): void
     abstract hold(): void
-
-    draw = (callback: (x: number, y: number) => void) => {
-        callback(Math.round(this.x), Math.round(this.y))
-    }
+    abstract release(dx: number, dy: number): void
 
     moveTo = (newX: number, newY: number) => {
         this.x = Math.floor(newX - this.width/2)
@@ -37,8 +34,12 @@ abstract class Body {
         }
     }
 
-    release = () => {
-        this.held = false
+    getX = () => {
+        return this.x
+    }
+
+    getY = () => {
+        return this.y
     }
 
     static detectCollision = (body1: Body, body2: Body) => {
@@ -54,5 +55,6 @@ abstract class Body {
     }
 
 }
+
 
 export { Body }

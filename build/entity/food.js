@@ -1,27 +1,26 @@
-import { Entity } from "./entity.js";
 import { PhysicsBody } from "./body/physicsbody.js";
-class Food extends Entity {
+class Food {
     constructor(x, y, nourishmentValue) {
-        super();
         this.mouseOver = 'grab';
-        this.mouseGrab = 'grabbing';
-        this.drawBody = (ctx) => {
-            return (x, y) => {
-                ctx.fillStyle = 'red';
-                ctx.fillRect(x, y, 50, 50);
-                ctx.fillStyle = 'black';
-            };
-        };
-        this.updateSelf = (interval) => {
-        };
-        this.release = (dx, dy) => {
-            this.body.toss(dx, dy);
-        };
+        this.mouseHold = 'grabbing';
         this.getNourishmentValue = () => {
             return this.nourishmentValue;
         };
         this.body = new PhysicsBody(x, y, 50, 50);
         this.nourishmentValue = nourishmentValue;
+    }
+    getBody() {
+        return this.body;
+    }
+    draw(ctx) {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(this.body.getX(), this.body.getY(), 50, 50);
+    }
+    getMouseOver() {
+        return this.mouseOver;
+    }
+    getMouseHold() {
+        return this.mouseHold;
     }
 }
 export { Food };

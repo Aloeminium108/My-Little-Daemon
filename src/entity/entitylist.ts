@@ -59,12 +59,12 @@ class EntityList {
     }
 
     hold = (entity: Entity | null) => {
-        entity?.hold()
+        entity?.getBody().hold()
         this.heldEntity = entity
     }
 
     release = (dx: number, dy: number) => {
-        this.heldEntity?.release(dx, dy)
+        this.heldEntity?.getBody().release?.(dx, dy)
         this.heldEntity = null
     }
 

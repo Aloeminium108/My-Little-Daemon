@@ -1,32 +1,34 @@
 import { Entity } from "./entity.js"
 import { PhysicsBody } from "./body/physicsbody.js"
+import { Body } from "./body/body.js"
 
-class Food extends Entity {
+class Food implements Entity {
     protected body: PhysicsBody
     mouseOver = 'grab'
-    mouseGrab = 'grabbing'
+    mouseHold = 'grabbing'
 
     private nourishmentValue: number
 
     constructor(x: number, y: number, nourishmentValue: number) {
-        super()
         this.body = new PhysicsBody(x, y, 50, 50)
         this.nourishmentValue = nourishmentValue
     }
 
-    drawBody = (ctx: CanvasRenderingContext2D) => {
-        return (x: number, y: number) => {
-            ctx.fillStyle = 'red'
-            ctx.fillRect(x, y, 50, 50)
-            ctx.fillStyle = 'black'
-        }
+    getBody(): Body {
+        return this.body
     }
 
-    updateSelf = (interval: number) => {
+    draw(ctx: CanvasRenderingContext2D): void {
+        ctx.fillStyle = 'red'
+        ctx.fillRect(this.body.getX(), this.body.getY(), 50, 50)
     }
 
-    release = (dx: number, dy: number) => {
-        this.body.toss(dx, dy)
+    getMouseOver(): string {
+        return this.mouseOver
+    }
+
+    getMouseHold(): string {
+        return this.mouseHold
     }
 
     getNourishmentValue = () => {
