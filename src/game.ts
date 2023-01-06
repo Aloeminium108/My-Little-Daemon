@@ -2,6 +2,7 @@ import { State, StateTransition } from "./state/state.js"
 import { GameState } from "./state/gamestate.js"
 import { MenuState } from "./state/statmenustate.js"
 import { Pet } from "./Pet/pet.js"
+import { Match3State } from "./state/match3state.js"
 
 class Game {
     canvas: HTMLCanvasElement
@@ -13,6 +14,7 @@ class Game {
 
     private gameState: GameState
     private statMenuState: MenuState
+    private match3State: Match3State
     private stateMap: Map<StateTransition, State>
     private currentState: State
 
@@ -24,10 +26,12 @@ class Game {
 
         this.gameState = new GameState(this)
         this.statMenuState = new MenuState(this)
+        this.match3State = new Match3State(this)
 
         this.stateMap = new Map<StateTransition, State>
         this.stateMap.set(StateTransition.GAME, this.gameState)
         this.stateMap.set(StateTransition.STATMENU, this.statMenuState)
+        this.stateMap.set(StateTransition.MATCH3, this.match3State)
 
         this.currentState = this.gameState
 
@@ -72,6 +76,9 @@ class Game {
         })
         buttons[1].addEventListener('click', (e) => {
             this.currentState.foodButton?.()
+        })
+        buttons[2].addEventListener('click', (e) => {
+            this.changeState(StateTransition.MATCH3)
         })
     }
 

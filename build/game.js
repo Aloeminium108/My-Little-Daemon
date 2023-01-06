@@ -2,6 +2,7 @@ import { StateTransition } from "./state/state.js";
 import { GameState } from "./state/gamestate.js";
 import { MenuState } from "./state/statmenustate.js";
 import { Pet } from "./Pet/pet.js";
+import { Match3State } from "./state/match3state.js";
 class Game {
     constructor(canvas) {
         this.lastFrameTimeStamp = null;
@@ -38,15 +39,20 @@ class Game {
                 var _a, _b;
                 (_b = (_a = this.currentState).foodButton) === null || _b === void 0 ? void 0 : _b.call(_a);
             });
+            buttons[2].addEventListener('click', (e) => {
+                this.changeState(StateTransition.MATCH3);
+            });
         };
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.pet = new Pet();
         this.gameState = new GameState(this);
         this.statMenuState = new MenuState(this);
+        this.match3State = new Match3State(this);
         this.stateMap = new Map;
         this.stateMap.set(StateTransition.GAME, this.gameState);
         this.stateMap.set(StateTransition.STATMENU, this.statMenuState);
+        this.stateMap.set(StateTransition.MATCH3, this.match3State);
         this.currentState = this.gameState;
         this.addCanvasListeners();
         this.addButtonListeners();
