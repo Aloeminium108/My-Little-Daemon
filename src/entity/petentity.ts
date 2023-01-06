@@ -2,18 +2,18 @@ import { Pet } from "../Pet/pet.js"
 import { Entity } from "./entity.js"
 import { PhysicsBody } from "./body/physicsbody.js"
 import { Food } from "./food.js"
+import { Body } from "./body/body.js"
 
-class PetEntity extends Entity {
+class PetEntity implements Entity {
 
     private pet: Pet
     protected body: PhysicsBody
     private image: ImageBitmap | null = null
 
-    mouseOver = 'pointer'
-    mouseGrab = 'grab'
+    private mouseOver: string = 'pointer'
+    private mouseHold: string = 'grab'
 
     constructor(pet: Pet) {
-        super()
         this.pet = pet
         this.body = new PhysicsBody(300, 300, 200, 300)
         let image = new Image()
@@ -28,21 +28,21 @@ class PetEntity extends Entity {
         
     }
 
-    drawBody = (ctx: CanvasRenderingContext2D) => {
-        if (this.image != null) {
-            return (x: number, y: number) => {
-                ctx.drawImage(this.image!!, x, y)
-            }
-        } else {
-            return (x: number, y: number) => {}
-        }
+    getBody(): Body {
+        return this.body
     }
 
-    updateSelf = (interval: number) => {
+    draw(ctx: CanvasRenderingContext2D): void {
+        if (this.image === null) return
+        ctx.drawImage(this.image!!, this.body.getX(), this.body.getY())
     }
 
-    release = (dx: number, dy: number) => {
-        this.body.toss(0, 0)
+    getMouseOver(): string {
+        return this.mouseOver
+    }
+
+    getMouseHold(): string {
+        return this.mouseHold
     }
 
     feed = (food: Food) => {

@@ -61,6 +61,10 @@ class PhysicsBody extends Body {
         this.dy = dy
     }
 
+    release(dx: number, dy: number): void {
+        this.toss(dx, dy)
+    }
+
 }
 
 export { PhysicsBody }

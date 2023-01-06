@@ -50,6 +50,9 @@ class PhysicsBody extends Body {
         this.x += this.dx;
         this.y += this.dy;
     }
+    release(dx, dy) {
+        this.toss(dx, dy);
+    }
 }
 PhysicsBody.vCap = 50;
 PhysicsBody.friction = 0.99;

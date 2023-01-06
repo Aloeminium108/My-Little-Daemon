@@ -25,7 +25,11 @@ class Mouse {
     }
 
     mouseOverEntity = (entity: Entity | null) => {
-        this.canvas.style.cursor = entity?.getMouseOver() ?? 'default'
+        this.canvas.style.cursor = entity?.getMouseOver?.() ?? 'default'
+    }
+
+    mouseHoldEntity = (entity: Entity) => {
+        this.canvas.style.cursor = entity.getMouseHold?.() ?? 'default'
     }
 
 }

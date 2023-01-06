@@ -16,7 +16,7 @@ class GameState {
             this.entityList.addFood(new Food(900, 300, 20));
         };
         this.update = (interval) => {
-            this.entityList.fullList().forEach((entity) => entity.update(interval));
+            this.entityList.fullList().forEach((entity) => entity.getBody().update());
             this.collisionHandler.handleEntityCollisions();
         };
         this.animate = (ctx) => {
@@ -34,8 +34,8 @@ class GameState {
             this.mouse.move(e);
             let heldEntity = this.entityList.getHeldEntity();
             if (heldEntity != null) {
-                heldEntity.moveTo(this.mouse.x, this.mouse.y);
-                this.game.canvas.style.cursor = heldEntity.getMouseHold();
+                this.mouse.mouseHoldEntity(heldEntity);
+                heldEntity.getBody().moveTo(this.mouse.x, this.mouse.y);
             }
             else {
                 this.mouse.mouseOverEntity(this.collisionHandler.detectMouseCollisions(this.mouse));
