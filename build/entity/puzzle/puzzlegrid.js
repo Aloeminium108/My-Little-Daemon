@@ -12,10 +12,13 @@ class PuzzleGrid {
                 });
             });
         };
+        this.checkForMatches = () => {
+            this.checkColumns();
+            this.checkRows();
+        };
         this.checkColumns = () => {
             this.columns.forEach((column) => {
                 let currentCell = column[0];
-                console.log(currentCell);
                 let group = { set: [currentCell], color: currentCell.getJewelColor() };
                 for (let i = 1; i < this.numRows; i++) {
                     currentCell = column[i];
@@ -30,6 +33,23 @@ class PuzzleGrid {
                 }
             });
         };
+        this.checkRows = () => {
+            for (let r = 0; r < this.numRows; r++) {
+                let currentCell = this.columns[0][r];
+                let group = { set: [currentCell], color: currentCell.getJewelColor() };
+                for (let i = 0; i < this.numColumns; i++) {
+                    currentCell = this.columns[i][r];
+                    if (currentCell.jewel.type.color === group.color) {
+                        group.set.push(currentCell);
+                        if (i != this.numColumns - 1)
+                            continue;
+                    }
+                    if (group.set.length >= 3)
+                        this.groups.push(group);
+                    group = { set: [currentCell], color: currentCell.getJewelColor() };
+                }
+            }
+        };
         this.x = x;
         this.y = y;
         for (let i = 0; i < this.numColumns; i++) {
@@ -39,7 +59,7 @@ class PuzzleGrid {
             }
             this.columns.push(column);
         }
-        this.checkColumns();
+        this.checkForMatches();
         this.groups.forEach((group) => {
             group.set.forEach((cell) => {
                 cell.activated = true;
@@ -51,17 +71,16 @@ class PuzzleCell {
     constructor(x, y) {
         this.activated = false;
         this.draw = (ctx) => {
-            var _a;
             ctx.fillStyle = this.activated ? '#A6FFC9' : '#000000';
             ctx.fillRect(this.x, this.y, PuzzleCell.width, PuzzleCell.width);
-            (_a = this.jewel) === null || _a === void 0 ? void 0 : _a.drawBody(ctx)(this.x + PuzzleCell.padding, this.y + PuzzleCell.padding);
+            this.jewel.draw(ctx);
         };
         this.getJewelColor = () => {
             return this.jewel.type.color;
         };
         this.x = x;
         this.y = y;
-        this.jewel = new Jewel();
+        this.jewel = new Jewel(x + PuzzleCell.padding, y + PuzzleCell.padding);
     }
 }
 PuzzleCell.padding = 5;

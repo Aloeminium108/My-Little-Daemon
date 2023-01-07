@@ -54,15 +54,11 @@ class PhysicsBody extends Body {
         this.dx = 0
         this.dy = 0
     }
-
-    toss = (dx: number, dy: number) => {
+    
+    release = (dx: number, dy: number) => {
         this.held = false
         this.dx = dx
         this.dy = dy
-    }
-
-    release(dx: number, dy: number): void {
-        this.toss(dx, dy)
     }
 
 }

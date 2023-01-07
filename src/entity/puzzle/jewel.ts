@@ -1,27 +1,39 @@
 import { Body } from "../body/body.js";
-import { PhysicsBody } from "../body/physicsbody.js";
+import { GemBody } from "../body/gembody.js";
 import { Entity } from "../entity.js";
 
 
-class Jewel {
+class Jewel implements Entity {
 
     static width: number = 50
 
+    body: GemBody
+
     mouseOver = 'grab'
-    mouseGrab = 'grabbing'
+    mouseHold = 'grabbing'
 
     type: JewelType
 
-    constructor(type: JewelType | null = null) {
+    constructor(x: number, y: number, type: JewelType | null = null) {
         this.type = type ?? Jewel.randomType()
+        this.body = new GemBody(x, y, Jewel.width, Jewel.width)
     }
 
+    getBody = () => {
+        return this.body
+    }
 
-    drawBody = (ctx: CanvasRenderingContext2D) => {
-        return (x: number, y: number) => {
-            ctx.fillStyle = this.type.color
-            ctx.fillRect(x, y, Jewel.width, Jewel.width)
-        }
+    draw = (ctx: CanvasRenderingContext2D) => {
+        ctx.fillStyle = this.type.color
+        ctx.fillRect(this.body.getX(), this.body.getY(), Jewel.width, Jewel.width)
+    }
+
+    getMouseOver = () => {
+        return this.mouseOver
+    }
+
+    getMouseHold = () => {
+        return this.mouseHold
     }
 
     static randomType = () => {

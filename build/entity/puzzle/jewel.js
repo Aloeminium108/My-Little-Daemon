@@ -1,14 +1,23 @@
+import { GemBody } from "../body/gembody.js";
 class Jewel {
-    constructor(type = null) {
+    constructor(x, y, type = null) {
         this.mouseOver = 'grab';
-        this.mouseGrab = 'grabbing';
-        this.drawBody = (ctx) => {
-            return (x, y) => {
-                ctx.fillStyle = this.type.color;
-                ctx.fillRect(x, y, Jewel.width, Jewel.width);
-            };
+        this.mouseHold = 'grabbing';
+        this.getBody = () => {
+            return this.body;
+        };
+        this.draw = (ctx) => {
+            ctx.fillStyle = this.type.color;
+            ctx.fillRect(this.body.getX(), this.body.getY(), Jewel.width, Jewel.width);
+        };
+        this.getMouseOver = () => {
+            return this.mouseOver;
+        };
+        this.getMouseHold = () => {
+            return this.mouseHold;
         };
         this.type = type !== null && type !== void 0 ? type : Jewel.randomType();
+        this.body = new GemBody(x, y, Jewel.width, Jewel.width);
     }
 }
 Jewel.width = 50;
