@@ -4,32 +4,24 @@ import { MenuState } from "./state/statmenustate.js"
 import { Pet } from "./Pet/pet.js"
 
 class Game {
-    canvas: HTMLCanvasElement
     ctx: CanvasRenderingContext2D
 
     pet: Pet
 
     lastFrameTimeStamp: DOMHighResTimeStamp | null = null
 
-    private gameState: GameState
-    private statMenuState: MenuState
-    private stateMap: Map<StateTransition, State>
+    private stateMap = new Map<StateTransition<State>, State>
+    private states: Array<StateTransition<State>> = [GameState, MenuState]
     private currentState: State
 
-    constructor(canvas: HTMLCanvasElement) {
-        this.canvas = canvas
+    constructor(public canvas: HTMLCanvasElement) {
         this.ctx = canvas.getContext("2d")!!
 
         this.pet = new Pet()
 
-        this.gameState = new GameState(this)
-        this.statMenuState = new MenuState(this)
+        this.initializeStates()
 
-        this.stateMap = new Map<StateTransition, State>
-        this.stateMap.set(StateTransition.GAME, this.gameState)
-        this.stateMap.set(StateTransition.STATMENU, this.statMenuState)
-
-        this.currentState = this.gameState
+        this.currentState = this.stateMap.get(GameState)!!
 
         this.addCanvasListeners()
         this.addButtonListeners()
@@ -50,7 +42,15 @@ class Game {
         window.requestAnimationFrame(this.animate)
     }
 
-    changeState = (state: StateTransition) => {
+    initializeStates = () => {
+        
+    }
+
+    addState = <T extends State>(state: State) => {
+        this.stateMap.set(state.constructor as StateTransition<T>, state)
+    }
+
+    changeState = (state: StateTransition<State>) => {
         if (this.stateMap.has(state)) {
             this.currentState.pause()
             this.currentState = this.stateMap.get(state)!!
@@ -68,7 +68,7 @@ class Game {
     addButtonListeners = () => {
         let buttons = document.querySelectorAll('.button')
         buttons[0].addEventListener('click', (e) => {
-            this.changeState(StateTransition.STATMENU)
+            this.changeState(MenuState)
         })
         buttons[1].addEventListener('click', (e) => {
             this.currentState.foodButton?.()
