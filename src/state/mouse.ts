@@ -1,5 +1,3 @@
-import { Entity } from "../entity/entity"
-
 class Mouse {
     pressed: boolean = false
     x: number = 0

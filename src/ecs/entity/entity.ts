@@ -1,5 +1,5 @@
-import { Component, ComponentType } from "./component/component.js"
-import { ECS } from "./ecs.js"
+import { Component, ComponentType } from "../component/component.js"
+import { ECS } from "../ecs.js"
 
 class Entity {
     

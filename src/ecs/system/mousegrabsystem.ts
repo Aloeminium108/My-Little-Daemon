@@ -2,7 +2,7 @@ import { Mouse } from "../../state/mouse.js";
 import { Hitbox } from "../component/hitbox.js";
 import { MouseGrabbable } from "../component/mousegrabbable.js";
 import { Velocity } from "../component/velocity.js";
-import { Entity } from "../entity.js";
+import { Entity } from "../entity/entity.js";
 import { System } from "./system.js";
 
 class MouseGrabSystem extends System {

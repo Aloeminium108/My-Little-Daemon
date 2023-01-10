@@ -1,4 +1,4 @@
-import { Entity } from "./entity.js"
+import { Entity } from "./entity/entity.js"
 import { System } from "./system/system.js"
 
 class ECS {

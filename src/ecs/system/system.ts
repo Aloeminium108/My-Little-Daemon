@@ -1,4 +1,4 @@
-import { Entity } from "../entity.js"
+import { Entity } from "../entity/entity.js"
 import { Component, ComponentType } from "../component/component.js"
 import { ECS } from "../ecs.js"
 
