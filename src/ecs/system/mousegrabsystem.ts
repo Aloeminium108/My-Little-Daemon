@@ -24,6 +24,8 @@ class MouseGrabSystem extends System {
         } else {
             if (this.checkMouseCollision() === null) this.canvas.style.cursor = 'default'
             else this.canvas.style.cursor = 'grab'
+            this.heldEntity?.getPossibleComponent(Velocity)?.setDX(this.mouse.dx)
+            this.heldEntity?.getPossibleComponent(Velocity)?.setDY(this.mouse.dy)
             this.heldEntity = null
         }
 

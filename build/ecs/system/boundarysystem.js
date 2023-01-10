@@ -21,13 +21,13 @@ class BoundarySystem extends System {
             }
             else if (position.x + hitbox.width > bounds.xUpperBound) {
                 position.x = bounds.xUpperBound - hitbox.width;
-                velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
+                velocity === null || velocity === void 0 ? void 0 : velocity.dxInvert();
             }
             if (position.y < bounds.yLowerBound) {
                 position.y = bounds.yLowerBound;
                 velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
             }
-            else if (position.y + hitbox.width > bounds.yUpperBound) {
+            else if (position.y + hitbox.height > bounds.yUpperBound) {
                 position.y = bounds.yUpperBound - hitbox.width;
                 velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
             }

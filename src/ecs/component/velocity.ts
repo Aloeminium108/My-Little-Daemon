@@ -10,6 +10,14 @@ class Velocity extends Component {
         this.dy = 0
     }
 
+    setDX = (dx: number) => {
+        this.dx = dx
+    }
+
+    setDY = (dy: number) => {
+        this.dy = dy
+    }
+
     dxInvert = () => {
         this.dx *= -1
     }

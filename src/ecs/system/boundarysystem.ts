@@ -19,13 +19,13 @@ class BoundarySystem extends System {
                 velocity?.dxInvert()
             } else if (position.x + hitbox.width > bounds.xUpperBound) {
                 position.x = bounds.xUpperBound - hitbox.width
-                velocity?.dyInvert()
+                velocity?.dxInvert()
             }
 
             if (position.y < bounds.yLowerBound) {
                 position.y = bounds.yLowerBound
                 velocity?.dyInvert()
-            } else if (position.y + hitbox.width > bounds.yUpperBound) {
+            } else if (position.y + hitbox.height > bounds.yUpperBound) {
                 position.y = bounds.yUpperBound - hitbox.width
                 velocity?.dyInvert()
             }
