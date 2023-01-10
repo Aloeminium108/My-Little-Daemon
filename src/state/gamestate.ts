@@ -20,6 +20,8 @@ import { Gravity } from "../ecs/component/gravity.js"
 import { Velocity } from "../ecs/component/velocity.js"
 import { Bounds } from "../ecs/component/bounds.js"
 import { BoundarySystem } from "../ecs/system/boundarysystem.js"
+import { Friction } from "../ecs/component/friction.js"
+import { FrictionSystem } from "../ecs/system/frictionsystem.js"
 
 class GameState implements State {
 
@@ -51,10 +53,11 @@ class GameState implements State {
         box.addComponent(position)
         box.addComponent(new Hitbox(position, 50, 50))
         box.addComponent(new Drawable(ctx => {
-            ctx.fillRect(box.getComponent(Position)!!.x, box.getComponent(Position)!!.y, 50, 50)
+            ctx.fillRect(Math.round(box.getComponent(Position)!!.x), Math.round(box.getComponent(Position)!!.y), 50, 50)
         }
         ))
         box.addComponent(new Gravity())
+        box.addComponent(new Friction())
         box.addComponent(new Velocity(0, 0))
         box.addComponent(new Bounds(0, this.game.canvas.width, 0, this.game.canvas.height))
         this.ecs.addEntity(box)
@@ -64,6 +67,7 @@ class GameState implements State {
         this.ecs.addSystem(new GravitySystem())
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new BoundarySystem())
+        this.ecs.addSystem(new FrictionSystem())
     }
 
     update = (interval: number) => {
