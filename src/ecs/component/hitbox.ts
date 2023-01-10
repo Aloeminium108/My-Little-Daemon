@@ -19,6 +19,18 @@ class Hitbox extends Component {
         }
     }
 
+    insideLastFrame = (x: number, y: number) => {
+        if (x > this.position.lastX 
+            && x < this.position.lastX + this.width 
+            && y > this.position.lastY
+            && y < this.position.lastY + this.height
+        ) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     moveCenterTo = (x: number, y: number) => {
         this.position.x = Math.floor(x - this.width/2)
         this.position.y = Math.floor(y - this.height/2)

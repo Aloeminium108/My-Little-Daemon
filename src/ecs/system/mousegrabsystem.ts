@@ -19,7 +19,8 @@ class MouseGrabSystem extends System {
         if (this.mouse.pressed) {
             this.holdEntity()
             this.moveHeldEntity()
-            this.canvas.style.cursor = 'grabbing'
+            if (this.heldEntity === null) this.canvas.style.cursor = 'default'
+            else this.canvas.style.cursor = 'grabbing'
         } else {
             if (this.checkMouseCollision() === null) this.canvas.style.cursor = 'default'
             else this.canvas.style.cursor = 'grab'
@@ -42,7 +43,7 @@ class MouseGrabSystem extends System {
 
     checkMouseCollision = () => {
         for (let entity of this.entities) {
-            if (entity.getComponent(Hitbox).inside(this.mouse.x, this.mouse.y)) {
+            if (entity.getComponent(Hitbox).insideLastFrame(this.mouse.x, this.mouse.y)) {
                 return entity
             }
         }
