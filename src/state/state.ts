@@ -14,11 +14,6 @@ interface State {
     animate?(ctx: CanvasRenderingContext2D): void
     update?(interval: number): void
 
-    mouseUp?(e: MouseEvent): void
-    mouseDown?(e: MouseEvent): void
-    mouseMove?(e: MouseEvent): void
-    mouseLeave?(e: MouseEvent): void
-
     foodButton?(): void
 }
 

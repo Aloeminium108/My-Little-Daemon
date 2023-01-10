@@ -1,4 +1,4 @@
-import { Component, ComponentType } from "./component.js"
+import { Component, ComponentType } from "./component/component.js"
 import { ECS } from "./ecs.js"
 
 class Entity {
@@ -14,6 +14,10 @@ class Entity {
 
     getComponent = <T extends Component>(componentClass: ComponentType<T>) => {
         return this.componentSet.get(componentClass) as T
+    }
+
+    getPossibleComponent = <T extends Component>(componentClass: ComponentType<T>) => {
+        return this.componentSet.get(componentClass) as T | undefined
     }
 
     deleteComponent = <T extends Component>(componentClass: ComponentType<T>) => {

@@ -1,4 +1,4 @@
-import { StateTransition } from "./state.js";
+import { GameState } from "./gamestate.js";
 class StatMenuState {
     constructor(game) {
         this.update = () => {
@@ -6,7 +6,7 @@ class StatMenuState {
         this.init = () => {
             let exitButton = document.getElementById('menu-exit');
             exitButton === null || exitButton === void 0 ? void 0 : exitButton.addEventListener('click', (e) => {
-                this.game.changeState(StateTransition.GAME);
+                this.game.changeState(GameState);
             });
             this.updateMenu();
         };

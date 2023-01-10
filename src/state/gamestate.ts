@@ -7,73 +7,71 @@ import { EntityList } from "../entity/entitylist.js"
 import { CollisionHandler } from "../entity/collisionhandler.js"
 import { Mouse } from "./mouse.js"
 import { Pet } from "../Pet/pet.js"
+import { ECS } from "../ecs/ecs.js"
+import { Entity } from "../ecs/entity.js"
+import { Drawable } from "../ecs/component/drawable.js"
+import { Position } from "../ecs/component/position.js"
+import { DrawingSystem } from "../ecs/system/drawingsystem.js"
+import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js"
+import { Hitbox } from "../ecs/component/hitbox.js"
+import { GravitySystem } from "../ecs/system/gravitysystem.js"
+import { VelocitySystem } from "../ecs/system/velocitysystem.js"
+import { Gravity } from "../ecs/component/gravity.js"
+import { Velocity } from "../ecs/component/velocity.js"
+import { Bounds } from "../ecs/component/bounds.js"
+import { BoundarySystem } from "../ecs/system/boundarysystem.js"
 
 class GameState implements State {
 
-    entityList: EntityList
-
-    collisionHandler: CollisionHandler
-    mouse: Mouse
+    ecs = new ECS()
 
     floorHeight: number = 100
     game: Game
     pet: Pet
+    mouse: Mouse
+
     constructor(game: Game) {
         this.game = game
         this.pet = game.pet
-
-        this.entityList = new EntityList(new PetEntity(this.pet))
-
-        this.collisionHandler = new CollisionHandler(this.entityList, game.canvas.width, game.canvas.height - this.floorHeight)
-        this.mouse = new Mouse(game.canvas)
+        this.mouse = game.mouse
 
         this.init()
     }
     
     foodButton = () => {
-        this.entityList.addFood(new Food(900, 300, 20))
+        // this.entityList.addFood(new Food(900, 300, 20))
     }
 
     init = () => {
-        this.entityList.addToy(new Box(500, 300, 50, 50))
-        this.entityList.addToy(new Box(700, 300, 100, 100))
-        this.entityList.addFood(new Food(900, 300, 20))
+        // this.entityList.addToy(new Box(500, 300, 50, 50))
+        // this.entityList.addToy(new Box(700, 300, 100, 100))
+        // this.entityList.addFood(new Food(900, 300, 20))
+        let box = new Entity()
+        let position = new Position(50, 50)
+        box.addComponent(position)
+        box.addComponent(new Hitbox(position, 50, 50))
+        box.addComponent(new Drawable(ctx => {
+            ctx.fillRect(box.getComponent(Position)!!.x, box.getComponent(Position)!!.y, 50, 50)
+        }
+        ))
+        box.addComponent(new Gravity())
+        box.addComponent(new Velocity(0, 0))
+        box.addComponent(new Bounds(0, this.game.canvas.width, 0, this.game.canvas.height))
+        this.ecs.addEntity(box)
+
+        this.ecs.addSystem(new DrawingSystem())
+        this.ecs.addSystem(new MouseGrabSystem(this.mouse, this.game.canvas))
+        this.ecs.addSystem(new GravitySystem())
+        this.ecs.addSystem(new VelocitySystem())
+        this.ecs.addSystem(new BoundarySystem())
     }
 
     update = (interval: number) => {
-        this.entityList.fullList().forEach((entity) => entity.getBody().update())
-        this.collisionHandler.handleEntityCollisions()
+        this.ecs.update(interval)
     }
 
     animate = (ctx: CanvasRenderingContext2D) => {
-        this.entityList.fullList().forEach((entity) => entity.draw(ctx))
-    }
-
-    mouseDown = (e: MouseEvent) => {
-        this.mouse.pressed = true
-        this.entityList.hold(this.collisionHandler.detectMouseCollisions(this.mouse))
-    }
-
-    mouseUp = (e: MouseEvent) => {
-        this.mouse.pressed = false
-        this.entityList.release(this.mouse.dx, this.mouse.dy)
-    }
-
-    mouseMove = (e: MouseEvent) => {
-        this.mouse.move(e)
-        
-        let heldEntity = this.entityList.getHeldEntity()
-        if (heldEntity != null) {
-            this.mouse.mouseHoldEntity(heldEntity)
-            heldEntity.getBody().moveTo(this.mouse.x, this.mouse.y)
-        } else {
-            this.mouse.mouseOverEntity(this.collisionHandler.detectMouseCollisions(this.mouse))
-        }
-    }
-
-    mouseLeave = (e: MouseEvent) => {
-        this.mouse.pressed = false
-        this.entityList.release(0, 0)
+        this.ecs.animate(ctx)
     }
 
     pause = () => {}

@@ -1,5 +1,5 @@
 import { Entity } from "./entity.js"
-import { System } from "./system.js"
+import { System } from "./system/system.js"
 
 class ECS {
 
@@ -10,6 +10,7 @@ class ECS {
     addEntity = (entity: Entity) => {
         this.entities.add(entity)
         entity.addToECS(this)
+        this.checkEntityForSystems(entity)
     }
 
     removeEntity = (entity: Entity) => {
@@ -18,6 +19,7 @@ class ECS {
 
     addSystem = (system: System) => {
         this.systems.add(system)
+        system.addToECS(this)
         this.checkSystemForEntities(system)
     }
 
@@ -35,6 +37,12 @@ class ECS {
             this.removeEntityFromSystems(entity)
         })
         this.markedForDeletion.clear()
+    }
+
+    animate = (ctx: CanvasRenderingContext2D) => {
+        this.systems.forEach(system => {
+            system.animate(ctx)
+        })
     }
 
     checkEntityForSystems = (entity: Entity) => {

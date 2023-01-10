@@ -2,16 +2,18 @@ import { State, StateTransition } from "./state/state.js"
 import { GameState } from "./state/gamestate.js"
 import { MenuState } from "./state/statmenustate.js"
 import { Pet } from "./Pet/pet.js"
+import { Mouse } from "./state/mouse.js"
 
 class Game {
     ctx: CanvasRenderingContext2D
 
     pet: Pet
 
+    mouse: Mouse = new Mouse()
+
     lastFrameTimeStamp: DOMHighResTimeStamp | null = null
 
     private stateMap = new Map<StateTransition<State>, State>
-    private states: Array<StateTransition<State>> = [GameState, MenuState]
     private currentState: State
 
     constructor(public canvas: HTMLCanvasElement) {
@@ -43,7 +45,8 @@ class Game {
     }
 
     initializeStates = () => {
-        
+        this.addState(new GameState(this))
+        this.addState(new MenuState(this))
     }
 
     addState = <T extends State>(state: State) => {
@@ -59,10 +62,10 @@ class Game {
     }
 
     addCanvasListeners = () => {
-        this.canvas.addEventListener('mousedown', (e) => this.currentState.mouseDown?.(e))
-        this.canvas.addEventListener('mouseup', (e) => this.currentState.mouseUp?.(e))
-        this.canvas.addEventListener('mousemove', (e) => this.currentState.mouseMove?.(e))
-        this.canvas.addEventListener('mouseleave', (e) => this.currentState.mouseLeave?.(e))
+        this.canvas.addEventListener('mousedown', (e) => this.mouse.pressed = true)
+        this.canvas.addEventListener('mouseup', (e) => this.mouse.pressed = false)
+        this.canvas.addEventListener('mousemove', (e) => this.mouse.move(e))
+        this.canvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false)
     }
 
     addButtonListeners = () => {

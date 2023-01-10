@@ -1,10 +1,13 @@
-import { StateTransition } from "./state/state.js";
 import { GameState } from "./state/gamestate.js";
 import { MenuState } from "./state/statmenustate.js";
 import { Pet } from "./Pet/pet.js";
+import { Mouse } from "./state/mouse.js";
 class Game {
     constructor(canvas) {
+        this.canvas = canvas;
+        this.mouse = new Mouse();
         this.lastFrameTimeStamp = null;
+        this.stateMap = new Map;
         this.animate = (currentFrameTimeStamp) => {
             var _a, _b, _c, _d, _e;
             let lastFrameTimeStamp = (_a = this.lastFrameTimeStamp) !== null && _a !== void 0 ? _a : currentFrameTimeStamp;
@@ -16,6 +19,13 @@ class Game {
             (_e = (_d = this.currentState).animate) === null || _e === void 0 ? void 0 : _e.call(_d, this.ctx);
             window.requestAnimationFrame(this.animate);
         };
+        this.initializeStates = () => {
+            this.addState(new GameState(this));
+            this.addState(new MenuState(this));
+        };
+        this.addState = (state) => {
+            this.stateMap.set(state.constructor, state);
+        };
         this.changeState = (state) => {
             if (this.stateMap.has(state)) {
                 this.currentState.pause();
@@ -24,30 +34,25 @@ class Game {
             }
         };
         this.addCanvasListeners = () => {
-            this.canvas.addEventListener('mousedown', (e) => { var _a, _b; return (_b = (_a = this.currentState).mouseDown) === null || _b === void 0 ? void 0 : _b.call(_a, e); });
-            this.canvas.addEventListener('mouseup', (e) => { var _a, _b; return (_b = (_a = this.currentState).mouseUp) === null || _b === void 0 ? void 0 : _b.call(_a, e); });
-            this.canvas.addEventListener('mousemove', (e) => { var _a, _b; return (_b = (_a = this.currentState).mouseMove) === null || _b === void 0 ? void 0 : _b.call(_a, e); });
-            this.canvas.addEventListener('mouseleave', (e) => { var _a, _b; return (_b = (_a = this.currentState).mouseLeave) === null || _b === void 0 ? void 0 : _b.call(_a, e); });
+            this.canvas.addEventListener('mousedown', (e) => this.mouse.pressed = true);
+            this.canvas.addEventListener('mouseup', (e) => this.mouse.pressed = false);
+            this.canvas.addEventListener('mousemove', (e) => this.mouse.move(e));
+            this.canvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false);
         };
         this.addButtonListeners = () => {
             let buttons = document.querySelectorAll('.button');
             buttons[0].addEventListener('click', (e) => {
-                this.changeState(StateTransition.STATMENU);
+                this.changeState(MenuState);
             });
             buttons[1].addEventListener('click', (e) => {
                 var _a, _b;
                 (_b = (_a = this.currentState).foodButton) === null || _b === void 0 ? void 0 : _b.call(_a);
             });
         };
-        this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.pet = new Pet();
-        this.gameState = new GameState(this);
-        this.statMenuState = new MenuState(this);
-        this.stateMap = new Map;
-        this.stateMap.set(StateTransition.GAME, this.gameState);
-        this.stateMap.set(StateTransition.STATMENU, this.statMenuState);
-        this.currentState = this.gameState;
+        this.initializeStates();
+        this.currentState = this.stateMap.get(GameState);
         this.addCanvasListeners();
         this.addButtonListeners();
     }
