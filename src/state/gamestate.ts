@@ -27,11 +27,15 @@ class GameState implements State {
     game: Game
     pet: Pet
     mouse: Mouse
+    ctx: CanvasRenderingContext2D
+    canvas: HTMLCanvasElement
 
     constructor(game: Game) {
         this.game = game
         this.pet = game.pet
         this.mouse = game.mouse
+        this.ctx = game.ctx
+        this.canvas = game.canvas
 
         this.init()
     }
@@ -53,17 +57,17 @@ class GameState implements State {
         box.addComponent(new Gravity())
         box.addComponent(new Friction())
         box.addComponent(new Velocity(0, 0))
-        box.addComponent(new Bounds(0, this.game.canvas.width, 0, this.game.canvas.height))
+        box.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
         this.ecs.addEntity(box)
 
         
-        this.ecs.addSystem(new MouseGrabSystem(this.mouse, this.game.canvas))
+        this.ecs.addSystem(new MouseGrabSystem(this.mouse, this.canvas))
         this.ecs.addSystem(new GravitySystem())
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new BoundarySystem())
         this.ecs.addSystem(new FrictionSystem())
 
-        this.ecs.addSystem(new DrawingSystem(this.game.ctx))
+        this.ecs.addSystem(new DrawingSystem(this.ctx))
     }
 
     update = (interval: number) => {
