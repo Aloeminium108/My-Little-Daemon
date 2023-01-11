@@ -56,20 +56,18 @@ class GameState implements State {
         box.addComponent(new Bounds(0, this.game.canvas.width, 0, this.game.canvas.height))
         this.ecs.addEntity(box)
 
-        this.ecs.addSystem(new DrawingSystem())
+        
         this.ecs.addSystem(new MouseGrabSystem(this.mouse, this.game.canvas))
         this.ecs.addSystem(new GravitySystem())
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new BoundarySystem())
         this.ecs.addSystem(new FrictionSystem())
+
+        this.ecs.addSystem(new DrawingSystem(this.game.ctx))
     }
 
     update = (interval: number) => {
         this.ecs.update(interval)
-    }
-
-    animate = (ctx: CanvasRenderingContext2D) => {
-        this.ecs.animate(ctx)
     }
 
     pause = () => {}

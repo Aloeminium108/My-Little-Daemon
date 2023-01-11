@@ -11,7 +11,6 @@ interface State {
     pause(): void
     resume(): void
 
-    animate?(ctx: CanvasRenderingContext2D): void
     update?(interval: number): void
 
     foodButton?(): void

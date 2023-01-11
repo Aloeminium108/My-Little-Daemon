@@ -35,8 +35,6 @@ class MouseGrabSystem extends OrderedSystem<MouseGrabbable> {
         this.heldEntity?.getComponent(Velocity)?.hold()
     }
 
-    animate = (ctx: CanvasRenderingContext2D) => {}
-
     holdEntity = () => {
         if (this.heldEntity !== null) return
         this.heldEntity = this.checkMouseCollision()

@@ -7,7 +7,6 @@ class BoundarySystem extends UnorderedSystem {
     constructor() {
         super(...arguments);
         this.componentsRequired = new Set([Bounds, Position, Hitbox]);
-        this.animate = (ctx) => { };
     }
     update(interval) {
         this.entities.forEach(entity => {

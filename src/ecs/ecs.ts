@@ -4,7 +4,7 @@ import { System } from "./system/system.js"
 class ECS {
 
     private entities = new Set<Entity>()
-    private systems = new Set<System>()
+    private systems = new Array<System>()
     private markedForDeletion = new Set<Entity>()
 
     addEntity = (entity: Entity) => {
@@ -18,13 +18,15 @@ class ECS {
     }
 
     addSystem = (system: System) => {
-        this.systems.add(system)
+        this.systems.push(system)
         system.addToECS(this)
         this.checkSystemForEntities(system)
     }
 
     removeSystem = (system: System) => {
-        this.systems.delete(system)
+        let index = this.systems.findIndex((x) => x === system)
+        if (index < 0) return
+        this.systems.splice(index, 1)
     }
 
     update = (interval: number) => {
@@ -37,12 +39,6 @@ class ECS {
             this.removeEntityFromSystems(entity)
         })
         this.markedForDeletion.clear()
-    }
-
-    animate = (ctx: CanvasRenderingContext2D) => {
-        this.systems.forEach(system => {
-            system.animate(ctx)
-        })
     }
 
     checkEntityForSystems = (entity: Entity) => {

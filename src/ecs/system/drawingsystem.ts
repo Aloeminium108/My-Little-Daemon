@@ -9,11 +9,13 @@ class DrawingSystem extends OrderedSystem<Sprite> {
 
     public orderingComponent = Sprite
 
-    update = (interval: number) => {}
+    constructor(private ctx: CanvasRenderingContext2D) {
+        super()
+    }
 
-    animate = (ctx: CanvasRenderingContext2D) => {
+    update = (interval: number) => {
         this.entities.forEach(entity => {
-            entity.getComponent(Sprite).draw(ctx)
+            entity.getComponent(Sprite).draw(this.ctx)
         })
     }
     

@@ -32,8 +32,6 @@ class BoundarySystem extends UnorderedSystem {
         })
     }
 
-    animate = (ctx: CanvasRenderingContext2D) => {}
-
 }
 
 export {BoundarySystem}

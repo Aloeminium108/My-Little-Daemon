@@ -12,8 +12,6 @@ class GravitySystem extends UnorderedSystem {
             entity.getComponent(Velocity).dy += 1
         })
     }
-
-    animate = (ctx: CanvasRenderingContext2D) => {}
     
 }
 

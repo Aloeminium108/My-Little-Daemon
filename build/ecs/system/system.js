@@ -26,6 +26,12 @@ class OrderedSystem extends System {
             this.entities.push(entity);
             this.sortByOrderingComponent();
         };
+        this.removeEntity = (entity) => {
+            let index = this.entities.findIndex((x) => x === entity);
+            if (index < 0)
+                return;
+            this.entities.splice(index, 1);
+        };
         this.sortByOrderingComponent = () => {
             this.entities.sort((a, b) => {
                 let indexA = a.getComponent(this.orderingComponent.constructor).index;
@@ -33,12 +39,6 @@ class OrderedSystem extends System {
                 return indexA - indexB;
             });
         };
-    }
-    removeEntity(entity) {
-        let index = this.entities.findIndex((x) => x === entity);
-        if (index < 0)
-            return;
-        this.entities.splice(index, 1);
     }
 }
 export { System, OrderedSystem, UnorderedSystem };

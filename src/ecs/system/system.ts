@@ -11,7 +11,6 @@ abstract class System {
     public abstract componentsRequired: Set<ComponentType<Component>>
 
     public abstract update(interval: number): void
-    public abstract animate(ctx: CanvasRenderingContext2D): void
 
     abstract addEntity(entity: Entity): void
     abstract removeEntity(entity: Entity): void
@@ -45,7 +44,7 @@ abstract class OrderedSystem<T extends OrderingComponent> extends System {
         this.sortByOrderingComponent()
     }
 
-    removeEntity(entity: Entity): void {
+    removeEntity = (entity: Entity) => {
         let index = this.entities.findIndex((x) => x === entity)
         if (index < 0) return
         this.entities.splice(index, 1)

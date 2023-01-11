@@ -39,7 +39,6 @@ class Game {
 
         this.pet.update(interval)
         this.currentState.update?.(interval)
-        this.currentState.animate?.(this.ctx)
         
         window.requestAnimationFrame(this.animate)
     }

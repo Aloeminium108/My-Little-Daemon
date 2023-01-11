@@ -9,14 +9,13 @@ class Game {
         this.lastFrameTimeStamp = null;
         this.stateMap = new Map;
         this.animate = (currentFrameTimeStamp) => {
-            var _a, _b, _c, _d, _e;
+            var _a, _b, _c;
             let lastFrameTimeStamp = (_a = this.lastFrameTimeStamp) !== null && _a !== void 0 ? _a : currentFrameTimeStamp;
             let interval = currentFrameTimeStamp - lastFrameTimeStamp;
             this.lastFrameTimeStamp = currentFrameTimeStamp;
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.pet.update(interval);
             (_c = (_b = this.currentState).update) === null || _c === void 0 ? void 0 : _c.call(_b, interval);
-            (_e = (_d = this.currentState).animate) === null || _e === void 0 ? void 0 : _e.call(_d, this.ctx);
             window.requestAnimationFrame(this.animate);
         };
         this.initializeStates = () => {

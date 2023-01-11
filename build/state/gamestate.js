@@ -36,18 +36,15 @@ class GameState {
             box.addComponent(new Velocity(0, 0));
             box.addComponent(new Bounds(0, this.game.canvas.width, 0, this.game.canvas.height));
             this.ecs.addEntity(box);
-            this.ecs.addSystem(new DrawingSystem());
             this.ecs.addSystem(new MouseGrabSystem(this.mouse, this.game.canvas));
             this.ecs.addSystem(new GravitySystem());
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new BoundarySystem());
             this.ecs.addSystem(new FrictionSystem());
+            this.ecs.addSystem(new DrawingSystem(this.game.ctx));
         };
         this.update = (interval) => {
             this.ecs.update(interval);
-        };
-        this.animate = (ctx) => {
-            this.ecs.animate(ctx);
         };
         this.pause = () => { };
         this.resume = () => { };

@@ -13,7 +13,6 @@ class FrictionSystem extends UnorderedSystem {
                 velocity.dy *= friction;
             });
         };
-        this.animate = () => { };
     }
 }
 export { FrictionSystem };

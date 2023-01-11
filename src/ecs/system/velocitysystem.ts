@@ -15,8 +15,6 @@ class VelocitySystem extends UnorderedSystem {
         })
     }
 
-    public animate(ctx: CanvasRenderingContext2D): void {}
-    
 }
 
 export {VelocitySystem}

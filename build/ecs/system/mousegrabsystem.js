@@ -31,7 +31,6 @@ class MouseGrabSystem extends OrderedSystem {
             }
             (_f = (_e = this.heldEntity) === null || _e === void 0 ? void 0 : _e.getComponent(Velocity)) === null || _f === void 0 ? void 0 : _f.hold();
         };
-        this.animate = (ctx) => { };
         this.holdEntity = () => {
             if (this.heldEntity !== null)
                 return;

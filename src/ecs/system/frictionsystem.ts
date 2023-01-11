@@ -15,8 +15,6 @@ class FrictionSystem extends UnorderedSystem {
         })
     }
 
-    animate = () => {}
-
 }
 
 export {FrictionSystem}

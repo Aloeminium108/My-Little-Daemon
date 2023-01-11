@@ -14,6 +14,5 @@ class VelocitySystem extends UnorderedSystem {
             position.y += velocity.dy;
         });
     }
-    animate(ctx) { }
 }
 export { VelocitySystem };

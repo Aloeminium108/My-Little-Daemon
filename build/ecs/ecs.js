@@ -1,7 +1,7 @@
 class ECS {
     constructor() {
         this.entities = new Set();
-        this.systems = new Set();
+        this.systems = new Array();
         this.markedForDeletion = new Set();
         this.addEntity = (entity) => {
             this.entities.add(entity);
@@ -12,12 +12,15 @@ class ECS {
             this.markedForDeletion.add(entity);
         };
         this.addSystem = (system) => {
-            this.systems.add(system);
+            this.systems.push(system);
             system.addToECS(this);
             this.checkSystemForEntities(system);
         };
         this.removeSystem = (system) => {
-            this.systems.delete(system);
+            let index = this.systems.findIndex((x) => x === system);
+            if (index < 0)
+                return;
+            this.systems.splice(index, 1);
         };
         this.update = (interval) => {
             this.systems.forEach(system => {
@@ -28,11 +31,6 @@ class ECS {
                 this.removeEntityFromSystems(entity);
             });
             this.markedForDeletion.clear();
-        };
-        this.animate = (ctx) => {
-            this.systems.forEach(system => {
-                system.animate(ctx);
-            });
         };
         this.checkEntityForSystems = (entity) => {
             this.systems.forEach((system) => this.checkEntityAndSystem(entity, system));

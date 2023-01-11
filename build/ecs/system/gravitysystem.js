@@ -11,7 +11,6 @@ class GravitySystem extends UnorderedSystem {
                 entity.getComponent(Velocity).dy += 1;
             });
         };
-        this.animate = (ctx) => { };
     }
 }
 export { GravitySystem };
