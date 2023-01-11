@@ -41,12 +41,16 @@ class MouseGrabSystem extends OrderedSystem {
             (_a = this.heldEntity) === null || _a === void 0 ? void 0 : _a.getComponent(Hitbox).moveCenterTo(this.mouse.x, this.mouse.y);
         };
         this.checkMouseCollision = () => {
-            for (let entity of this.entities) {
-                if (entity.getComponent(Hitbox).insideLastFrame(this.mouse.x, this.mouse.y)) {
-                    return entity;
-                }
-            }
-            return null;
+            // for (let entity of this.entities) {
+            //     if (entity.getComponent(Hitbox).insideLastFrame(this.mouse.x, this.mouse.y)) {
+            //         return entity
+            //     }
+            // }
+            // return null
+            var _a;
+            return (_a = this.entities.find((entity => {
+                return entity.getComponent(Hitbox).insideLastFrame(this.mouse.x, this.mouse.y);
+            }))) !== null && _a !== void 0 ? _a : null;
         };
     }
 }

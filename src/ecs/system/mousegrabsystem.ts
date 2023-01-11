@@ -45,12 +45,9 @@ class MouseGrabSystem extends OrderedSystem<MouseGrabbable> {
     }
 
     checkMouseCollision = () => {
-        for (let entity of this.entities) {
-            if (entity.getComponent(Hitbox).insideLastFrame(this.mouse.x, this.mouse.y)) {
-                return entity
-            }
-        }
-        return null
+        return this.entities.find((entity => {
+            return entity.getComponent(Hitbox).insideLastFrame(this.mouse.x, this.mouse.y)
+        })) ?? null
     }
 
 }
