@@ -22,9 +22,6 @@ class GameState {
             // this.entityList.addFood(new Food(900, 300, 20))
         };
         this.init = () => {
-            // this.entityList.addToy(new Box(500, 300, 50, 50))
-            // this.entityList.addToy(new Box(700, 300, 100, 100))
-            // this.entityList.addFood(new Food(900, 300, 20))
             let box = new Entity();
             let position = new Position(50, 50);
             let sprite = new Sprite(0, ctx => {
