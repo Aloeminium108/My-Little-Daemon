@@ -1,14 +1,15 @@
 import { Hitbox } from "../component/hitbox.js";
 import { MouseGrabbable } from "../component/mousegrabbable.js";
 import { Velocity } from "../component/velocity.js";
-import { System } from "./system.js";
-class MouseGrabSystem extends System {
+import { OrderedSystem } from "./system.js";
+class MouseGrabSystem extends OrderedSystem {
     constructor(mouse, canvas) {
         super();
         this.mouse = mouse;
         this.canvas = canvas;
         this.heldEntity = null;
         this.componentsRequired = new Set([MouseGrabbable, Hitbox]);
+        this.orderingComponent = MouseGrabbable;
         this.update = (interval) => {
             var _a, _b, _c, _d, _e, _f;
             if (this.mouse.pressed) {

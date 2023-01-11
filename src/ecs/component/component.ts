@@ -1,5 +1,11 @@
 abstract class Component {}
 
+abstract class OrderingComponent extends Component {
+    constructor(public index: number) {
+        super()
+    }
+}
+
 // Type alias referring to the constructor of a Component
 // This is for the purpose of mapping each component of an entity 
 // to its own type. This has two benefits. First, this allows 
@@ -10,4 +16,4 @@ abstract class Component {}
 // with entity.getComponent(Hitbox)
 type ComponentType<T extends Component> = new (...args: any[]) => T
 
-export {Component, ComponentType}
+export {Component, OrderingComponent, ComponentType}

@@ -1,8 +1,8 @@
 import { Gravity } from "../component/gravity.js";
 import { Position } from "../component/position.js";
 import { Velocity } from "../component/velocity.js";
-import { System } from "./system.js";
-class GravitySystem extends System {
+import { UnorderedSystem } from "./system.js";
+class GravitySystem extends UnorderedSystem {
     constructor() {
         super(...arguments);
         this.componentsRequired = new Set([Position, Gravity, Velocity]);

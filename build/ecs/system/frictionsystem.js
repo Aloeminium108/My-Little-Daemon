@@ -1,7 +1,7 @@
 import { Friction } from "../component/friction.js";
 import { Velocity } from "../component/velocity.js";
-import { System } from "./system.js";
-class FrictionSystem extends System {
+import { UnorderedSystem } from "./system.js";
+class FrictionSystem extends UnorderedSystem {
     constructor() {
         super(...arguments);
         this.componentsRequired = new Set([Friction, Velocity]);

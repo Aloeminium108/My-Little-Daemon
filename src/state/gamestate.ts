@@ -4,7 +4,7 @@ import { Mouse } from "./mouse.js"
 import { Pet } from "../Pet/pet.js"
 import { ECS } from "../ecs/ecs.js"
 import { Entity } from "../ecs/entity/entity.js"
-import { Drawable } from "../ecs/component/drawable.js"
+import { Sprite } from "../ecs/component/sprite.js"
 import { Position } from "../ecs/component/position.js"
 import { DrawingSystem } from "../ecs/system/drawingsystem.js"
 import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js"
@@ -17,6 +17,7 @@ import { Bounds } from "../ecs/component/bounds.js"
 import { BoundarySystem } from "../ecs/system/boundarysystem.js"
 import { Friction } from "../ecs/component/friction.js"
 import { FrictionSystem } from "../ecs/system/frictionsystem.js"
+import { MouseGrabbable } from "../ecs/component/mousegrabbable.js"
 
 class GameState implements State {
 
@@ -45,12 +46,13 @@ class GameState implements State {
         // this.entityList.addFood(new Food(900, 300, 20))
         let box = new Entity()
         let position = new Position(50, 50)
+        let sprite = new Sprite(0, ctx => {
+            ctx.fillRect(Math.round(box.getComponent(Position)!!.x), Math.round(box.getComponent(Position)!!.y), 50, 50)
+        })
         box.addComponent(position)
         box.addComponent(new Hitbox(position, 50, 50))
-        box.addComponent(new Drawable(ctx => {
-            ctx.fillRect(Math.round(box.getComponent(Position)!!.x), Math.round(box.getComponent(Position)!!.y), 50, 50)
-        }
-        ))
+        box.addComponent(sprite)
+        box.addComponent(new MouseGrabbable(sprite))
         box.addComponent(new Gravity())
         box.addComponent(new Friction())
         box.addComponent(new Velocity(0, 0))

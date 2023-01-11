@@ -6,12 +6,12 @@ class PetStats {
         this.updateInterval = Time.MINUTE;
         this.hunger = hunger;
     }
-    feed(food) {
-        this.hunger += food.getNourishmentValue();
-        if (this.hunger > this.maxHunger) {
-            this.hunger = this.maxHunger;
-        }
-    }
+    // feed(food: Food) {
+    //     this.hunger += food.getNourishmentValue()
+    //     if (this.hunger > this.maxHunger) {
+    //         this.hunger = this.maxHunger
+    //     }
+    // }
     update(interval) {
         this.timeElapsed += interval;
         if (this.timeElapsed < this.updateInterval) {

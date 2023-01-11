@@ -1,4 +1,3 @@
-import { Food } from "../entity/food.js"
 import { PetStats } from "./petstats.js"
 
 
@@ -24,9 +23,9 @@ class Pet {
         return this.stats.getHunger()
     }
 
-    feed = (food: Food) => {
-        this.stats.feed(food)
-    }
+    // feed = (food: Food) => {
+    //     this.stats.feed(food)
+    // }
 
     update = (interval: number) => {
         this.stats.update(interval)

@@ -1,9 +1,8 @@
-import { ComponentType, Component } from "../component/component.js";
 import { Friction } from "../component/friction.js";
 import { Velocity } from "../component/velocity.js";
-import { System } from "./system.js";
+import { UnorderedSystem } from "./system.js";
 
-class FrictionSystem extends System {
+class FrictionSystem extends UnorderedSystem {
 
     public componentsRequired = new Set([Friction, Velocity])
 

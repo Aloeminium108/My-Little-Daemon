@@ -2,8 +2,8 @@ import { Bounds } from "../component/bounds.js";
 import { Hitbox } from "../component/hitbox.js";
 import { Position } from "../component/position.js";
 import { Velocity } from "../component/velocity.js";
-import { System } from "./system.js";
-class BoundarySystem extends System {
+import { UnorderedSystem } from "./system.js";
+class BoundarySystem extends UnorderedSystem {
     constructor() {
         super(...arguments);
         this.componentsRequired = new Set([Bounds, Position, Hitbox]);

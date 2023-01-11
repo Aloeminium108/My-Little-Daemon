@@ -2,9 +2,9 @@ import { Bounds } from "../component/bounds.js";
 import { Hitbox } from "../component/hitbox.js";
 import { Position } from "../component/position.js";
 import { Velocity } from "../component/velocity.js";
-import { System } from "./system.js";
+import { UnorderedSystem } from "./system.js";
 
-class BoundarySystem extends System {
+class BoundarySystem extends UnorderedSystem {
     public componentsRequired = new Set([Bounds, Position, Hitbox])
 
     public update(interval: number): void {

@@ -1,16 +1,19 @@
-import { Drawable } from "../component/drawable.js";
+import { Sprite } from "../component/sprite.js";
 import { Position } from "../component/position.js";
-import { System } from "./system.js";
+import { OrderedSystem } from "./system.js";
+import { ComponentType } from "../component/component.js";
 
-class DrawingSystem extends System {
+class DrawingSystem extends OrderedSystem<Sprite> {
 
-    public componentsRequired = new Set([Drawable, Position])
+    public componentsRequired = new Set([Sprite, Position])
+
+    public orderingComponent = Sprite
 
     update = (interval: number) => {}
 
     animate = (ctx: CanvasRenderingContext2D) => {
         this.entities.forEach(entity => {
-            entity.getComponent(Drawable).draw(ctx)
+            entity.getComponent(Sprite).draw(ctx)
         })
     }
     

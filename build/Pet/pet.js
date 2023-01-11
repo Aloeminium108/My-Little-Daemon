@@ -5,9 +5,9 @@ class Pet {
         this.getHunger = () => {
             return this.stats.getHunger();
         };
-        this.feed = (food) => {
-            this.stats.feed(food);
-        };
+        // feed = (food: Food) => {
+        //     this.stats.feed(food)
+        // }
         this.update = (interval) => {
             this.stats.update(interval);
         };

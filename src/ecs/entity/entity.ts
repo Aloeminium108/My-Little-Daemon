@@ -26,11 +26,12 @@ class Entity {
     }
 
     hasAll = (componentClasses: Set<ComponentType<Component>>) => {
-        componentClasses.forEach(neededComponent => {
+        for (let neededComponent of componentClasses) {
             if (!this.componentSet.has(neededComponent)) {
+                console.log("Component missing:", neededComponent)
                 return false
             }
-        })
+        }
         return true
     }
 

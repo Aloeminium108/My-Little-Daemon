@@ -1,7 +1,7 @@
 import { Position } from "../component/position.js";
 import { Velocity } from "../component/velocity.js";
-import { System } from "./system.js";
-class VelocitySystem extends System {
+import { UnorderedSystem } from "./system.js";
+class VelocitySystem extends UnorderedSystem {
     constructor() {
         super(...arguments);
         this.componentsRequired = new Set([Position, Velocity]);

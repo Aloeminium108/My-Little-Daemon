@@ -1,15 +1,18 @@
 import { Mouse } from "../../state/mouse.js";
+import { ComponentType } from "../component/component.js";
 import { Hitbox } from "../component/hitbox.js";
 import { MouseGrabbable } from "../component/mousegrabbable.js";
 import { Velocity } from "../component/velocity.js";
 import { Entity } from "../entity/entity.js";
-import { System } from "./system.js";
+import { OrderedSystem } from "./system.js";
 
-class MouseGrabSystem extends System {
+class MouseGrabSystem extends OrderedSystem<MouseGrabbable> {
 
     private heldEntity: Entity | null = null
 
     public componentsRequired = new Set([MouseGrabbable, Hitbox])
+
+    public orderingComponent = MouseGrabbable
 
     constructor(private mouse: Mouse, private canvas: HTMLCanvasElement) {
         super()
