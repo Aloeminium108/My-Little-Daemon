@@ -1,3 +1,5 @@
+import { MouseInteractable } from "../component/mouseinteractable.js";
+import { Sprite } from "../component/sprite.js";
 import { ECS } from "../ecs.js";
 import { Entity } from "./entity.js";
 
@@ -11,7 +13,7 @@ class PetEntity extends Entity {
         image.onload = () => {
             createImageBitmap(image).then((sprite) => {
                     this.addPhysicsBody(x, y, 0, sprite)
-                    this.addMouseGrab()
+                    this.addComponent(new MouseInteractable(this.getComponent(Sprite)))
                 }
             )
         }

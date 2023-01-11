@@ -15,9 +15,13 @@ class MouseGrabSystem extends UnorderedSystem {
     }
 
     update = (interval: number) => {
-        this.mouseSystem.heldEntity?.getComponent(Velocity)?.hold()
-        this.moveHeldEntity()
-        this.throwReleasedEntity()
+        if (this.mouseSystem.heldEntity !== null && this.entities.has(this.mouseSystem.heldEntity)) {
+            this.mouseSystem.heldEntity?.getComponent(Velocity)?.hold()
+            this.moveHeldEntity()
+        }
+        if (this.mouseSystem.releasedEntity !== null && this.entities.has(this.mouseSystem.releasedEntity)) {
+            this.throwReleasedEntity()
+        }
     }
 
     moveHeldEntity = () => {

@@ -29,8 +29,6 @@ class MouseSystem extends OrderedSystem<MouseInteractable> {
             this.releasedEntity = this.heldEntity
             this.heldEntity = null
         }
-
-        this.heldEntity?.getComponent(Velocity)?.hold()
     }
 
     holdEntity = () => {

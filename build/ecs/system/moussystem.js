@@ -1,6 +1,5 @@
 import { Hitbox } from "../component/hitbox.js";
 import { MouseInteractable } from "../component/mouseinteractable.js";
-import { Velocity } from "../component/velocity.js";
 import { OrderedSystem } from "./system.js";
 class MouseSystem extends OrderedSystem {
     constructor(mouse, canvas) {
@@ -12,7 +11,7 @@ class MouseSystem extends OrderedSystem {
         this.componentsRequired = new Set([MouseInteractable, Hitbox]);
         this.orderingComponent = MouseInteractable;
         this.update = (interval) => {
-            var _a, _b, _c, _d, _e, _f;
+            var _a, _b, _c, _d;
             if (this.mouse.pressed) {
                 this.holdEntity();
                 this.releasedEntity = null;
@@ -23,7 +22,6 @@ class MouseSystem extends OrderedSystem {
                 this.releasedEntity = this.heldEntity;
                 this.heldEntity = null;
             }
-            (_f = (_e = this.heldEntity) === null || _e === void 0 ? void 0 : _e.getComponent(Velocity)) === null || _f === void 0 ? void 0 : _f.hold();
         };
         this.holdEntity = () => {
             if (this.heldEntity !== null)

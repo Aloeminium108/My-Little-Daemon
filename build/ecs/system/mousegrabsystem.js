@@ -9,9 +9,13 @@ class MouseGrabSystem extends UnorderedSystem {
         this.componentsRequired = new Set([MouseGrabbable, Hitbox]);
         this.update = (interval) => {
             var _a, _b;
-            (_b = (_a = this.mouseSystem.heldEntity) === null || _a === void 0 ? void 0 : _a.getComponent(Velocity)) === null || _b === void 0 ? void 0 : _b.hold();
-            this.moveHeldEntity();
-            this.throwReleasedEntity();
+            if (this.mouseSystem.heldEntity !== null && this.entities.has(this.mouseSystem.heldEntity)) {
+                (_b = (_a = this.mouseSystem.heldEntity) === null || _a === void 0 ? void 0 : _a.getComponent(Velocity)) === null || _b === void 0 ? void 0 : _b.hold();
+                this.moveHeldEntity();
+            }
+            if (this.mouseSystem.releasedEntity !== null && this.entities.has(this.mouseSystem.releasedEntity)) {
+                this.throwReleasedEntity();
+            }
         };
         this.moveHeldEntity = () => {
             var _a;
