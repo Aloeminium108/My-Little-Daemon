@@ -44,9 +44,9 @@ class Entity {
         this.ecs = ecs
     }
 
-    addPhysicsBody = (x: number, y: number, image: ImageBitmap) => {
+    addPhysicsBody = (x: number, y: number, z: number, image: ImageBitmap) => {
         let position = new Position(x, y)
-        let sprite = new Sprite(0, image)
+        let sprite = new Sprite(z, image)
         this.addComponent(position)
         this.addComponent(sprite)
         this.addComponent(new Hitbox(position, image.width, image.height))

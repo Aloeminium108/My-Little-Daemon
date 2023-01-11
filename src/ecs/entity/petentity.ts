@@ -3,21 +3,21 @@ import { Entity } from "./entity.js";
 
 class PetEntity extends Entity {
 
-    image: ImageBitmap | null = null
+    private static spriteSource = '../../assets/bird.png'
 
-    constructor(ecs: ECS | null = null) {
-        super(ecs)
-
+    constructor(x: number, y: number) {
+        super()
         let image = new Image()
         image.onload = () => {
-            createImageBitmap(image)
-            .then((sprite) => {
-                this.image = sprite
-            })
+            createImageBitmap(image).then((sprite) => {
+                    this.addPhysicsBody(x, y, 0, sprite)
+                    this.addMouseGrab()
+                }
+            )
         }
-        image.src = '../../assets/bird.png'
-
+        image.src = PetEntity.spriteSource
     }
+
 }
 
 

@@ -5,11 +5,12 @@ class Ball extends Entity {
         let image = new Image();
         image.onload = () => {
             createImageBitmap(image).then((sprite) => {
-                this.addPhysicsBody(x, y, sprite);
+                this.addPhysicsBody(x, y, 1, sprite);
                 this.addMouseGrab();
             });
         };
-        image.src = '../../assets/ball.png';
+        image.src = Ball.spriteSource;
     }
 }
+Ball.spriteSource = '../../assets/ball.png';
 export { Ball };

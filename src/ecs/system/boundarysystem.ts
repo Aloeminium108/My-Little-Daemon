@@ -26,7 +26,7 @@ class BoundarySystem extends UnorderedSystem {
                 position.y = bounds.yLowerBound
                 velocity?.dyInvert()
             } else if (position.y + hitbox.height > bounds.yUpperBound) {
-                position.y = bounds.yUpperBound - hitbox.width
+                position.y = bounds.yUpperBound - hitbox.height
                 velocity?.dyInvert()
             }
         })

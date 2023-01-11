@@ -1,16 +1,16 @@
 import { Entity } from "./entity.js";
 class PetEntity extends Entity {
-    constructor(ecs = null) {
-        super(ecs);
-        this.image = null;
+    constructor(x, y) {
+        super();
         let image = new Image();
         image.onload = () => {
-            createImageBitmap(image)
-                .then((sprite) => {
-                this.image = sprite;
+            createImageBitmap(image).then((sprite) => {
+                this.addPhysicsBody(x, y, 0, sprite);
+                this.addMouseGrab();
             });
         };
-        image.src = '../../assets/bird.png';
+        image.src = PetEntity.spriteSource;
     }
 }
+PetEntity.spriteSource = '../../assets/bird.png';
 export { PetEntity };

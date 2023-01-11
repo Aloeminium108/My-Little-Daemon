@@ -35,9 +35,9 @@ class Entity {
         this.addToECS = (ecs) => {
             this.ecs = ecs;
         };
-        this.addPhysicsBody = (x, y, image) => {
+        this.addPhysicsBody = (x, y, z, image) => {
             let position = new Position(x, y);
-            let sprite = new Sprite(0, image);
+            let sprite = new Sprite(z, image);
             this.addComponent(position);
             this.addComponent(sprite);
             this.addComponent(new Hitbox(position, image.width, image.height));
