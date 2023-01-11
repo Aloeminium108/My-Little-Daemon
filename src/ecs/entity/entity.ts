@@ -15,7 +15,6 @@ class Entity {
 
     addComponent = <T extends Component>(component: Component) => {
         this.componentSet.set(component.constructor as ComponentType<T>, component)
-        console.log("Component added:", component)
         this.ecs?.checkEntityForSystems(this)
     }
 
@@ -33,12 +32,10 @@ class Entity {
     }
 
     hasAll = (componentClasses: Set<ComponentType<Component>>) => {
-        for (let neededComponent of componentClasses) {
-            if (!this.componentSet.has(neededComponent)) {
-                return false
-            }
-        }
-        return true
+        let missingComponent = Array.from(componentClasses).find(neededComponent => {
+            return !this.componentSet.has(neededComponent)
+        })
+        return missingComponent === undefined
     }
 
     addToECS = (ecs: ECS) => {

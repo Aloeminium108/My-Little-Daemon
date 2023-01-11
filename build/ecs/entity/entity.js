@@ -26,12 +26,16 @@ class Entity {
             (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.checkEntityForSystems(this);
         };
         this.hasAll = (componentClasses) => {
-            for (let neededComponent of componentClasses) {
-                if (!this.componentSet.has(neededComponent)) {
-                    return false;
-                }
-            }
-            return true;
+            // for (let neededComponent of componentClasses) {
+            //     if (!this.componentSet.has(neededComponent)) {
+            //         return false
+            //     }
+            // }
+            // return true
+            let missingComponent = Array.from(componentClasses).find(neededComponent => {
+                return !this.componentSet.has(neededComponent);
+            });
+            return missingComponent === undefined;
         };
         this.addToECS = (ecs) => {
             this.ecs = ecs;
