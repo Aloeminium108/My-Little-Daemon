@@ -10,7 +10,7 @@ class Ball extends Entity {
         image.onload = () => {
             createImageBitmap(image).then((sprite) => {
                     this.addPhysicsBody(x, y, sprite)
-                    this.addComponent(new MouseGrabbable(this.getComponent(Sprite)))
+                    this.addMouseGrab()
                 }
             )
         }

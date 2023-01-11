@@ -7,6 +7,7 @@ import { BoundarySystem } from "../ecs/system/boundarysystem.js";
 import { FrictionSystem } from "../ecs/system/frictionsystem.js";
 import { Ball } from "../ecs/entity/ball.js";
 import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js";
+import { MouseSystem } from "../ecs/system/moussystem.js";
 class GameState {
     constructor(game) {
         this.ecs = new ECS();
@@ -30,7 +31,9 @@ class GameState {
             this.ecs.addEntity(ball2);
         };
         this.initSystems = () => {
-            this.ecs.addSystem(new MouseGrabSystem(this.mouse, this.canvas));
+            let mouseSystem = new MouseSystem(this.mouse, this.canvas);
+            this.ecs.addSystem(mouseSystem);
+            this.ecs.addSystem(new MouseGrabSystem(mouseSystem));
             this.ecs.addSystem(new GravitySystem());
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new BoundarySystem());

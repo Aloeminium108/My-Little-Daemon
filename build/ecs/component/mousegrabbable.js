@@ -1,7 +1,4 @@
-import { OrderingComponent } from "./component.js";
-class MouseGrabbable extends OrderingComponent {
-    constructor(sprite) {
-        super(-sprite.index);
-    }
+import { Component } from "./component.js";
+class MouseGrabbable extends Component {
 }
 export { MouseGrabbable };

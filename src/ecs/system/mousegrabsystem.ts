@@ -1,53 +1,36 @@
 import { Mouse } from "../../state/mouse.js";
-import { ComponentType } from "../component/component.js";
 import { Hitbox } from "../component/hitbox.js";
 import { MouseGrabbable } from "../component/mousegrabbable.js";
 import { Velocity } from "../component/velocity.js";
 import { Entity } from "../entity/entity.js";
-import { OrderedSystem } from "./system.js";
+import { MouseSystem } from "./moussystem.js";
+import { UnorderedSystem } from "./system.js";
 
-class MouseGrabSystem extends OrderedSystem<MouseGrabbable> {
-
-    private heldEntity: Entity | null = null
+class MouseGrabSystem extends UnorderedSystem {
 
     public componentsRequired = new Set([MouseGrabbable, Hitbox])
 
-    public orderingComponent = MouseGrabbable
-
-    constructor(private mouse: Mouse, private canvas: HTMLCanvasElement) {
+    constructor(private mouseSystem: MouseSystem) {
         super()
     }
 
     update = (interval: number) => {
-        if (this.mouse.pressed) {
-            this.holdEntity()
-            this.moveHeldEntity()
-            if (this.heldEntity === null) this.canvas.style.cursor = 'default'
-            else this.canvas.style.cursor = 'grabbing'
-        } else {
-            if (this.checkMouseCollision() === null) this.canvas.style.cursor = 'default'
-            else this.canvas.style.cursor = 'grab'
-            this.heldEntity?.getPossibleComponent(Velocity)?.setDX(this.mouse.dx)
-            this.heldEntity?.getPossibleComponent(Velocity)?.setDY(this.mouse.dy)
-            this.heldEntity = null
-        }
-
-        this.heldEntity?.getComponent(Velocity)?.hold()
-    }
-
-    holdEntity = () => {
-        if (this.heldEntity !== null) return
-        this.heldEntity = this.checkMouseCollision()
+        this.mouseSystem.heldEntity?.getComponent(Velocity)?.hold()
+        this.moveHeldEntity()
+        this.throwReleasedEntity()
     }
 
     moveHeldEntity = () => {
-        this.heldEntity?.getComponent(Hitbox).moveCenterTo(this.mouse.x, this.mouse.y)
+        let heldEntity = this.mouseSystem.heldEntity?.getComponent(Hitbox)
+        let mouse = this.mouseSystem.mouse
+        heldEntity?.moveCenterTo(mouse.x, mouse.y)
     }
 
-    checkMouseCollision = () => {
-        return this.entities.find((entity => {
-            return entity.getComponent(Hitbox).insideLastFrame(this.mouse.x, this.mouse.y)
-        })) ?? null
+    throwReleasedEntity = () => {
+        let releasedEntity = this.mouseSystem.releasedEntity?.getPossibleComponent(Velocity)
+        let mouse = this.mouseSystem.mouse
+        releasedEntity?.setDX(mouse.dx)
+        releasedEntity?.setDY(mouse.dy)
     }
 
 }

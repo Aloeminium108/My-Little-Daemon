@@ -14,6 +14,7 @@ import { MouseGrabbable } from "../ecs/component/mousegrabbable.js"
 import { Ball } from "../ecs/entity/ball.js"
 import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js"
 import { Sprite } from "../ecs/component/sprite.js"
+import { MouseSystem } from "../ecs/system/moussystem.js"
 
 class GameState implements State {
 
@@ -58,7 +59,9 @@ class GameState implements State {
     }
 
     private initSystems = () => {
-        this.ecs.addSystem(new MouseGrabSystem(this.mouse, this.canvas))
+        let mouseSystem = new MouseSystem (this.mouse, this.canvas)
+        this.ecs.addSystem(mouseSystem)
+        this.ecs.addSystem(new MouseGrabSystem(mouseSystem))
         this.ecs.addSystem(new GravitySystem())
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new BoundarySystem())
