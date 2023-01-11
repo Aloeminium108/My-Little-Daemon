@@ -4,15 +4,12 @@ import { Entity } from "./entity.js";
 
 class Ball extends Entity {
 
-    sprite: ImageBitmap | null = null
-
     constructor(x: number, y: number) {
         super()
         let image = new Image()
         image.onload = () => {
-            Promise.all([createImageBitmap(image)]).then((sprites) => {
-                    this.sprite = sprites[0]
-                    this.addPhysicsBody(x, y, this.sprite)
+            createImageBitmap(image).then((sprite) => {
+                    this.addPhysicsBody(x, y, sprite)
                     this.addComponent(new MouseGrabbable(this.getComponent(Sprite)))
                 }
             )
@@ -20,9 +17,6 @@ class Ball extends Entity {
         image.src = '../../assets/ball.png'
     }
 
-    static make(x: number, y: number) {
-
-    }
 }
 
 export {Ball}

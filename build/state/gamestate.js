@@ -15,9 +15,21 @@ class GameState {
             // this.entityList.addFood(new Food(900, 300, 20))
         };
         this.init = () => {
+            this.initEntities();
+            this.initSystems();
+        };
+        this.initEntities = () => {
             let ball = new Ball(200, 100);
             ball.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
+            let ball1 = new Ball(400, 100);
+            ball1.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
+            let ball2 = new Ball(600, 100);
+            ball2.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
             this.ecs.addEntity(ball);
+            this.ecs.addEntity(ball1);
+            this.ecs.addEntity(ball2);
+        };
+        this.initSystems = () => {
             this.ecs.addSystem(new MouseGrabSystem(this.mouse, this.canvas));
             this.ecs.addSystem(new GravitySystem());
             this.ecs.addSystem(new VelocitySystem());
