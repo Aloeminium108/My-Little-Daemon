@@ -11,7 +11,6 @@ class Entity {
         this.addComponent = (component) => {
             var _a;
             this.componentSet.set(component.constructor, component);
-            console.log("Component added:", component);
             (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.checkEntityForSystems(this);
         };
         this.getComponent = (componentClass) => {
@@ -26,12 +25,6 @@ class Entity {
             (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.checkEntityForSystems(this);
         };
         this.hasAll = (componentClasses) => {
-            // for (let neededComponent of componentClasses) {
-            //     if (!this.componentSet.has(neededComponent)) {
-            //         return false
-            //     }
-            // }
-            // return true
             let missingComponent = Array.from(componentClasses).find(neededComponent => {
                 return !this.componentSet.has(neededComponent);
             });

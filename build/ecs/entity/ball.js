@@ -1,3 +1,5 @@
+import { MouseGrabbable } from "../component/mousegrabbable.js";
+import { Sprite } from "../component/sprite.js";
 import { Entity } from "./entity.js";
 class Ball extends Entity {
     constructor(x, y) {
@@ -8,7 +10,7 @@ class Ball extends Entity {
             Promise.all([createImageBitmap(image)]).then((sprites) => {
                 this.sprite = sprites[0];
                 this.addPhysicsBody(x, y, this.sprite);
-                //this.addComponent(new MouseGrabbable(this.getComponent(Sprite)))
+                this.addComponent(new MouseGrabbable(this.getComponent(Sprite)));
             });
         };
         image.src = '../../assets/ball.png';
