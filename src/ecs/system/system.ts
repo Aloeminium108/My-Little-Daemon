@@ -52,8 +52,8 @@ abstract class OrderedSystem<T extends OrderingComponent> extends System {
 
     private sortByOrderingComponent = () => {
         this.entities.sort((a: Entity, b: Entity) => {
-            let indexA = a.getComponent(this.orderingComponent.constructor as ComponentType<T>).index
-            let indexB = b.getComponent(this.orderingComponent.constructor as ComponentType<T>).index
+            let indexA = a.getComponent(this.orderingComponent).index
+            let indexB = b.getComponent(this.orderingComponent).index
             return indexA - indexB
         }) 
     }

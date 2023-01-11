@@ -9,7 +9,9 @@ class DrawingSystem extends OrderedSystem {
         this.orderingComponent = Sprite;
         this.update = (interval) => {
             this.entities.forEach(entity => {
-                entity.getComponent(Sprite).draw(this.ctx);
+                let sprite = entity.getComponent(Sprite).sprite;
+                let position = entity.getComponent(Position);
+                this.ctx.drawImage(sprite, position.x, position.y);
             });
         };
     }

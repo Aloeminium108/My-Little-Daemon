@@ -1,8 +1,8 @@
 import { OrderingComponent } from "./component.js";
 class Sprite extends OrderingComponent {
-    constructor(index, draw) {
+    constructor(index, sprite) {
         super(index);
-        this.draw = draw;
+        this.sprite = sprite;
     }
 }
 export { Sprite };

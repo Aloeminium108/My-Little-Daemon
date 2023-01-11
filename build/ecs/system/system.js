@@ -34,8 +34,8 @@ class OrderedSystem extends System {
         };
         this.sortByOrderingComponent = () => {
             this.entities.sort((a, b) => {
-                let indexA = a.getComponent(this.orderingComponent.constructor).index;
-                let indexB = b.getComponent(this.orderingComponent.constructor).index;
+                let indexA = a.getComponent(this.orderingComponent).index;
+                let indexB = b.getComponent(this.orderingComponent).index;
                 return indexA - indexB;
             });
         };
