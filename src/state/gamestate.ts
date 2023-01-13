@@ -16,6 +16,7 @@ import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js"
 import { Sprite } from "../ecs/component/sprite.js"
 import { MouseSystem } from "../ecs/system/moussystem.js"
 import { PetEntity } from "../ecs/entity/petentity.js"
+import { CollisionDetection } from "../ecs/system/collisiondetection.js"
 
 class GameState implements State {
 
@@ -71,6 +72,7 @@ class GameState implements State {
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new BoundarySystem())
         this.ecs.addSystem(new FrictionSystem())
+        this.ecs.addSystem(new CollisionDetection())
         this.ecs.addSystem(new DrawingSystem(this.ctx))
     }
 

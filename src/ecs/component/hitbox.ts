@@ -36,6 +36,14 @@ class Hitbox extends Component {
         this.position.y = Math.floor(y - this.height/2)
     }
 
+    public get x() {
+        return this.position.x
+    }
+
+    public get y() {
+        return this.position.y
+    }
+
 }
 
 export {Hitbox}
