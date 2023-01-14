@@ -47,6 +47,7 @@ class Game {
     initializeStates = () => {
         this.addState(new GameState(this))
         this.addState(new MenuState(this))
+        this.addState(new Match3State(this))
     }
 
     addState = <T extends State>(state: State) => {
@@ -77,7 +78,7 @@ class Game {
             this.currentState.foodButton?.()
         })
         buttons[2].addEventListener('click', (e) => {
-            this.changeState(StateTransition.MATCH3)
+            this.changeState(Match3State)
         })
     }
 

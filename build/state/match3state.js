@@ -1,14 +1,15 @@
+import { ECS } from "../ecs/ecs.js";
 import { PuzzleGrid } from "../entity/puzzle/puzzlegrid.js";
 class Match3State {
     constructor(game) {
+        this.ecs = new ECS();
         this.puzzleGrid = new PuzzleGrid(100, 100);
         this.init = () => { };
         this.pause = () => { };
         this.resume = () => { };
-        this.animate = (ctx) => {
-            this.puzzleGrid.draw(ctx);
+        this.update = (interval) => {
+            this.ecs.update(interval);
         };
-        this.update = (interval) => { };
         this.mouseUp = (e) => { };
         this.mouseDown = (e) => { };
         this.mouseMove = (e) => { };

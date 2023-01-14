@@ -102,11 +102,11 @@ class PuzzleCell {
         this.jewel = new Jewel(x + PuzzleCell.padding, y + PuzzleCell.padding)
     }
 
-    draw = (ctx: CanvasRenderingContext2D) => {
-        ctx.fillStyle = this.activated ? '#A6FFC9' : '#000000'
-        ctx.fillRect(this.x, this.y, PuzzleCell.width, PuzzleCell.width)
-        this.jewel.draw(ctx)
-    }
+    // draw = (ctx: CanvasRenderingContext2D) => {
+    //     ctx.fillStyle = this.activated ? '#A6FFC9' : '#000000'
+    //     ctx.fillRect(this.x, this.y, PuzzleCell.width, PuzzleCell.width)
+    //     this.jewel.draw(ctx)
+    // }
 
     getJewelColor = () => {
         return this.jewel.type.color

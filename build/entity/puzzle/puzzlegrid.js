@@ -16,6 +16,11 @@ class PuzzleGrid {
             this.checkColumns();
             this.checkRows();
         };
+        // These two particularly ugly functions work the same
+        // Each row/column is scanned, and groups of consecutive jewels with the same
+        // color are built. Once a jewel that does not match the color of the current
+        // group being built is encountered, the group is added to PuzzleGrid.groups
+        // if the group is large enough, and discarded otherwise.
         this.checkColumns = () => {
             this.columns.forEach((column) => {
                 let currentCell = column[0];
@@ -60,6 +65,7 @@ class PuzzleGrid {
             this.columns.push(column);
         }
         this.checkForMatches();
+        // Testing to make sure checkForMatches() works properly
         this.groups.forEach((group) => {
             group.set.forEach((cell) => {
                 cell.activated = true;
