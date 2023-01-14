@@ -1,79 +1,89 @@
 import { State } from "./state.js"
 import { Game } from "../game.js"
-import { Box } from "../entity/toy/box.js"
-import { PetEntity } from "../entity/petentity.js"
-import { Food } from "../entity/food.js"
-import { EntityList } from "../entity/entitylist.js"
-import { CollisionHandler } from "../entity/collisionhandler.js"
 import { Mouse } from "./mouse.js"
 import { Pet } from "../Pet/pet.js"
+import { ECS } from "../ecs/ecs.js"
+import { DrawingSystem } from "../ecs/system/drawingsystem.js"
+import { GravitySystem } from "../ecs/system/gravitysystem.js"
+import { VelocitySystem } from "../ecs/system/velocitysystem.js"
+import { Bounds } from "../ecs/component/bounds.js"
+import { BoundarySystem } from "../ecs/system/boundarysystem.js"
+import { Friction } from "../ecs/component/friction.js"
+import { FrictionSystem } from "../ecs/system/frictionsystem.js"
+import { MouseGrabbable } from "../ecs/component/mousegrabbable.js"
+import { Ball } from "../ecs/entity/ball.js"
+import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js"
+import { Sprite } from "../ecs/component/sprite.js"
+import { MouseSystem } from "../ecs/system/moussystem.js"
+import { PetEntity } from "../ecs/entity/petentity.js"
+import { CollisionDetection } from "../ecs/system/collisiondetection.js"
+import { Apple } from "../ecs/entity/food.js"
+import { ConsumableSystem } from "../ecs/system/consumablesystem.js"
 
 class GameState implements State {
 
-    entityList: EntityList
-
-    collisionHandler: CollisionHandler
-    mouse: Mouse
+    ecs = new ECS()
 
     floorHeight: number = 100
     game: Game
     pet: Pet
+    mouse: Mouse
+    ctx: CanvasRenderingContext2D
+    canvas: HTMLCanvasElement
+
     constructor(game: Game) {
         this.game = game
         this.pet = game.pet
-
-        this.entityList = new EntityList(new PetEntity(this.pet))
-
-        this.collisionHandler = new CollisionHandler(this.entityList, game.canvas.width, game.canvas.height - this.floorHeight)
-        this.mouse = new Mouse(game.canvas)
+        this.mouse = game.mouse
+        this.ctx = game.ctx
+        this.canvas = game.canvas
 
         this.init()
     }
     
     foodButton = () => {
-        this.entityList.addFood(new Food(900, 300, 20))
+        let food = new Apple(100, 300)
+        food.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
+        this.ecs.addEntity(food)
     }
 
     init = () => {
-        this.entityList.addToy(new Box(500, 300, 50, 50))
-        this.entityList.addToy(new Box(700, 300, 100, 100))
-        this.entityList.addFood(new Food(900, 300, 20))
+        this.initEntities()
+        this.initSystems()
+    }
+
+    private initEntities = () => {
+        let ball = new Ball(200, 100)
+        ball.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
+        let ball1 = new Ball(400, 100)
+        ball1.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
+        let ball2 = new Ball(600, 100)
+        ball2.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
+        this.ecs.addEntity(ball)
+        this.ecs.addEntity(ball1)
+        this.ecs.addEntity(ball2)
+
+        let petEntity = new PetEntity(800, 100, this.pet.stats)
+        petEntity.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
+        this.ecs.addEntity(petEntity)
+    }
+
+    private initSystems = () => {
+        let mouseSystem = new MouseSystem (this.mouse, this.canvas)
+        this.ecs.addSystem(mouseSystem)
+        this.ecs.addSystem(new MouseGrabSystem(mouseSystem))
+        this.ecs.addSystem(new GravitySystem())
+        this.ecs.addSystem(new VelocitySystem())
+        this.ecs.addSystem(new BoundarySystem())
+        this.ecs.addSystem(new FrictionSystem())
+        let collisionDetection = new CollisionDetection()
+        this.ecs.addSystem(collisionDetection)
+        this.ecs.addSystem(new ConsumableSystem(collisionDetection))
+        this.ecs.addSystem(new DrawingSystem(this.ctx))
     }
 
     update = (interval: number) => {
-        this.entityList.fullList().forEach((entity) => entity.getBody().update())
-        this.collisionHandler.handleEntityCollisions()
-    }
-
-    animate = (ctx: CanvasRenderingContext2D) => {
-        this.entityList.fullList().forEach((entity) => entity.draw(ctx))
-    }
-
-    mouseDown = (e: MouseEvent) => {
-        this.mouse.pressed = true
-        this.entityList.hold(this.collisionHandler.detectMouseCollisions(this.mouse))
-    }
-
-    mouseUp = (e: MouseEvent) => {
-        this.mouse.pressed = false
-        this.entityList.release(this.mouse.dx, this.mouse.dy)
-    }
-
-    mouseMove = (e: MouseEvent) => {
-        this.mouse.move(e)
-        
-        let heldEntity = this.entityList.getHeldEntity()
-        if (heldEntity != null) {
-            this.mouse.mouseHoldEntity(heldEntity)
-            heldEntity.getBody().moveTo(this.mouse.x, this.mouse.y)
-        } else {
-            this.mouse.mouseOverEntity(this.collisionHandler.detectMouseCollisions(this.mouse))
-        }
-    }
-
-    mouseLeave = (e: MouseEvent) => {
-        this.mouse.pressed = false
-        this.entityList.release(0, 0)
+        this.ecs.update(interval)
     }
 
     pause = () => {}

@@ -1,6 +1,7 @@
 import { State, StateTransition } from "./state.js"
 import { Game } from "../game.js"
 import { Pet } from "../Pet/pet.js"
+import { GameState } from "./gamestate.js"
 
 class StatMenuState implements State {
 
@@ -37,7 +38,7 @@ class StatMenuState implements State {
     init = () => {
         let exitButton = document.getElementById('menu-exit')
         exitButton?.addEventListener('click', (e) => {
-            this.game.changeState(StateTransition.GAME)
+            this.game.changeState(GameState)
         })
         this.updateMenu()
     }

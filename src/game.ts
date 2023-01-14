@@ -2,38 +2,29 @@ import { State, StateTransition } from "./state/state.js"
 import { GameState } from "./state/gamestate.js"
 import { MenuState } from "./state/statmenustate.js"
 import { Pet } from "./Pet/pet.js"
+import { Mouse } from "./state/mouse.js"
 import { Match3State } from "./state/match3state.js"
 
 class Game {
-    canvas: HTMLCanvasElement
     ctx: CanvasRenderingContext2D
 
     pet: Pet
 
+    mouse: Mouse = new Mouse()
+
     lastFrameTimeStamp: DOMHighResTimeStamp | null = null
 
-    private gameState: GameState
-    private statMenuState: MenuState
-    private match3State: Match3State
-    private stateMap: Map<StateTransition, State>
+    private stateMap = new Map<StateTransition<State>, State>
     private currentState: State
 
-    constructor(canvas: HTMLCanvasElement) {
-        this.canvas = canvas
+    constructor(public canvas: HTMLCanvasElement) {
         this.ctx = canvas.getContext("2d")!!
 
         this.pet = new Pet()
 
-        this.gameState = new GameState(this)
-        this.statMenuState = new MenuState(this)
-        this.match3State = new Match3State(this)
+        this.initializeStates()
 
-        this.stateMap = new Map<StateTransition, State>
-        this.stateMap.set(StateTransition.GAME, this.gameState)
-        this.stateMap.set(StateTransition.STATMENU, this.statMenuState)
-        this.stateMap.set(StateTransition.MATCH3, this.match3State)
-
-        this.currentState = this.gameState
+        this.currentState = this.stateMap.get(GameState)!!
 
         this.addCanvasListeners()
         this.addButtonListeners()
@@ -49,12 +40,20 @@ class Game {
 
         this.pet.update(interval)
         this.currentState.update?.(interval)
-        this.currentState.animate?.(this.ctx)
         
         window.requestAnimationFrame(this.animate)
     }
 
-    changeState = (state: StateTransition) => {
+    initializeStates = () => {
+        this.addState(new GameState(this))
+        this.addState(new MenuState(this))
+    }
+
+    addState = <T extends State>(state: State) => {
+        this.stateMap.set(state.constructor as StateTransition<T>, state)
+    }
+
+    changeState = (state: StateTransition<State>) => {
         if (this.stateMap.has(state)) {
             this.currentState.pause()
             this.currentState = this.stateMap.get(state)!!
@@ -63,16 +62,16 @@ class Game {
     }
 
     addCanvasListeners = () => {
-        this.canvas.addEventListener('mousedown', (e) => this.currentState.mouseDown?.(e))
-        this.canvas.addEventListener('mouseup', (e) => this.currentState.mouseUp?.(e))
-        this.canvas.addEventListener('mousemove', (e) => this.currentState.mouseMove?.(e))
-        this.canvas.addEventListener('mouseleave', (e) => this.currentState.mouseLeave?.(e))
+        this.canvas.addEventListener('mousedown', (e) => this.mouse.pressed = true)
+        this.canvas.addEventListener('mouseup', (e) => this.mouse.pressed = false)
+        this.canvas.addEventListener('mousemove', (e) => this.mouse.move(e))
+        this.canvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false)
     }
 
     addButtonListeners = () => {
         let buttons = document.querySelectorAll('.button')
         buttons[0].addEventListener('click', (e) => {
-            this.changeState(StateTransition.STATMENU)
+            this.changeState(MenuState)
         })
         buttons[1].addEventListener('click', (e) => {
             this.currentState.foodButton?.()

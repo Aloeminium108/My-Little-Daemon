@@ -62,5 +62,3 @@ class PhysicsBody extends Body {
     }
 
 }
-
-export { PhysicsBody }
