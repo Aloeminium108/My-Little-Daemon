@@ -10,12 +10,16 @@ import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js";
 import { MouseSystem } from "../ecs/system/moussystem.js";
 import { PetEntity } from "../ecs/entity/petentity.js";
 import { CollisionDetection } from "../ecs/system/collisiondetection.js";
+import { Apple } from "../ecs/entity/food.js";
+import { ConsumableSystem } from "../ecs/system/consumablesystem.js";
 class GameState {
     constructor(game) {
         this.ecs = new ECS();
         this.floorHeight = 100;
         this.foodButton = () => {
-            // this.entityList.addFood(new Food(900, 300, 20))
+            let food = new Apple(100, 300);
+            food.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
+            this.ecs.addEntity(food);
         };
         this.init = () => {
             this.initEntities();
@@ -31,7 +35,7 @@ class GameState {
             this.ecs.addEntity(ball);
             this.ecs.addEntity(ball1);
             this.ecs.addEntity(ball2);
-            let petEntity = new PetEntity(800, 100);
+            let petEntity = new PetEntity(800, 100, this.pet.stats);
             petEntity.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
             this.ecs.addEntity(petEntity);
         };
@@ -43,7 +47,9 @@ class GameState {
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new BoundarySystem());
             this.ecs.addSystem(new FrictionSystem());
-            this.ecs.addSystem(new CollisionDetection());
+            let collisionDetection = new CollisionDetection();
+            this.ecs.addSystem(collisionDetection);
+            this.ecs.addSystem(new ConsumableSystem(collisionDetection));
             this.ecs.addSystem(new DrawingSystem(this.ctx));
         };
         this.update = (interval) => {

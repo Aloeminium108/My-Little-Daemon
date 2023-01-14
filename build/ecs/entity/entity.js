@@ -15,6 +15,9 @@ class Entity {
             this.componentSet.set(component.constructor, component);
             (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.checkEntityForSystems(this);
         };
+        this.hasComponent = (componentClass) => {
+            return this.componentSet.has(componentClass);
+        };
         this.getComponent = (componentClass) => {
             return this.componentSet.get(componentClass);
         };

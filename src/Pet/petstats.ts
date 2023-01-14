@@ -1,3 +1,4 @@
+import { Consumable } from "../ecs/component/consumable.js"
 import { Time } from "../time.js"
 
 class PetStats {
@@ -11,14 +12,12 @@ class PetStats {
         this.hunger = hunger
     }
 
-    // feed(food: Food) {
-    //     this.hunger += food.getNourishmentValue()
-    //     if (this.hunger > this.maxHunger) {
-    //         this.hunger = this.maxHunger
-    //     }
-    // }
+    consume = (consumable: Consumable) => {
+        this.hunger += consumable.hunger
+        if (this.hunger > this.maxHunger) this.hunger = this.maxHunger
+    }
 
-    update(interval: number) {
+    update = (interval: number) => {
         this.timeElapsed += interval
 
         if (this.timeElapsed < this.updateInterval) {

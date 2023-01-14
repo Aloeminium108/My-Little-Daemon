@@ -20,6 +20,10 @@ class Entity {
         this.ecs?.checkEntityForSystems(this)
     }
 
+    hasComponent = (componentClass: ComponentType<Component>) => {
+        return this.componentSet.has(componentClass)
+    }
+
     getComponent = <T extends Component>(componentClass: ComponentType<T>) => {
         return this.componentSet.get(componentClass) as T
     }

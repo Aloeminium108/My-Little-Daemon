@@ -23,8 +23,10 @@ class OrderedSystem extends System {
         super(...arguments);
         this.entities = new Array();
         this.addEntity = (entity) => {
-            this.entities.push(entity);
-            this.sortByOrderingComponent();
+            if (!this.entities.includes(entity)) {
+                this.entities.push(entity);
+                this.sortByOrderingComponent();
+            }
         };
         this.removeEntity = (entity) => {
             let index = this.entities.findIndex((x) => x === entity);

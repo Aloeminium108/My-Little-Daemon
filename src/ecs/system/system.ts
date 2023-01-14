@@ -40,8 +40,10 @@ abstract class OrderedSystem<T extends OrderingComponent> extends System {
     public abstract orderingComponent: ComponentType<T>
 
     addEntity = (entity: Entity) => {
-        this.entities.push(entity)
-        this.sortByOrderingComponent()
+        if (!this.entities.includes(entity)) {
+            this.entities.push(entity)
+            this.sortByOrderingComponent()
+        }
     }
 
     removeEntity = (entity: Entity) => {
