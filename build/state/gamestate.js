@@ -1,5 +1,5 @@
 import { ECS } from "../ecs/ecs.js";
-import { DrawingSystem } from "../ecs/system/drawingsystem.js";
+import { SpriteSystem } from "../ecs/system/spritesystem.js";
 import { GravitySystem } from "../ecs/system/gravitysystem.js";
 import { VelocitySystem } from "../ecs/system/velocitysystem.js";
 import { Bounds } from "../ecs/component/bounds.js";
@@ -50,7 +50,7 @@ class GameState {
             let collisionDetection = new CollisionDetection();
             this.ecs.addSystem(collisionDetection);
             this.ecs.addSystem(new ConsumableSystem(collisionDetection));
-            this.ecs.addSystem(new DrawingSystem(this.ctx));
+            this.ecs.addSystem(new SpriteSystem(this.ctx));
         };
         this.update = (interval) => {
             this.ecs.update(interval);

@@ -10,6 +10,7 @@ class Entity {
     constructor(ecs = null) {
         this.ecs = ecs;
         this.componentSet = new Map();
+        this.childEntities = new Set;
         this.addComponent = (component) => {
             var _a;
             this.componentSet.set(component.constructor, component);
@@ -37,6 +38,9 @@ class Entity {
         };
         this.addToECS = (ecs) => {
             this.ecs = ecs;
+            this.childEntities.forEach(childEntity => {
+                childEntity.ecs = ecs;
+            });
         };
         this.addPhysicsBody = (x, y, z, image) => {
             let position = new Position(x, y);

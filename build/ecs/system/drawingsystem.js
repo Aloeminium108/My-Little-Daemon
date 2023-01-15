@@ -1,17 +1,13 @@
-import { Sprite } from "../component/sprite.js";
-import { Position } from "../component/position.js";
-import { OrderedSystem } from "./system.js";
-class DrawingSystem extends OrderedSystem {
+import { Drawable } from "../component/drawable.js";
+import { UnorderedSystem } from "./system.js";
+class DrawingSystem extends UnorderedSystem {
     constructor(ctx) {
         super();
         this.ctx = ctx;
-        this.componentsRequired = new Set([Sprite, Position]);
-        this.orderingComponent = Sprite;
+        this.componentsRequired = new Set([Drawable]);
         this.update = (interval) => {
             this.entities.forEach(entity => {
-                let sprite = entity.getComponent(Sprite).sprite;
-                let position = entity.getComponent(Position);
-                this.ctx.drawImage(sprite, position.x, position.y);
+                entity.getComponent(Drawable).draw(this.ctx);
             });
         };
     }

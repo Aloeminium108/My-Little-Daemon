@@ -7,6 +7,9 @@ class ECS {
             this.entities.add(entity);
             entity.addToECS(this);
             this.checkEntityForSystems(entity);
+            entity.childEntities.forEach(childEntity => {
+                this.addEntity(childEntity);
+            });
         };
         this.removeEntity = (entity) => {
             this.markedForDeletion.add(entity);
@@ -26,10 +29,7 @@ class ECS {
             this.systems.forEach(system => {
                 system.update(interval);
             });
-            this.markedForDeletion.forEach(entity => {
-                this.entities.delete(entity);
-                this.removeEntityFromSystems(entity);
-            });
+            this.markedForDeletion.forEach(this.removeEntityAndChildren);
             this.markedForDeletion.clear();
         };
         this.checkEntityForSystems = (entity) => {
@@ -50,6 +50,13 @@ class ECS {
             this.systems.forEach(system => {
                 system.removeEntity(entity);
             });
+        };
+        this.removeEntityAndChildren = (entity) => {
+            entity.childEntities.forEach(childEntity => {
+                this.removeEntityAndChildren(childEntity);
+            });
+            this.entities.delete(entity);
+            this.removeEntityFromSystems(entity);
         };
     }
 }

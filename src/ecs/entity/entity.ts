@@ -12,6 +12,8 @@ import { ECS } from "../ecs.js"
 class Entity {
     
     private componentSet = new Map<ComponentType<Component>, Component>()
+
+    public childEntities = new Set<Entity>
     
     constructor(private ecs: ECS | null = null) {}
 
@@ -46,6 +48,9 @@ class Entity {
 
     addToECS = (ecs: ECS) => {
         this.ecs = ecs
+        this.childEntities.forEach(childEntity => {
+            childEntity.ecs = ecs
+        })
     }
 
     addPhysicsBody = (x: number, y: number, z: number, image: ImageBitmap) => {

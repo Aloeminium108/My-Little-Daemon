@@ -39,7 +39,8 @@ class Match3State implements State {
     }
 
     initEntities = () => {
-
+        let puzzleGrid = new PuzzleGrid(50, 50)
+        this.ecs.addEntity(puzzleGrid)
     }
 
     initSystems = () => {
@@ -51,8 +52,8 @@ class Match3State implements State {
         this.ecs.addSystem(new FrictionSystem())
         let collisionDetection = new CollisionDetection()
         this.ecs.addSystem(collisionDetection)
-        this.ecs.addSystem(new SpriteSystem(this.ctx))
         this.ecs.addSystem(new DrawingSystem(this.ctx))
+        this.ecs.addSystem(new SpriteSystem(this.ctx))
     }
 
     pause = () => {}

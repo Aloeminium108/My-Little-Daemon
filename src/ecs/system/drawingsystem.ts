@@ -1,11 +1,9 @@
-import { ComponentType, Component } from "../component/component";
-import { Drawable } from "../component/drawable";
-import { Position } from "../component/position";
-import { UnorderedSystem } from "./system";
+import { Drawable } from "../component/drawable.js";
+import { UnorderedSystem } from "./system.js";
 
 class DrawingSystem extends UnorderedSystem {
 
-    public componentsRequired = new Set([Drawable, Position])
+    public componentsRequired = new Set([Drawable])
 
     constructor(private ctx: CanvasRenderingContext2D) {
         super()
@@ -13,8 +11,7 @@ class DrawingSystem extends UnorderedSystem {
 
     update = (interval: number) => {
         this.entities.forEach(entity => {
-            let position = entity.getComponent(Position)
-            entity.getComponent(Drawable).draw(position.x, position.y, this.ctx)
+            entity.getComponent(Drawable).draw(this.ctx)
         })
     }
     

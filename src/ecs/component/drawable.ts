@@ -1,7 +1,7 @@
 import { Component } from "./component.js";
 
 class Drawable extends Component {
-    constructor(public draw: (x: number, y: number, ctx: CanvasRenderingContext2D) => void) {
+    constructor(public draw: (ctx: CanvasRenderingContext2D) => void) {
         super()
     }
 }
