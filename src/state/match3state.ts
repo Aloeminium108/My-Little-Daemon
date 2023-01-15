@@ -1,9 +1,17 @@
 import { ECS } from "../ecs/ecs.js";
 import { PuzzleGrid } from "../ecs/entity/puzzle/puzzlegrid.js";
+import { CollisionDetection } from "../ecs/system/collisiondetection.js";
+import { SpriteSystem } from "../ecs/system/spritesystem.js";
+import { FrictionSystem } from "../ecs/system/frictionsystem.js";
+import { GravitySystem } from "../ecs/system/gravitysystem.js";
+import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js";
+import { MouseSystem } from "../ecs/system/moussystem.js";
+import { VelocitySystem } from "../ecs/system/velocitysystem.js";
 import { Game } from "../game.js";
 import { Pet } from "../Pet/pet.js";
 import { Mouse } from "./mouse.js";
 import { State } from "./state.js"
+import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 
 class Match3State implements State {
     game: Game;
@@ -25,7 +33,28 @@ class Match3State implements State {
         this.init()
     }
 
-    init = () => {}
+    init = () => {
+        this.initEntities()
+        this.initSystems()
+    }
+
+    initEntities = () => {
+
+    }
+
+    initSystems = () => {
+        let mouseSystem = new MouseSystem (this.mouse, this.canvas)
+        this.ecs.addSystem(mouseSystem)
+        this.ecs.addSystem(new MouseGrabSystem(mouseSystem))
+        this.ecs.addSystem(new GravitySystem())
+        this.ecs.addSystem(new VelocitySystem())
+        this.ecs.addSystem(new FrictionSystem())
+        let collisionDetection = new CollisionDetection()
+        this.ecs.addSystem(collisionDetection)
+        this.ecs.addSystem(new SpriteSystem(this.ctx))
+        this.ecs.addSystem(new DrawingSystem(this.ctx))
+    }
+
     pause = () => {}
     resume = () =>  {}
 

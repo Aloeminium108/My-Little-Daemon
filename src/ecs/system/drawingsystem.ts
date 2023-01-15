@@ -1,13 +1,11 @@
-import { Sprite } from "../component/sprite.js";
-import { Position } from "../component/position.js";
-import { OrderedSystem } from "./system.js";
-import { ComponentType } from "../component/component.js";
+import { ComponentType, Component } from "../component/component";
+import { Drawable } from "../component/drawable";
+import { Position } from "../component/position";
+import { UnorderedSystem } from "./system";
 
-class DrawingSystem extends OrderedSystem<Sprite> {
+class DrawingSystem extends UnorderedSystem {
 
-    public componentsRequired = new Set([Sprite, Position])
-
-    public orderingComponent = Sprite
+    public componentsRequired = new Set([Drawable, Position])
 
     constructor(private ctx: CanvasRenderingContext2D) {
         super()
@@ -15,9 +13,8 @@ class DrawingSystem extends OrderedSystem<Sprite> {
 
     update = (interval: number) => {
         this.entities.forEach(entity => {
-            let sprite = entity.getComponent(Sprite).sprite
             let position = entity.getComponent(Position)
-            this.ctx.drawImage(sprite, position.x, position.y)
+            entity.getComponent(Drawable).draw(position.x, position.y, this.ctx)
         })
     }
     

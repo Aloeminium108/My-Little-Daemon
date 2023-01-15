@@ -1,6 +1,7 @@
+import { Entity } from "../entity.js"
 import { Color, Jewel } from "./jewel.js"
 
-class PuzzleGrid {
+class PuzzleGrid extends Entity {
     numRows: number = 8
     numColumns: number = 8
 
@@ -12,6 +13,10 @@ class PuzzleGrid {
     groups: Array<Group> = []
 
     constructor(x: number, y: number) {
+        super()
+
+        
+
         this.x = x
         this.y = y
 
@@ -33,13 +38,13 @@ class PuzzleGrid {
         })
     }
 
-    draw = (ctx: CanvasRenderingContext2D) => {
-        this.columns.forEach((column, i) => {
-            column.forEach((cell, j) => {
-                cell.draw(ctx)
-            })
-        })
-    }
+    // draw = (ctx: CanvasRenderingContext2D) => {
+    //     this.columns.forEach((column, i) => {
+    //         column.forEach((cell, j) => {
+    //             cell.draw(ctx)
+    //         })
+    //     })
+    // }
 
     checkForMatches = () => {
         this.checkColumns()

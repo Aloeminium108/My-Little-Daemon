@@ -3,17 +3,14 @@ import { Game } from "../game.js"
 import { Mouse } from "./mouse.js"
 import { Pet } from "../Pet/pet.js"
 import { ECS } from "../ecs/ecs.js"
-import { DrawingSystem } from "../ecs/system/drawingsystem.js"
+import { SpriteSystem } from "../ecs/system/spritesystem.js"
 import { GravitySystem } from "../ecs/system/gravitysystem.js"
 import { VelocitySystem } from "../ecs/system/velocitysystem.js"
 import { Bounds } from "../ecs/component/bounds.js"
 import { BoundarySystem } from "../ecs/system/boundarysystem.js"
-import { Friction } from "../ecs/component/friction.js"
 import { FrictionSystem } from "../ecs/system/frictionsystem.js"
-import { MouseGrabbable } from "../ecs/component/mousegrabbable.js"
 import { Ball } from "../ecs/entity/ball.js"
 import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js"
-import { Sprite } from "../ecs/component/sprite.js"
 import { MouseSystem } from "../ecs/system/moussystem.js"
 import { PetEntity } from "../ecs/entity/petentity.js"
 import { CollisionDetection } from "../ecs/system/collisiondetection.js"
@@ -79,7 +76,7 @@ class GameState implements State {
         let collisionDetection = new CollisionDetection()
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new ConsumableSystem(collisionDetection))
-        this.ecs.addSystem(new DrawingSystem(this.ctx))
+        this.ecs.addSystem(new SpriteSystem(this.ctx))
     }
 
     update = (interval: number) => {
