@@ -15,7 +15,7 @@ class Entity {
 
     public childEntities = new Set<Entity>
     
-    constructor(private ecs: ECS | null = null) {}
+    constructor(public ecs: ECS | null = null) {}
 
     addComponent = <T extends Component>(component: Component) => {
         this.componentSet.set(component.constructor as ComponentType<T>, component)

@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { Drawable } from "../../component/drawable.js";
 import { Hitbox } from "../../component/hitbox.js";
 import { JewelType } from "../../component/jeweltype.js";
@@ -11,10 +20,6 @@ class PuzzleGrid extends Entity {
         this.numColumns = 8;
         this.columns = [];
         this.groups = new Set([]);
-        this.checkForMatches = () => {
-            this.checkColumns();
-            this.checkRows();
-        };
         // These two particularly ugly functions work the same
         // Each row/column is scanned, and groups of consecutive jewels with the same
         // color are built. Once a jewel that does not match the color of the current
@@ -65,11 +70,27 @@ class PuzzleGrid extends Entity {
             }
             this.columns.push(column);
         }
-        this.checkForMatches();
-        // Testing to make sure checkForMatches() works properly
-        this.groups.forEach((group) => {
-            group.set.forEach((cell) => {
-                cell.activated = true;
+        this.checkColumns();
+        this.checkRows();
+        while (this.groups.size > 0) {
+            console.log(this.columns
+                .map(column => column.map(cell => cell.jewel.getComponent(JewelType).color)));
+            console.log("Randomizing jewels");
+            this.groups.forEach(group => {
+                group.set.forEach((cell) => __awaiter(this, void 0, void 0, function* () {
+                    cell.jewel.getComponent(JewelType).randomizeColor(group.color);
+                }));
+            });
+            this.groups.clear();
+            this.checkColumns();
+            this.checkRows();
+        }
+        console.log("FINISHED RANDOMIZING, FINAL CONFIGURATION:");
+        console.log(this.columns
+            .map(column => column.map(cell => cell.jewel.getComponent(JewelType).color)));
+        this.columns.forEach((column) => {
+            column.forEach(cell => {
+                cell.jewel.updateImage();
             });
         });
     }

@@ -1,27 +1,44 @@
-import { Color } from "../../component/jeweltype.js";
+import { Color, JewelType } from "../../component/jeweltype.js";
 import { Position } from "../../component/position.js";
 import { Sprite } from "../../component/sprite.js";
 import { Entity } from "../entity.js";
 class Jewel extends Entity {
     constructor(x, y, jewelType) {
         super();
-        this.addComponent(jewelType);
-        let image = new Image();
-        image.onload = () => {
-            createImageBitmap(image).then(sprite => {
-                //this.addPhysicsBody(x, y, 5, sprite)
-                this.addComponent(new Position(x, y));
-                this.addComponent(new Sprite(5, sprite));
+        this.updateImage = () => {
+            this.imageLoading = this.imageLoading.then(() => {
+                return this.loadImage(Jewel.getImageSrc(this.getComponent(JewelType)));
+            })
+                .then(image => {
+                return createImageBitmap(image);
+            })
+                .then(sprite => {
+                this.getComponent(Sprite).sprite = sprite;
+                return new Promise(resolve => resolve(null));
             });
         };
-        image.src = Jewel.getImage(jewelType);
+        this.loadImage = (src) => {
+            return new Promise((resolve, reject) => {
+                const image = new Image();
+                image.onload = () => resolve(image);
+                image.onerror = reject;
+                image.src = src;
+            });
+        };
+        this.addComponent(jewelType);
+        this.imageLoading = this.loadImage(Jewel.getImageSrc(jewelType))
+            .then(image => {
+            return createImageBitmap(image);
+        })
+            .then(sprite => {
+            this.addComponent(new Position(x, y));
+            this.addComponent(new Sprite(5, sprite));
+            return new Promise(resolve => resolve(null));
+        });
     }
 }
-Jewel.getImage = (type) => {
-    var _a;
-    let color = (_a = type.color) !== null && _a !== void 0 ? _a : Color.RED;
-    console.log(color);
-    switch (color) {
+Jewel.getImageSrc = (jewelType) => {
+    switch (jewelType.color) {
         case Color.RED:
             return '../../assets/jewel-red.png';
         case Color.YELLOW:
@@ -31,7 +48,7 @@ Jewel.getImage = (type) => {
         case Color.BLUE:
             return '../../assets/jewel-blue.png';
         default:
-            return '../../assets/jewel-blue.png';
+            return '../../assets/jewel-black.png';
     }
 };
 export { Jewel };

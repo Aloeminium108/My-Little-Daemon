@@ -6,24 +6,39 @@ import { Entity } from "../entity.js";
 
 class Jewel extends Entity {
 
+    imageLoading: Promise<any>
+
     constructor(x: number, y: number, jewelType: JewelType) {
         super()
         this.addComponent(jewelType)
-        let image = new Image()
-        image.onload = () => {
-            createImageBitmap(image).then(sprite => {
-                //this.addPhysicsBody(x, y, 5, sprite)
-                this.addComponent(new Position(x, y))
-                this.addComponent(new Sprite(5, sprite))
-            })
-        }
-        image.src = Jewel.getImage(jewelType)
+
+        this.imageLoading = this.loadImage(Jewel.getImageSrc(jewelType))
+        .then(image => {
+            return createImageBitmap(image)
+        })
+        .then(sprite => {
+            this.addComponent(new Position(x, y))
+            this.addComponent(new Sprite(5, sprite)) 
+            return new Promise(resolve => resolve(null)) 
+        })
+
     }
 
-    static getImage = (type: JewelType) => {
-        let color = type.color ?? Color.RED
-        console.log(color)
-        switch (color as Color) {
+    updateImage = () => {
+        this.imageLoading = this.imageLoading.then(() => {
+            return this.loadImage(Jewel.getImageSrc(this.getComponent(JewelType)))
+        })
+        .then(image => {
+            return createImageBitmap(image)
+        })
+        .then(sprite => {
+            this.getComponent(Sprite).sprite = sprite
+            return new Promise(resolve => resolve(null))
+        })
+    }
+
+    static getImageSrc = (jewelType: JewelType) => {
+        switch (jewelType.color as Color | null) {
             case Color.RED:
                 return '../../assets/jewel-red.png'
             case Color.YELLOW:
@@ -33,12 +48,23 @@ class Jewel extends Entity {
             case Color.BLUE:
                 return '../../assets/jewel-blue.png'
             default:
-                return '../../assets/jewel-blue.png'
+                return '../../assets/jewel-black.png'
         }
     }
 
-}
 
+    loadImage = (src: string) => {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = () => resolve(image);
+            image.onerror = reject;
+            image.src = src
+        }) as Promise<HTMLImageElement>
+    }
+
+
+
+}
 
 
 export { Jewel }

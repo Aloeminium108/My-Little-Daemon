@@ -5,7 +5,7 @@ import { SpriteSystem } from "../ecs/system/spritesystem.js";
 import { FrictionSystem } from "../ecs/system/frictionsystem.js";
 import { GravitySystem } from "../ecs/system/gravitysystem.js";
 import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js";
-import { MouseSystem } from "../ecs/system/moussystem.js";
+import { MouseSystem } from "../ecs/system/mousesystem.js";
 import { VelocitySystem } from "../ecs/system/velocitysystem.js";
 import { Game } from "../game.js";
 import { Pet } from "../Pet/pet.js";

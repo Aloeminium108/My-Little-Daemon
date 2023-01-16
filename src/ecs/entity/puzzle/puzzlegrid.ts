@@ -2,6 +2,7 @@ import { Drawable } from "../../component/drawable.js"
 import { Hitbox } from "../../component/hitbox.js"
 import { Color, JewelType } from "../../component/jeweltype.js"
 import { Position } from "../../component/position.js"
+import { ECS } from "../../ecs.js"
 import { Entity } from "../entity.js"
 import { Jewel } from "./jewel.js"
 
@@ -26,27 +27,48 @@ class PuzzleGrid extends Entity {
             this.columns.push(column)
         }
 
-        this.checkForMatches()
-
-        // Testing to make sure checkForMatches() works properly
-        this.groups.forEach((group) => {
-            group.set.forEach((cell) => {
-                cell.activated = true
-            })
-        })
-    }
-
-    checkForMatches = () => {
         this.checkColumns()
         this.checkRows()
+
+        while (this.groups.size > 0) {
+
+            console.log(this.columns
+                .map(column => column.map(cell => cell.jewel.getComponent(JewelType).color))
+            )
+
+            console.log("Randomizing jewels")
+
+            this.groups.forEach(group => {
+                group.set.forEach(async cell => {
+                    cell.jewel.getComponent(JewelType).randomizeColor(group.color)
+                })
+            })
+
+            this.groups.clear()
+
+            this.checkColumns()
+            this.checkRows()
+        } 
+
+        console.log("FINISHED RANDOMIZING, FINAL CONFIGURATION:")
+        console.log(this.columns
+            .map(column => column.map(cell => cell.jewel.getComponent(JewelType).color))
+        )
+
+        this.columns.forEach((column) => {
+            column.forEach(cell => {
+                cell.jewel.updateImage()
+            })
+        })
+
     }
+
 
     // These two particularly ugly functions work the same
     // Each row/column is scanned, and groups of consecutive jewels with the same
     // color are built. Once a jewel that does not match the color of the current
     // group being built is encountered, the group is added to PuzzleGrid.groups
     // if the group is large enough, and discarded otherwise.
-
     private checkColumns = () => {
         for (let i = 0; i < this.numColumns; i++) {
             let group = new Group(this.columns[i][0])
@@ -78,37 +100,6 @@ class PuzzleGrid extends Entity {
             if (group.set.size >= 3) this.groups.add(group)
         }
     }
-
-    // private checkColumns = () => {
-    //     this.columns.forEach((column) => {
-    //         let currentCell = column[0]
-    //         let group: Group = { set: [currentCell], color: currentCell.getJewelColor() }
-    //         for (let i = 1; i < this.numRows; i++) {
-    //             currentCell = column[i]
-    //             if (currentCell.jewel.getComponent(JewelType).color === group.color) {
-    //                 group.set.push(currentCell)
-    //                 if (i != this.numRows - 1) continue
-    //             }
-    //             if (group.set.length >= 3) this.groups.push(group)
-    //             group = { set: [currentCell], color: currentCell.getJewelColor()}
-    //         }
-    //     })
-    // }
-    // private checkRows = () => {
-    //     for (let r = 0; r < this.numRows; r++) {
-    //         let currentCell = this.columns[0][r]
-    //         let group: Group = { set: [currentCell], color: currentCell.getJewelColor() }
-    //         for (let i = 0; i < this.numColumns; i++) {
-    //             currentCell = this.columns[i][r]
-    //             if (currentCell.jewel.getComponent(JewelType).color === group.color) {
-    //                 group.set.push(currentCell)
-    //                 if (i != this.numColumns - 1) continue
-    //             }
-    //             if (group.set.length >= 3) this.groups.push(group)
-    //             group = { set: [currentCell], color: currentCell.getJewelColor()}
-    //         }
-    //     }
-    // }
 
 }
 
@@ -145,7 +136,7 @@ class PuzzleCell extends Entity {
 
 class Group {
     public set = new Set<PuzzleCell>()
-    private color: Color | null
+    public color: Color | null
 
     constructor(cell: PuzzleCell) {
         this.set.add(cell)

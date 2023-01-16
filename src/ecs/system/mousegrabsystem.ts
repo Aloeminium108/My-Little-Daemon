@@ -3,7 +3,7 @@ import { Hitbox } from "../component/hitbox.js";
 import { MouseGrabbable } from "../component/mousegrabbable.js";
 import { Velocity } from "../component/velocity.js";
 import { Entity } from "../entity/entity.js";
-import { MouseSystem } from "./moussystem.js";
+import { MouseSystem } from "./mousesystem.js";
 import { UnorderedSystem } from "./system.js";
 
 class MouseGrabSystem extends UnorderedSystem {

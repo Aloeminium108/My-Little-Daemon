@@ -7,7 +7,7 @@ import { BoundarySystem } from "../ecs/system/boundarysystem.js";
 import { FrictionSystem } from "../ecs/system/frictionsystem.js";
 import { Ball } from "../ecs/entity/ball.js";
 import { MouseGrabSystem } from "../ecs/system/mousegrabsystem.js";
-import { MouseSystem } from "../ecs/system/moussystem.js";
+import { MouseSystem } from "../ecs/system/mousesystem.js";
 import { PetEntity } from "../ecs/entity/petentity.js";
 import { CollisionDetection } from "../ecs/system/collisiondetection.js";
 import { Apple } from "../ecs/entity/food.js";
