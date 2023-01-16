@@ -17,7 +17,8 @@ class ECS {
         })
     }
 
-    removeEntity = (entity: Entity) => {
+    removeEntity = (entity: Entity | null) => {
+        if (entity === null) return
         this.markedForDeletion.add(entity)
     }
 

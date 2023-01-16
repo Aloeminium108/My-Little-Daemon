@@ -8,8 +8,10 @@ class GemGrabSystem extends UnorderedSystem {
         super();
         this.mouseSystem = mouseSystem;
         this.componentsRequired = new Set([JewelType, Hitbox]);
+        this.swapped = new Set();
     }
     update(interval) {
+        this.swapped.clear();
         let heldEntity = this.mouseSystem.heldEntity;
         // Check to make sure that there is a held entity and that it is a gem
         if (heldEntity === null)
@@ -27,6 +29,8 @@ class GemGrabSystem extends UnorderedSystem {
             // If gem is dragged over another gem, swap their positions
             if (entity.getComponent(Hitbox).inside(mouse.x, mouse.y)) {
                 Position.swap(entity.getComponent(Position), heldEntity.getComponent(Position));
+                this.swapped.add(entity);
+                this.swapped.add(heldEntity);
                 this.mouseSystem.heldEntity = null;
                 this.mouseSystem.wrenched = true;
                 break;

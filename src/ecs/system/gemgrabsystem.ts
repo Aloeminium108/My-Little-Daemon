@@ -2,17 +2,21 @@ import { Gravity } from "../component/gravity.js";
 import { Hitbox } from "../component/hitbox.js";
 import { JewelType } from "../component/jeweltype.js";
 import { Position } from "../component/position.js";
+import { Jewel } from "../entity/puzzle/jewel.js";
 import { MouseSystem } from "./mousesystem.js";
 import { UnorderedSystem } from "./system.js";
 
 class GemGrabSystem extends UnorderedSystem {
     public componentsRequired = new Set([JewelType, Hitbox])
 
+    public swapped = new Set<Jewel>()
+
     constructor(private mouseSystem: MouseSystem) {
         super()
     }
 
     public update(interval: number): void {
+        this.swapped.clear()
         let heldEntity = this.mouseSystem.heldEntity
 
         // Check to make sure that there is a held entity and that it is a gem
@@ -30,6 +34,8 @@ class GemGrabSystem extends UnorderedSystem {
             // If gem is dragged over another gem, swap their positions
             if (entity.getComponent(Hitbox).inside(mouse.x, mouse.y)) {
                 Position.swap(entity.getComponent(Position), heldEntity.getComponent(Position))
+                this.swapped.add(entity)
+                this.swapped.add(heldEntity)
                 this.mouseSystem.heldEntity = null
                 this.mouseSystem.wrenched = true
                 break

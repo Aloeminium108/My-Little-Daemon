@@ -12,6 +12,8 @@ class ECS {
             });
         };
         this.removeEntity = (entity) => {
+            if (entity === null)
+                return;
             this.markedForDeletion.add(entity);
         };
         this.addSystem = (system) => {

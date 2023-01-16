@@ -8,6 +8,8 @@ import { MouseSystem } from "../ecs/system/mousesystem.js";
 import { VelocitySystem } from "../ecs/system/velocitysystem.js";
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { GemGrabSystem } from "../ecs/system/gemgrabsystem.js";
+import { Match3System } from "../ecs/system/match3system.js";
+import { GemSlotSystem } from "../ecs/system/gemslotsystem.js";
 class Match3State {
     constructor(game) {
         this.ecs = new ECS();
@@ -22,12 +24,15 @@ class Match3State {
         this.initSystems = () => {
             let mouseSystem = new MouseSystem(this.mouse, this.canvas);
             this.ecs.addSystem(mouseSystem);
-            this.ecs.addSystem(new GemGrabSystem(mouseSystem));
+            let gemGrabSystem = new GemGrabSystem(mouseSystem);
+            this.ecs.addSystem(gemGrabSystem);
+            this.ecs.addSystem(new Match3System(gemGrabSystem));
             this.ecs.addSystem(new GravitySystem());
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new FrictionSystem());
             let collisionDetection = new CollisionDetection();
             this.ecs.addSystem(collisionDetection);
+            this.ecs.addSystem(new GemSlotSystem(collisionDetection));
             this.ecs.addSystem(new DrawingSystem(this.ctx));
             this.ecs.addSystem(new SpriteSystem(this.ctx));
         };
