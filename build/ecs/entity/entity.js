@@ -44,14 +44,14 @@ class Entity {
         };
         this.addPhysicsBody = (x, y, z, spriteSrc) => {
             let position = new Position(x, y);
+            this.addComponent(new Gravity());
+            this.addComponent(new Friction());
+            this.addComponent(new Velocity(0, 0));
             let sprite = new Sprite(z, spriteSrc);
+            this.addComponent(sprite);
             return sprite.loadingPromise.then(() => {
                 this.addComponent(position);
-                this.addComponent(sprite);
                 this.addComponent(new Hitbox(position, sprite.sprite.width, sprite.sprite.height));
-                this.addComponent(new Gravity());
-                this.addComponent(new Friction());
-                this.addComponent(new Velocity(0, 0));
             });
         };
         this.addMouseGrab = () => {

@@ -12,6 +12,7 @@ import { Pet } from "../Pet/pet.js";
 import { Mouse } from "./mouse.js";
 import { State } from "./state.js"
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
+import { GemGrabSystem } from "../ecs/system/gemgrabsystem.js";
 
 class Match3State implements State {
     game: Game;
@@ -46,7 +47,7 @@ class Match3State implements State {
     initSystems = () => {
         let mouseSystem = new MouseSystem (this.mouse, this.canvas)
         this.ecs.addSystem(mouseSystem)
-        this.ecs.addSystem(new MouseGrabSystem(mouseSystem))
+        this.ecs.addSystem(new GemGrabSystem(mouseSystem))
         this.ecs.addSystem(new GravitySystem())
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new FrictionSystem())

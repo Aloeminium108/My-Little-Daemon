@@ -1,9 +1,10 @@
 import { Drawable } from "../../component/drawable.js"
+import { GemSlot } from "../../component/gemslot.js"
+import { Grid } from "../../component/grid.js"
 import { Hitbox } from "../../component/hitbox.js"
 import { Color, JewelType } from "../../component/jeweltype.js"
 import { Position } from "../../component/position.js"
 import { Sprite } from "../../component/sprite.js"
-import { ECS } from "../../ecs.js"
 import { Entity } from "../entity.js"
 import { Jewel } from "./jewel.js"
 
@@ -17,6 +18,8 @@ class PuzzleGrid extends Entity {
 
     constructor(x: number, y: number, ) {
         super()
+
+        this.addComponent(new Grid())
 
         for (let i = 0; i < this.numColumns; i++) {
             let column = []
@@ -130,6 +133,9 @@ class PuzzleCell extends Entity {
 
         let jewel = new Jewel(x + PuzzleCell.padding, y + PuzzleCell.padding, new JewelType())
         this.jewel = jewel
+
+        this.addComponent(new GemSlot(jewel))
+
         this.childEntities.add(jewel)
     }
 

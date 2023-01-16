@@ -1,13 +1,17 @@
+import { Gravity } from "../../component/gravity.js";
 import { Color } from "../../component/jeweltype.js";
-import { Position } from "../../component/position.js";
+import { MouseInteractable } from "../../component/mouseinteractable.js";
 import { Sprite } from "../../component/sprite.js";
 import { Entity } from "../entity.js";
 class Jewel extends Entity {
     constructor(x, y, jewelType) {
         super();
         this.addComponent(jewelType);
-        this.addComponent(new Position(x, y));
-        this.addComponent(new Sprite(5, Jewel.getImageSrc(jewelType)));
+        this.addPhysicsBody(x, y, 5, Jewel.getImageSrc(jewelType))
+            .then(() => {
+            this.addComponent(new MouseInteractable(this.getComponent(Sprite)));
+            this.deleteComponent(Gravity);
+        });
     }
 }
 Jewel.getImageSrc = (jewelType) => {

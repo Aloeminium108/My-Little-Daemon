@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Drawable } from "../../component/drawable.js";
+import { GemSlot } from "../../component/gemslot.js";
+import { Grid } from "../../component/grid.js";
 import { Hitbox } from "../../component/hitbox.js";
 import { JewelType } from "../../component/jeweltype.js";
 import { Position } from "../../component/position.js";
@@ -62,6 +64,7 @@ class PuzzleGrid extends Entity {
                     this.groups.add(group);
             }
         };
+        this.addComponent(new Grid());
         for (let i = 0; i < this.numColumns; i++) {
             let column = [];
             for (let j = 0; j < this.numRows; j++) {
@@ -116,6 +119,7 @@ class PuzzleCell extends Entity {
         }));
         let jewel = new Jewel(x + PuzzleCell.padding, y + PuzzleCell.padding, new JewelType());
         this.jewel = jewel;
+        this.addComponent(new GemSlot(jewel));
         this.childEntities.add(jewel);
     }
 }

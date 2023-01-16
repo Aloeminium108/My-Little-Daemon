@@ -31,5 +31,13 @@ class Position extends Component {
     get lastY() {
         return this._lastY;
     }
+    static swap(position1, position2) {
+        let tempX = position1.x;
+        let tempY = position1.y;
+        position1.x = position2.x;
+        position1.y = position2.y;
+        position2.x = tempX;
+        position2.y = tempY;
+    }
 }
 export { Position };

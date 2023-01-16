@@ -10,6 +10,11 @@ class MouseSystem extends OrderedSystem<MouseInteractable> {
     public heldEntity: Entity | null = null
     public releasedEntity: Entity | null = null
 
+    // If for some reason the heldEntity is taken away while the mouse button is still
+    // being held down, this is mean to keep track of that so whatever is under the mouse
+    // doesn't get held immediately after.
+    public wrenched: boolean = false
+
     public componentsRequired = new Set([MouseInteractable, Hitbox])
 
     public orderingComponent = MouseInteractable
@@ -28,10 +33,12 @@ class MouseSystem extends OrderedSystem<MouseInteractable> {
             this.canvas.style.cursor = this.checkMouseCollision()?.getComponent(MouseInteractable).hover ?? 'default'
             this.releasedEntity = this.heldEntity
             this.heldEntity = null
+            this.wrenched = false
         }
     }
 
     holdEntity = () => {
+        if (this.wrenched) return
         if (this.heldEntity !== null) return
         this.heldEntity = this.checkMouseCollision()
     }

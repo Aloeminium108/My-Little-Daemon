@@ -8,6 +8,10 @@ class MouseSystem extends OrderedSystem {
         this.canvas = canvas;
         this.heldEntity = null;
         this.releasedEntity = null;
+        // If for some reason the heldEntity is taken away while the mouse button is still
+        // being held down, this is mean to keep track of that so whatever is under the mouse
+        // doesn't get held immediately after.
+        this.wrenched = false;
         this.componentsRequired = new Set([MouseInteractable, Hitbox]);
         this.orderingComponent = MouseInteractable;
         this.update = (interval) => {
@@ -21,9 +25,12 @@ class MouseSystem extends OrderedSystem {
                 this.canvas.style.cursor = (_d = (_c = this.checkMouseCollision()) === null || _c === void 0 ? void 0 : _c.getComponent(MouseInteractable).hover) !== null && _d !== void 0 ? _d : 'default';
                 this.releasedEntity = this.heldEntity;
                 this.heldEntity = null;
+                this.wrenched = false;
             }
         };
         this.holdEntity = () => {
+            if (this.wrenched)
+                return;
             if (this.heldEntity !== null)
                 return;
             this.heldEntity = this.checkMouseCollision();
