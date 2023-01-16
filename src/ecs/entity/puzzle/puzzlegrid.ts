@@ -2,6 +2,7 @@ import { Drawable } from "../../component/drawable.js"
 import { Hitbox } from "../../component/hitbox.js"
 import { Color, JewelType } from "../../component/jeweltype.js"
 import { Position } from "../../component/position.js"
+import { Sprite } from "../../component/sprite.js"
 import { ECS } from "../../ecs.js"
 import { Entity } from "../entity.js"
 import { Jewel } from "./jewel.js"
@@ -57,7 +58,10 @@ class PuzzleGrid extends Entity {
 
         this.columns.forEach((column) => {
             column.forEach(cell => {
-                cell.jewel.updateImage()
+                cell.jewel.getComponent(Sprite)
+                .updateSprite(
+                    Jewel.getImageSrc(cell.jewel.getComponent(JewelType))
+                )
             })
         })
 

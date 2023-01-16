@@ -42,15 +42,17 @@ class Entity {
                 childEntity.ecs = ecs;
             });
         };
-        this.addPhysicsBody = (x, y, z, image) => {
+        this.addPhysicsBody = (x, y, z, spriteSrc) => {
             let position = new Position(x, y);
-            let sprite = new Sprite(z, image);
-            this.addComponent(position);
-            this.addComponent(sprite);
-            this.addComponent(new Hitbox(position, image.width, image.height));
-            this.addComponent(new Gravity());
-            this.addComponent(new Friction());
-            this.addComponent(new Velocity(0, 0));
+            let sprite = new Sprite(z, spriteSrc);
+            return sprite.loadingPromise.then(() => {
+                this.addComponent(position);
+                this.addComponent(sprite);
+                this.addComponent(new Hitbox(position, sprite.sprite.width, sprite.sprite.height));
+                this.addComponent(new Gravity());
+                this.addComponent(new Friction());
+                this.addComponent(new Velocity(0, 0));
+            });
         };
         this.addMouseGrab = () => {
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)));

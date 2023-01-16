@@ -53,15 +53,17 @@ class Entity {
         })
     }
 
-    addPhysicsBody = (x: number, y: number, z: number, image: ImageBitmap) => {
+    addPhysicsBody = (x: number, y: number, z: number, spriteSrc: string) => {
         let position = new Position(x, y)
-        let sprite = new Sprite(z, image)
-        this.addComponent(position)
-        this.addComponent(sprite)
-        this.addComponent(new Hitbox(position, image.width, image.height))
-        this.addComponent(new Gravity())
-        this.addComponent(new Friction())
-        this.addComponent(new Velocity(0, 0))
+        let sprite = new Sprite(z, spriteSrc)
+        return sprite.loadingPromise.then(() => {
+            this.addComponent(position)
+            this.addComponent(sprite)
+            this.addComponent(new Hitbox(position, sprite.sprite!!.width, sprite.sprite!!.height))
+            this.addComponent(new Gravity())
+            this.addComponent(new Friction())
+            this.addComponent(new Velocity(0, 0))
+        })
     }
 
     addMouseGrab = () => {

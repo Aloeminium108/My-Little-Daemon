@@ -6,35 +6,12 @@ import { Entity } from "../entity.js";
 
 class Jewel extends Entity {
 
-    imageLoading: Promise<any>
-
     constructor(x: number, y: number, jewelType: JewelType) {
         super()
         this.addComponent(jewelType)
+        this.addComponent(new Position(x, y))
+        this.addComponent(new Sprite(5, Jewel.getImageSrc(jewelType)))
 
-        this.imageLoading = this.loadImage(Jewel.getImageSrc(jewelType))
-        .then(image => {
-            return createImageBitmap(image)
-        })
-        .then(sprite => {
-            this.addComponent(new Position(x, y))
-            this.addComponent(new Sprite(5, sprite)) 
-            return new Promise(resolve => resolve(null)) 
-        })
-
-    }
-
-    updateImage = () => {
-        this.imageLoading = this.imageLoading.then(() => {
-            return this.loadImage(Jewel.getImageSrc(this.getComponent(JewelType)))
-        })
-        .then(image => {
-            return createImageBitmap(image)
-        })
-        .then(sprite => {
-            this.getComponent(Sprite).sprite = sprite
-            return new Promise(resolve => resolve(null))
-        })
     }
 
     static getImageSrc = (jewelType: JewelType) => {
@@ -51,18 +28,6 @@ class Jewel extends Entity {
                 return '../../assets/jewel-black.png'
         }
     }
-
-
-    loadImage = (src: string) => {
-        return new Promise((resolve, reject) => {
-            const image = new Image();
-            image.onload = () => resolve(image);
-            image.onerror = reject;
-            image.src = src
-        }) as Promise<HTMLImageElement>
-    }
-
-
 
 }
 

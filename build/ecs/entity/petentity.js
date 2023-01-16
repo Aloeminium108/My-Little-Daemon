@@ -5,15 +5,11 @@ import { Entity } from "./entity.js";
 class PetEntity extends Entity {
     constructor(x, y, petStats) {
         super();
-        let image = new Image();
-        image.onload = () => {
-            createImageBitmap(image).then((sprite) => {
-                this.addPhysicsBody(x, y, 0, sprite);
-                this.addComponent(new MouseInteractable(this.getComponent(Sprite)));
-                this.addComponent(new Consumer(petStats));
-            });
-        };
-        image.src = PetEntity.spriteSource;
+        this.addPhysicsBody(x, y, 0, PetEntity.spriteSource)
+            .then(() => {
+            this.addComponent(new MouseInteractable(this.getComponent(Sprite)));
+            this.addComponent(new Consumer(petStats));
+        });
     }
 }
 PetEntity.spriteSource = '../../assets/bird.png';
