@@ -20,6 +20,13 @@ class Sprite extends OrderingComponent {
     }
 
     updateSprite = (src: string) => {
+        if (Sprite.loadedBitmaps.has(src)) {
+            return  new Promise(resolve => {
+                this.sprite = Sprite.loadedBitmaps.get(src)!!
+                resolve(null)
+            })
+        } 
+
         this.loadingPromise = this.loadingPromise.then(() => {
             return this.loadImage(src)
         })
@@ -28,6 +35,8 @@ class Sprite extends OrderingComponent {
         })
         .then(sprite => {
             this.sprite = sprite
+            Sprite.loadedBitmaps.set(src, sprite)
+            console.log("Sprite generated from", src)
             return new Promise(resolve => resolve(null))
         })
     }

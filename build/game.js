@@ -3,6 +3,8 @@ import { MenuState } from "./state/statmenustate.js";
 import { Pet } from "./Pet/pet.js";
 import { Mouse } from "./state/mouse.js";
 import { Match3State } from "./state/match3state.js";
+import { Sprite } from "./ecs/component/sprite.js";
+import { LoadingState } from "./state/loadingstate.js";
 class Game {
     constructor(canvas) {
         this.canvas = canvas;
@@ -18,6 +20,23 @@ class Game {
             this.pet.update(interval);
             (_c = (_b = this.currentState).update) === null || _c === void 0 ? void 0 : _c.call(_b, interval);
             window.requestAnimationFrame(this.animate);
+        };
+        this.loadAssets = () => {
+            let sources = [
+                '../../assets/jewel-red.png',
+                '../../assets/jewel-yellow.png',
+                '../../assets/jewel-green.png',
+                '../../assets/jewel-blue.png',
+                '../../assets/jewel-black.png',
+                '../../assets/apple.png',
+                '../../assets/ball.png',
+                '../../assets/bird.png',
+            ];
+            let assets = sources.map(src => {
+                let sprite = new Sprite(0, src);
+                return sprite.loadingPromise;
+            });
+            return assets;
         };
         this.initializeStates = () => {
             this.addState(new GameState(this));
@@ -55,10 +74,13 @@ class Game {
         };
         this.ctx = canvas.getContext("2d");
         this.pet = new Pet();
-        this.initializeStates();
-        this.currentState = this.stateMap.get(GameState);
-        this.addCanvasListeners();
-        this.addButtonListeners();
+        this.currentState = new LoadingState(this);
+        Promise.all(this.loadAssets()).then(() => {
+            this.initializeStates();
+            this.currentState = this.stateMap.get(GameState);
+            this.addCanvasListeners();
+            this.addButtonListeners();
+        });
     }
 }
 export { Game };

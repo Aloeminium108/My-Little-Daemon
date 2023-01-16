@@ -4,6 +4,8 @@ import { MenuState } from "./state/statmenustate.js"
 import { Pet } from "./Pet/pet.js"
 import { Mouse } from "./state/mouse.js"
 import { Match3State } from "./state/match3state.js"
+import { Sprite } from "./ecs/component/sprite.js"
+import { LoadingState } from "./state/loadingstate.js"
 
 class Game {
     ctx: CanvasRenderingContext2D
@@ -22,12 +24,18 @@ class Game {
 
         this.pet = new Pet()
 
-        this.initializeStates()
+        this.currentState = new LoadingState(this)
 
-        this.currentState = this.stateMap.get(GameState)!!
+        Promise.all(this.loadAssets()).then(() => {
+            this.initializeStates()
 
-        this.addCanvasListeners()
-        this.addButtonListeners()
+            this.currentState = this.stateMap.get(GameState)!!
+
+            this.addCanvasListeners()
+            this.addButtonListeners()
+        })
+
+        
     }
 
     animate = (currentFrameTimeStamp: DOMHighResTimeStamp) => {
@@ -42,6 +50,24 @@ class Game {
         this.currentState.update?.(interval)
         
         window.requestAnimationFrame(this.animate)
+    }
+
+    loadAssets = () => {
+        let sources = [
+            '../../assets/jewel-red.png',
+            '../../assets/jewel-yellow.png',
+            '../../assets/jewel-green.png',
+            '../../assets/jewel-blue.png',
+            '../../assets/jewel-black.png',
+            '../../assets/apple.png',
+            '../../assets/ball.png',
+            '../../assets/bird.png',
+        ]
+        let assets = sources.map(src => {
+            let sprite = new Sprite(0, src)
+            return sprite.loadingPromise
+        })
+        return assets
     }
 
     initializeStates = () => {
