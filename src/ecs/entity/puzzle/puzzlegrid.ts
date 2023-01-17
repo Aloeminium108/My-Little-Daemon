@@ -45,21 +45,28 @@ class PuzzleCell extends Entity {
 
     static width = 40 + (PuzzleCell.padding * 2)
 
-    constructor(public i: number, public j: number, x: number, y: number) {
+    constructor(public i: number, public j: number, public x: number, public y: number) {
         super()
 
         let position = new Position(x, y)
         this.addComponent(new Hitbox(position, PuzzleCell.width, PuzzleCell.width))
-        this.addComponent(new Drawable((ctx) => {
-            if (this.getComponent(GemSlot).activated) {
+        this.addComponent(new Drawable(ctx => {
+            let gemSlot = this.getComponent(GemSlot)
+            if (gemSlot.open && gemSlot.jewel !== null) {
+                ctx.fillStyle = 'red'
+            } else if (gemSlot.open) {
                 ctx.fillStyle = 'green'
-                ctx.fillRect(position.x, position.y, PuzzleCell.width, PuzzleCell.width)
+            } else if (gemSlot.jewel === null) {
+                ctx.fillStyle = 'blue'
+            } else {
+                ctx.fillStyle = 'white'
             }
+            ctx.fillRect(x, y, PuzzleCell.width, PuzzleCell.width)
         }))
 
         let jewel = new Jewel(x + PuzzleCell.padding, y + PuzzleCell.padding, new JewelType())
 
-        this.addComponent(new GemSlot(jewel, x + PuzzleCell.padding, y + PuzzleCell.padding))
+        this.addComponent(new GemSlot(jewel, this))
 
         this.childEntities.add(jewel)
     }

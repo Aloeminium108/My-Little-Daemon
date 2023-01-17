@@ -54,6 +54,17 @@ class Entity {
                 this.addComponent(new Hitbox(position, sprite.sprite.width, sprite.sprite.height));
             });
         };
+        this.addZeroGPhysicsBody = (x, y, z, spriteSrc) => {
+            let position = new Position(x, y);
+            this.addComponent(new Friction());
+            this.addComponent(new Velocity(0, 0));
+            let sprite = new Sprite(z, spriteSrc);
+            this.addComponent(sprite);
+            return sprite.loadingPromise.then(() => {
+                this.addComponent(position);
+                this.addComponent(new Hitbox(position, sprite.sprite.width, sprite.sprite.height));
+            });
+        };
         this.addMouseGrab = () => {
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)));
             this.addComponent(new MouseGrabbable());

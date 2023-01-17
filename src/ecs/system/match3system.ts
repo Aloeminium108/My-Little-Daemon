@@ -1,14 +1,17 @@
 import { GemSlot } from "../component/gemslot.js";
 import { Gravity } from "../component/gravity.js";
 import { Grid } from "../component/grid.js";
+import { JewelType } from "../component/jeweltype.js";
 import { Group, PuzzleMatches } from "../component/puzzlematches.js";
+import { Jewel } from "../entity/puzzle/jewel.js";
+import { PuzzleCell } from "../entity/puzzle/puzzlegrid.js";
 import { GemGrabSystem } from "./gemgrabsystem.js";
 import { UnorderedSystem } from "./system.js";
 
 class Match3System extends UnorderedSystem {
     public componentsRequired = new Set([Grid, PuzzleMatches])
 
-    constructor(private gemGrabSystem: GemGrabSystem) {
+    constructor() {
         super()
     }
 
@@ -19,27 +22,25 @@ class Match3System extends UnorderedSystem {
             let grid = entity.getComponent(Grid)
             let puzzleMatches = entity.getComponent(PuzzleMatches)
 
-            // grid.columns.forEach(column => {
-            //     column.forEach(cell => {
-            //         cell.getComponent(GemSlot).activated = false
-            //     })
-            // })
-
             puzzleMatches.groups.clear()
 
             this.checkColumns(grid, puzzleMatches)
             this.checkRows(grid, puzzleMatches)
 
-            // puzzleMatches.groups.forEach(group => {
-            //     group.set.forEach(cell => {
-            //         cell.activated = true
-            //     })
-            // })
+            this.consolidateGroups(puzzleMatches)
+
+            puzzleMatches.groups.forEach(group => {
+                if (group.color === null) puzzleMatches.groups.delete(group)
+            })
 
             puzzleMatches.groups.forEach(group => {
                 group.set.forEach(cell => {
                     this.ecs?.removeEntity(cell.jewel)
                     cell.jewel = null
+
+                    let replacementJewel = new Jewel(cell.x + cell.padding, cell.y + cell.padding - 500, new JewelType())
+                    replacementJewel.addComponent(new Gravity())
+                    this.ecs?.addEntity(replacementJewel)
                 })
             })
             
@@ -85,7 +86,7 @@ class Match3System extends UnorderedSystem {
         }
     }
 
-    private updateColumn(column: Array<GemSlot>) {
+    private updateColumn = (column: Array<GemSlot>) => {
         let emptyCell = false
         for(let i = column.length - 1; i >= 0; i--) {
             if (emptyCell) {
@@ -93,12 +94,40 @@ class Match3System extends UnorderedSystem {
                 column[i].jewel = null
                 column[i].open = false
             } else if (column[i].jewel === null) {
-                console.log("Cell opened")
                 emptyCell = true
                 column[i].open = true
             } 
         }
     }
+
+    private consolidateGroups = (puzzleMatches: PuzzleMatches) => {
+        let map = new Map<GemSlot, Group>()
+        let groupSet = new Set<Group>()
+
+        puzzleMatches.groups.forEach(group => {
+            let overlappingGroups = new Set([group])
+            group.set.forEach(cell => {
+                if (map.has(cell)) {
+                    overlappingGroups.add(map.get(cell)!!)
+                }
+            })
+            let combinedGroup = new Group()
+            overlappingGroups.forEach(group => {
+                groupSet.delete(group)
+                group.set.forEach(cell => {
+                    combinedGroup.addCell(cell)
+                })
+            })
+            combinedGroup.set.forEach(cell => {
+                map.set(cell, combinedGroup)
+            })
+            groupSet.add(combinedGroup)
+        })
+
+        puzzleMatches.groups = groupSet
+    }
+
+    
     
 }
 

@@ -15,6 +15,7 @@ import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { GemGrabSystem } from "../ecs/system/gemgrabsystem.js";
 import { Match3System } from "../ecs/system/match3system.js";
 import { GemSlotSystem } from "../ecs/system/gemslotsystem.js";
+import { JewelCollision } from "../ecs/system/jewelcollision.js";
 
 class Match3State implements State {
     game: Game;
@@ -25,6 +26,7 @@ class Match3State implements State {
     mouse: Mouse
     ctx: CanvasRenderingContext2D
     canvas: HTMLCanvasElement
+    timeElapsed: number = 0
 
     constructor(game: Game) {
         this.game = game
@@ -51,13 +53,14 @@ class Match3State implements State {
         this.ecs.addSystem(mouseSystem)
         let gemGrabSystem = new GemGrabSystem(mouseSystem)
         this.ecs.addSystem(gemGrabSystem)
-        this.ecs.addSystem(new Match3System(gemGrabSystem))
         this.ecs.addSystem(new GravitySystem())
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new FrictionSystem())
         let collisionDetection = new CollisionDetection()
         this.ecs.addSystem(collisionDetection)
+        this.ecs.addSystem(new JewelCollision(collisionDetection))
         this.ecs.addSystem(new GemSlotSystem(collisionDetection))
+        this.ecs.addSystem(new Match3System())
         this.ecs.addSystem(new DrawingSystem(this.ctx))
         this.ecs.addSystem(new SpriteSystem(this.ctx))
     }
@@ -66,6 +69,7 @@ class Match3State implements State {
     resume = () =>  {}
 
     update = (interval: number) =>  {
+        this.timeElapsed += interval
         this.ecs.update(interval)
     }
 

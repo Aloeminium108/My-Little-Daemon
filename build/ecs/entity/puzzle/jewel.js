@@ -1,4 +1,3 @@
-import { Gravity } from "../../component/gravity.js";
 import { Color } from "../../component/jeweltype.js";
 import { MouseInteractable } from "../../component/mouseinteractable.js";
 import { Sprite } from "../../component/sprite.js";
@@ -7,10 +6,9 @@ class Jewel extends Entity {
     constructor(x, y, jewelType) {
         super();
         this.addComponent(jewelType);
-        this.addPhysicsBody(x, y, 5, Jewel.getImageSrc(jewelType))
+        this.addZeroGPhysicsBody(x, y, 5, Jewel.getImageSrc(jewelType))
             .then(() => {
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)));
-            this.deleteComponent(Gravity);
         });
     }
 }

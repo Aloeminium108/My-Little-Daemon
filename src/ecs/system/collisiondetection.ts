@@ -42,10 +42,6 @@ class CollisionDetection extends UnorderedSystem {
         })
     }
 
-
-
-
-
     checkCollision = (entity1: Entity, entity2: Entity) => {
         let rect1 = entity1.getComponent(Hitbox) 
         let rect2 = entity2.getComponent(Hitbox)

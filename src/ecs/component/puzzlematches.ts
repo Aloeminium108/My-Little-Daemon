@@ -9,9 +9,10 @@ class PuzzleMatches extends Component {
 
 class Group {
     public set = new Set<GemSlot>()
-    public color: Color | null
+    public color: Color | null = null
 
-    constructor(cell: GemSlot) {
+    constructor(cell: GemSlot | null = null) {
+        if (cell === null) return
         this.set.add(cell)
         this.color = cell.getJewelColor()
     }
@@ -23,6 +24,7 @@ class Group {
 
     addCell = (cell: GemSlot) => {
         this.set.add(cell)
+        if (this.color === null) this.color = cell.getJewelColor()
     }
 
 }

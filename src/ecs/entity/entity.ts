@@ -67,6 +67,19 @@ class Entity {
         })
     }
 
+    addZeroGPhysicsBody = (x: number, y: number, z: number, spriteSrc: string) => {
+        let position = new Position(x, y)
+        this.addComponent(new Friction())
+        this.addComponent(new Velocity(0, 0))
+
+        let sprite = new Sprite(z, spriteSrc)
+        this.addComponent(sprite)
+        return sprite.loadingPromise.then(() => {
+            this.addComponent(position)
+            this.addComponent(new Hitbox(position, sprite.sprite!!.width, sprite.sprite!!.height))
+        })
+    }
+
     addMouseGrab = () => {
         this.addComponent(new MouseInteractable(this.getComponent(Sprite)))
         this.addComponent(new MouseGrabbable())

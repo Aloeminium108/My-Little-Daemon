@@ -35,16 +35,28 @@ class PuzzleCell extends Entity {
         super();
         this.i = i;
         this.j = j;
+        this.x = x;
+        this.y = y;
         let position = new Position(x, y);
         this.addComponent(new Hitbox(position, PuzzleCell.width, PuzzleCell.width));
-        this.addComponent(new Drawable((ctx) => {
-            if (this.getComponent(GemSlot).activated) {
-                ctx.fillStyle = 'green';
-                ctx.fillRect(position.x, position.y, PuzzleCell.width, PuzzleCell.width);
+        this.addComponent(new Drawable(ctx => {
+            let gemSlot = this.getComponent(GemSlot);
+            if (gemSlot.open && gemSlot.jewel !== null) {
+                ctx.fillStyle = 'red';
             }
+            else if (gemSlot.open) {
+                ctx.fillStyle = 'green';
+            }
+            else if (gemSlot.jewel === null) {
+                ctx.fillStyle = 'blue';
+            }
+            else {
+                ctx.fillStyle = 'white';
+            }
+            ctx.fillRect(x, y, PuzzleCell.width, PuzzleCell.width);
         }));
         let jewel = new Jewel(x + PuzzleCell.padding, y + PuzzleCell.padding, new JewelType());
-        this.addComponent(new GemSlot(jewel, x + PuzzleCell.padding, y + PuzzleCell.padding));
+        this.addComponent(new GemSlot(jewel, this));
         this.childEntities.add(jewel);
     }
 }

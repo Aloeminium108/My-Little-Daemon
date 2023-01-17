@@ -12,10 +12,9 @@ class Jewel extends Entity {
     constructor(x: number, y: number, jewelType: JewelType) {
         super()
         this.addComponent(jewelType)
-        this.addPhysicsBody(x, y, 5, Jewel.getImageSrc(jewelType))
+        this.addZeroGPhysicsBody(x, y, 5, Jewel.getImageSrc(jewelType))
         .then(() => {
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)))
-            this.deleteComponent(Gravity)
         })
     }
 

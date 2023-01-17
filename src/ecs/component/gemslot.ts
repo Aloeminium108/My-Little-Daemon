@@ -1,4 +1,5 @@
 import { Jewel } from "../entity/puzzle/jewel.js";
+import { PuzzleCell } from "../entity/puzzle/puzzlegrid.js";
 import { Component } from "./component.js";
 import { JewelType } from "./jeweltype.js";
  
@@ -8,8 +9,15 @@ class GemSlot extends Component {
 
     public open: boolean = false
 
-    constructor(public jewel: Jewel | null, public x: number, public y: number){
+    public x: number
+    public y: number
+    public padding: number
+
+    constructor(public jewel: Jewel | null, puzzleCell: PuzzleCell){
         super()
+        this.x = puzzleCell.x
+        this.y = puzzleCell.y
+        this.padding = PuzzleCell.padding
     }
 
     public getJewelColor = () => {

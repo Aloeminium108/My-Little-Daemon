@@ -6,8 +6,9 @@ class PuzzleMatches extends Component {
     }
 }
 class Group {
-    constructor(cell) {
+    constructor(cell = null) {
         this.set = new Set();
+        this.color = null;
         this.checkCell = (cell) => {
             if (cell.jewel === null)
                 return false;
@@ -15,7 +16,11 @@ class Group {
         };
         this.addCell = (cell) => {
             this.set.add(cell);
+            if (this.color === null)
+                this.color = cell.getJewelColor();
         };
+        if (cell === null)
+            return;
         this.set.add(cell);
         this.color = cell.getJewelColor();
     }
