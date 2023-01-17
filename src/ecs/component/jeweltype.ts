@@ -25,6 +25,9 @@ enum Color {
     YELLOW,
     GREEN,
     BLUE,
+    PURPLE,
+    PINK,
+    ORANGE
 }
 
 enum SpecialProperty {

@@ -28,6 +28,12 @@ class Jewel extends Entity {
                 return '../../assets/jewel-green.png'
             case Color.BLUE:
                 return '../../assets/jewel-blue.png'
+            case Color.PURPLE:
+                return '../../assets/jewel-purple.png'
+            case Color.PINK:
+                return '../../assets/jewel-pink.png'
+            case Color.ORANGE:
+                return '../../assets/jewel-orange.png'
             default:
                 return '../../assets/jewel-black.png'
         }
