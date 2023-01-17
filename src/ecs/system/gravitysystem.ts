@@ -9,7 +9,7 @@ class GravitySystem extends UnorderedSystem {
 
     update = (interval: number) => {
         this.entities.forEach(entity => {
-            entity.getComponent(Velocity).dy += 1
+            entity.getComponent(Velocity).dy += entity.getComponent(Gravity).gravity
         })
     }
     

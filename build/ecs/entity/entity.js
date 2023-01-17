@@ -56,7 +56,7 @@ class Entity {
         };
         this.addZeroGPhysicsBody = (x, y, z, spriteSrc) => {
             let position = new Position(x, y);
-            this.addComponent(new Friction());
+            this.addComponent(new Friction(0.8));
             this.addComponent(new Velocity(0, 0));
             let sprite = new Sprite(z, spriteSrc);
             this.addComponent(sprite);

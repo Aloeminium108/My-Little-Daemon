@@ -3,6 +3,7 @@ import { Grid } from "../component/grid.js";
 import { JewelType } from "../component/jeweltype.js";
 import { Group, PuzzleMatches } from "../component/puzzlematches.js";
 import { Jewel } from "../entity/puzzle/jewel.js";
+import { PuzzleCell } from "../entity/puzzle/puzzlegrid.js";
 import { UnorderedSystem } from "./system.js";
 class Match3System extends UnorderedSystem {
     constructor() {
@@ -93,6 +94,7 @@ class Match3System extends UnorderedSystem {
         this.entities.forEach(entity => {
             let grid = entity.getComponent(Grid);
             let puzzleMatches = entity.getComponent(PuzzleMatches);
+            let padding = PuzzleCell.width * 2;
             puzzleMatches.groups.clear();
             this.checkColumns(grid, puzzleMatches);
             this.checkRows(grid, puzzleMatches);
@@ -106,7 +108,7 @@ class Match3System extends UnorderedSystem {
                     var _a, _b;
                     (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.removeEntity(cell.jewel);
                     cell.jewel = null;
-                    let replacementJewel = new Jewel(cell.x + cell.padding, cell.y + cell.padding - 500, new JewelType());
+                    let replacementJewel = new Jewel(cell.x + cell.padding, cell.y + cell.padding - (cell.j * padding), new JewelType());
                     replacementJewel.addComponent(new Gravity());
                     (_b = this.ecs) === null || _b === void 0 ? void 0 : _b.addEntity(replacementJewel);
                 });

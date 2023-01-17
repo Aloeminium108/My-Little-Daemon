@@ -18,9 +18,10 @@ class Match3System extends UnorderedSystem {
     public update(interval: number): void {
 
         this.entities.forEach(entity => {
-
             let grid = entity.getComponent(Grid)
             let puzzleMatches = entity.getComponent(PuzzleMatches)
+
+            let padding = PuzzleCell.width * 2
 
             puzzleMatches.groups.clear()
 
@@ -38,7 +39,7 @@ class Match3System extends UnorderedSystem {
                     this.ecs?.removeEntity(cell.jewel)
                     cell.jewel = null
 
-                    let replacementJewel = new Jewel(cell.x + cell.padding, cell.y + cell.padding - 500, new JewelType())
+                    let replacementJewel = new Jewel(cell.x + cell.padding, cell.y + cell.padding - (cell.j * padding), new JewelType())
                     replacementJewel.addComponent(new Gravity())
                     this.ecs?.addEntity(replacementJewel)
                 })

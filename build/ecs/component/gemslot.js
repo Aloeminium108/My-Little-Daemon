@@ -11,6 +11,8 @@ class GemSlot extends Component {
             var _a, _b;
             return (_b = (_a = this.jewel) === null || _a === void 0 ? void 0 : _a.getComponent(JewelType).color) !== null && _b !== void 0 ? _b : null;
         };
+        this.i = puzzleCell.i;
+        this.j = puzzleCell.j;
         this.x = puzzleCell.x;
         this.y = puzzleCell.y;
         this.padding = PuzzleCell.padding;

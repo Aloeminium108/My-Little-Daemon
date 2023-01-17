@@ -8,7 +8,7 @@ class GravitySystem extends UnorderedSystem {
         this.componentsRequired = new Set([Position, Gravity, Velocity]);
         this.update = (interval) => {
             this.entities.forEach(entity => {
-                entity.getComponent(Velocity).dy += 1;
+                entity.getComponent(Velocity).dy += entity.getComponent(Gravity).gravity;
             });
         };
     }

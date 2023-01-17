@@ -9,12 +9,17 @@ class GemSlot extends Component {
 
     public open: boolean = false
 
+    public i: number
+    public j: number
+
     public x: number
     public y: number
     public padding: number
 
     constructor(public jewel: Jewel | null, puzzleCell: PuzzleCell){
         super()
+        this.i = puzzleCell.i
+        this.j = puzzleCell.j
         this.x = puzzleCell.x
         this.y = puzzleCell.y
         this.padding = PuzzleCell.padding

@@ -69,7 +69,7 @@ class Entity {
 
     addZeroGPhysicsBody = (x: number, y: number, z: number, spriteSrc: string) => {
         let position = new Position(x, y)
-        this.addComponent(new Friction())
+        this.addComponent(new Friction(0.8))
         this.addComponent(new Velocity(0, 0))
 
         let sprite = new Sprite(z, spriteSrc)
