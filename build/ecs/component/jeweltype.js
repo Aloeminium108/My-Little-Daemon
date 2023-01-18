@@ -26,8 +26,6 @@ var Color;
     Color[Color["GREEN"] = 2] = "GREEN";
     Color[Color["BLUE"] = 3] = "BLUE";
     Color[Color["PURPLE"] = 4] = "PURPLE";
-    Color[Color["PINK"] = 5] = "PINK";
-    Color[Color["ORANGE"] = 6] = "ORANGE";
 })(Color || (Color = {}));
 var SpecialProperty;
 (function (SpecialProperty) {
