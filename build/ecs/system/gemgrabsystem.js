@@ -20,6 +20,8 @@ class GemGrabSystem extends UnorderedSystem {
             return;
         if (!heldEntity.hasComponent(JewelType))
             return;
+        if (heldEntity.hasComponent(Gravity))
+            return;
         let mouse = this.mouseSystem.mouse;
         for (let entity of this.entities) {
             // Do nothing if the entity being examined is the held entity itself

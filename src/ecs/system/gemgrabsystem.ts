@@ -25,6 +25,7 @@ class GemGrabSystem extends UnorderedSystem {
         // Check to make sure that there is a held entity and that it is a gem
         if (heldEntity === null) return
         if (!heldEntity.hasComponent(JewelType)) return
+        if (heldEntity.hasComponent(Gravity)) return
 
         let mouse = this.mouseSystem.mouse
 
