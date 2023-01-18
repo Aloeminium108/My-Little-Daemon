@@ -1,4 +1,4 @@
-import { Mouse } from "../../state/mouse.js";
+import { Mouse } from "../../gamestate/mouse.js";
 import { Hitbox } from "../component/hitbox.js";
 import { MouseInteractable } from "../component/mouseinteractable.js";
 import { Velocity } from "../component/velocity.js";

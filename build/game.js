@@ -1,10 +1,10 @@
-import { GameState } from "./state/gamestate.js";
-import { MenuState } from "./state/statmenustate.js";
+import { HomeState } from "./gamestate/homestate.js";
+import { StatMenuState } from "./gamestate/statmenustate.js";
 import { Pet } from "./Pet/pet.js";
-import { Mouse } from "./state/mouse.js";
-import { Match3State } from "./state/match3state.js";
+import { Mouse } from "./gamestate/mouse.js";
+import { Match3State } from "./gamestate/match3state.js";
 import { Sprite } from "./ecs/component/sprite.js";
-import { LoadingState } from "./state/loadingstate.js";
+import { LoadingState } from "./gamestate/loadingstate.js";
 class Game {
     constructor(canvas) {
         this.canvas = canvas;
@@ -39,8 +39,8 @@ class Game {
             return assets;
         };
         this.initializeStates = () => {
-            this.addState(new GameState(this));
-            this.addState(new MenuState(this));
+            this.addState(new HomeState(this));
+            this.addState(new StatMenuState(this));
             this.addState(new Match3State(this));
         };
         this.addState = (state) => {
@@ -62,7 +62,7 @@ class Game {
         this.addButtonListeners = () => {
             let buttons = document.querySelectorAll('.button');
             buttons[0].addEventListener('click', (e) => {
-                this.changeState(MenuState);
+                this.changeState(StatMenuState);
             });
             buttons[1].addEventListener('click', (e) => {
                 var _a, _b;
@@ -77,7 +77,7 @@ class Game {
         this.currentState = new LoadingState(this);
         Promise.all(this.loadAssets()).then(() => {
             this.initializeStates();
-            this.currentState = this.stateMap.get(GameState);
+            this.currentState = this.stateMap.get(HomeState);
             this.addCanvasListeners();
             this.addButtonListeners();
         });

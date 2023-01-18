@@ -1,9 +1,9 @@
-import { State, StateTransition } from "./state.js"
+import { GameState, GameStateTransition } from "./gamestate.js"
 import { Game } from "../game.js"
 import { Pet } from "../Pet/pet.js"
-import { GameState } from "./gamestate.js"
+import { HomeState } from "./homestate.js"
 
-class StatMenuState implements State {
+class StatMenuState implements GameState {
 
     menuHTML: HTMLElement
     petImage: HTMLImageElement
@@ -38,7 +38,7 @@ class StatMenuState implements State {
     init = () => {
         let exitButton = document.getElementById('menu-exit')
         exitButton?.addEventListener('click', (e) => {
-            this.game.changeState(GameState)
+            this.game.changeState(HomeState)
         })
         this.updateMenu()
     }
@@ -63,4 +63,4 @@ class StatMenuState implements State {
     
 }
 
-export { StatMenuState as MenuState }
+export { StatMenuState }

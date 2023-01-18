@@ -2,7 +2,7 @@ import { ECS } from "../ecs/ecs.js"
 import { Game } from "../game.js"
 import { Pet } from "../Pet/pet.js"
 
-interface State {
+interface GameState {
     game: Game
     pet: Pet
     ecs?: ECS
@@ -16,6 +16,6 @@ interface State {
     foodButton?(): void
 }
 
-type StateTransition<T extends State> = new (...args: any[]) => T
+type GameStateTransition<T extends GameState> = new (...args: any[]) => T
 
-export { State, StateTransition }
+export { GameState, GameStateTransition }

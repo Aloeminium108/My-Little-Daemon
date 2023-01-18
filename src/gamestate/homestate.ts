@@ -1,4 +1,4 @@
-import { State } from "./state.js"
+import { GameState } from "./gamestate.js"
 import { Game } from "../game.js"
 import { Mouse } from "./mouse.js"
 import { Pet } from "../Pet/pet.js"
@@ -18,7 +18,7 @@ import { Apple } from "../ecs/entity/food.js"
 import { ConsumableSystem } from "../ecs/system/consumablesystem.js"
 import { SpatialHashing } from "../ecs/system/spatialhashing.js"
 
-class GameState implements State {
+class HomeState implements GameState {
 
     ecs = new ECS()
 
@@ -75,6 +75,7 @@ class GameState implements State {
         this.ecs.addSystem(new BoundarySystem())
         this.ecs.addSystem(new FrictionSystem())
         let spatialHashing = new SpatialHashing(300)
+        this.ecs.addSystem(spatialHashing)
         let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new ConsumableSystem(collisionDetection))
@@ -90,4 +91,4 @@ class GameState implements State {
     
 }
 
-export { GameState }
+export { HomeState }

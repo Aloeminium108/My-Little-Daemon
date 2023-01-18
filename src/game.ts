@@ -1,11 +1,11 @@
-import { State, StateTransition } from "./state/state.js"
-import { GameState } from "./state/gamestate.js"
-import { MenuState } from "./state/statmenustate.js"
+import { GameState, GameStateTransition } from "./gamestate/gamestate.js"
+import { HomeState } from "./gamestate/homestate.js"
+import { StatMenuState } from "./gamestate/statmenustate.js"
 import { Pet } from "./Pet/pet.js"
-import { Mouse } from "./state/mouse.js"
-import { Match3State } from "./state/match3state.js"
+import { Mouse } from "./gamestate/mouse.js"
+import { Match3State } from "./gamestate/match3state.js"
 import { Sprite } from "./ecs/component/sprite.js"
-import { LoadingState } from "./state/loadingstate.js"
+import { LoadingState } from "./gamestate/loadingstate.js"
 
 class Game {
     ctx: CanvasRenderingContext2D
@@ -16,8 +16,8 @@ class Game {
 
     lastFrameTimeStamp: DOMHighResTimeStamp | null = null
 
-    private stateMap = new Map<StateTransition<State>, State>
-    private currentState: State
+    private stateMap = new Map<GameStateTransition<GameState>, GameState>
+    private currentState: GameState
 
     constructor(public canvas: HTMLCanvasElement) {
         this.ctx = canvas.getContext("2d")!!
@@ -29,7 +29,7 @@ class Game {
         Promise.all(this.loadAssets()).then(() => {
             this.initializeStates()
 
-            this.currentState = this.stateMap.get(GameState)!!
+            this.currentState = this.stateMap.get(HomeState)!!
 
             this.addCanvasListeners()
             this.addButtonListeners()
@@ -71,16 +71,16 @@ class Game {
     }
 
     initializeStates = () => {
-        this.addState(new GameState(this))
-        this.addState(new MenuState(this))
+        this.addState(new HomeState(this))
+        this.addState(new StatMenuState(this))
         this.addState(new Match3State(this))
     }
 
-    addState = <T extends State>(state: State) => {
-        this.stateMap.set(state.constructor as StateTransition<T>, state)
+    addState = <T extends GameState>(state: GameState) => {
+        this.stateMap.set(state.constructor as GameStateTransition<T>, state)
     }
 
-    changeState = (state: StateTransition<State>) => {
+    changeState = (state: GameStateTransition<GameState>) => {
         if (this.stateMap.has(state)) {
             this.currentState.pause()
             this.currentState = this.stateMap.get(state)!!
@@ -98,7 +98,7 @@ class Game {
     addButtonListeners = () => {
         let buttons = document.querySelectorAll('.button')
         buttons[0].addEventListener('click', (e) => {
-            this.changeState(MenuState)
+            this.changeState(StatMenuState)
         })
         buttons[1].addEventListener('click', (e) => {
             this.currentState.foodButton?.()

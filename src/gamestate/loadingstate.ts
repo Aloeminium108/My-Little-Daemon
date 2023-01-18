@@ -1,9 +1,9 @@
 import { ECS } from "../ecs/ecs";
 import { Game } from "../game";
 import { Pet } from "../Pet/pet";
-import { State } from "./state";
+import { GameState } from "./gamestate";
 
-class LoadingState implements State {
+class LoadingState implements GameState {
     game: Game;
     pet: Pet;
     ctx: CanvasRenderingContext2D
