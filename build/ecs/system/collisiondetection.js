@@ -1,8 +1,9 @@
 import { Hitbox } from "../component/hitbox.js";
 import { UnorderedSystem } from "./system.js";
 class CollisionDetection extends UnorderedSystem {
-    constructor() {
-        super(...arguments);
+    constructor(spatialHashing) {
+        super();
+        this.spatialHashing = spatialHashing;
         this.componentsRequired = new Set([Hitbox]);
         this.collisions = new Map();
         this.checkCollision = (entity1, entity2) => {
@@ -16,6 +17,10 @@ class CollisionDetection extends UnorderedSystem {
     }
     update(interval) {
         this.collisions.clear();
+        this.spatialHashing.proximityMap.forEach(cell => {
+            cell.forEach(entity1 => {
+            });
+        });
         this.entities.forEach(entity1 => {
             if (!this.collisions.has(entity1))
                 this.collisions.set(entity1, new Set());

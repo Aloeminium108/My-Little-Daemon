@@ -16,6 +16,7 @@ import { PetEntity } from "../ecs/entity/petentity.js"
 import { CollisionDetection } from "../ecs/system/collisiondetection.js"
 import { Apple } from "../ecs/entity/food.js"
 import { ConsumableSystem } from "../ecs/system/consumablesystem.js"
+import { SpatialHashing } from "../ecs/system/spatialhashing.js"
 
 class GameState implements State {
 
@@ -73,7 +74,8 @@ class GameState implements State {
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new BoundarySystem())
         this.ecs.addSystem(new FrictionSystem())
-        let collisionDetection = new CollisionDetection()
+        let spatialHashing = new SpatialHashing(300)
+        let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new ConsumableSystem(collisionDetection))
         this.ecs.addSystem(new SpriteSystem(this.ctx))

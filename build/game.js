@@ -27,7 +27,7 @@ class Game {
                 '../../assets/jewel-yellow.png',
                 '../../assets/jewel-green.png',
                 '../../assets/jewel-blue.png',
-                '../../assets/jewel-black.png',
+                '../../assets/jewel-purple.png',
                 '../../assets/apple.png',
                 '../../assets/ball.png',
                 '../../assets/bird.png',
