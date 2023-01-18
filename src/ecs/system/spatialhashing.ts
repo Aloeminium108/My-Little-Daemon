@@ -32,6 +32,7 @@ class SpatialHashing extends UnorderedSystem {
                     } else {
                         this.proximityMap.set(hash, new Set([entity]))
                     }
+
                 }
             }
         })

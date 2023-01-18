@@ -58,6 +58,7 @@ class Match3State implements State {
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new FrictionSystem())
         let spatialHashing = new SpatialHashing(100)
+        this.ecs.addSystem(spatialHashing)
         let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new JewelCollision(collisionDetection))
