@@ -3,7 +3,7 @@ import { Entity } from "./entity.js";
 
 class Apple extends Entity {
 
-    private static spriteSource = '../../assets/apple.png'
+    private static spriteSource = './assets/apple.png'
 
     constructor(x: number, y: number) {
         super()

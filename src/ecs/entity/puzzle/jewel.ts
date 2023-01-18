@@ -21,17 +21,17 @@ class Jewel extends Entity {
     static getImageSrc = (jewelType: JewelType) => {
         switch (jewelType.color as Color | null) {
             case Color.RED:
-                return '../../assets/jewel-red.png'
+                return './assets/jewel-red.png'
             case Color.YELLOW:
-                return '../../assets/jewel-yellow.png'
+                return './assets/jewel-yellow.png'
             case Color.GREEN:
-                return '../../assets/jewel-green.png'
+                return './assets/jewel-green.png'
             case Color.BLUE:
-                return '../../assets/jewel-blue.png'
+                return './assets/jewel-blue.png'
             case Color.PURPLE:
-                return '../../assets/jewel-purple.png'
+                return './assets/jewel-purple.png'
             default:
-                return '../../assets/jewel-black.png'
+                return './assets/jewel-black.png'
         }
     }
 

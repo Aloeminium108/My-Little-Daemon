@@ -8,5 +8,5 @@ class Ball extends Entity {
         });
     }
 }
-Ball.spriteSource = '../../assets/ball.png';
+Ball.spriteSource = './assets/ball.png';
 export { Ball };

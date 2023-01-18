@@ -10,5 +10,5 @@ class Apple extends Entity {
         });
     }
 }
-Apple.spriteSource = '../../assets/apple.png';
+Apple.spriteSource = './assets/apple.png';
 export { Apple };

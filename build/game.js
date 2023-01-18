@@ -23,14 +23,14 @@ class Game {
         };
         this.loadAssets = () => {
             let sources = [
-                '../../assets/jewel-red.png',
-                '../../assets/jewel-yellow.png',
-                '../../assets/jewel-green.png',
-                '../../assets/jewel-blue.png',
-                '../../assets/jewel-purple.png',
-                '../../assets/apple.png',
-                '../../assets/ball.png',
-                '../../assets/bird.png',
+                './assets/jewel-red.png',
+                './assets/jewel-yellow.png',
+                './assets/jewel-green.png',
+                './assets/jewel-blue.png',
+                './assets/jewel-purple.png',
+                './assets/apple.png',
+                './assets/ball.png',
+                './assets/bird.png',
             ];
             let assets = sources.map(src => {
                 let sprite = new Sprite(0, src);

@@ -12,5 +12,5 @@ class PetEntity extends Entity {
         });
     }
 }
-PetEntity.spriteSource = '../../assets/bird.png';
+PetEntity.spriteSource = './assets/bird.png';
 export { PetEntity };

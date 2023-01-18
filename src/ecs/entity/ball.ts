@@ -2,7 +2,7 @@ import { Entity } from "./entity.js";
 
 class Ball extends Entity {
 
-    private static spriteSource = '../../assets/ball.png'
+    private static spriteSource = './assets/ball.png'
 
     constructor(x: number, y: number) {
         super()
