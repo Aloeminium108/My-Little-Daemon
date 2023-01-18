@@ -6,8 +6,10 @@ import { Jewel } from "../entity/puzzle/jewel.js";
 import { PuzzleCell } from "../entity/puzzle/puzzlegrid.js";
 import { UnorderedSystem } from "./system.js";
 class Match3System extends UnorderedSystem {
-    constructor() {
+    constructor(slotSystem, grabSystem) {
         super();
+        this.slotSystem = slotSystem;
+        this.grabSystem = grabSystem;
         this.componentsRequired = new Set([Grid, PuzzleMatches]);
         // These two particularly ugly functions work the same
         // Each row/column is scanned, and groups of consecutive jewels with the same
@@ -91,6 +93,8 @@ class Match3System extends UnorderedSystem {
         };
     }
     update(interval) {
+        if (!this.slotSystem.updateNeeded && !this.grabSystem.updateNeeded)
+            return;
         this.entities.forEach(entity => {
             let grid = entity.getComponent(Grid);
             let puzzleMatches = entity.getComponent(PuzzleMatches);

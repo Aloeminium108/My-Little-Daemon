@@ -11,11 +11,14 @@ class GemGrabSystem extends UnorderedSystem {
 
     public swapped = new Set<Jewel>()
 
+    public updateNeeded: boolean = false
+
     constructor(private mouseSystem: MouseSystem) {
         super()
     }
 
     public update(interval: number): void {
+        this.updateNeeded = false
         this.swapped.clear()
         let heldEntity = this.mouseSystem.heldEntity
 
@@ -38,6 +41,7 @@ class GemGrabSystem extends UnorderedSystem {
                 this.swapped.add(heldEntity)
                 this.mouseSystem.heldEntity = null
                 this.mouseSystem.wrenched = true
+                this.updateNeeded = true
                 break
             }
         }

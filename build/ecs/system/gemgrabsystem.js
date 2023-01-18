@@ -9,8 +9,10 @@ class GemGrabSystem extends UnorderedSystem {
         this.mouseSystem = mouseSystem;
         this.componentsRequired = new Set([JewelType, Hitbox]);
         this.swapped = new Set();
+        this.updateNeeded = false;
     }
     update(interval) {
+        this.updateNeeded = false;
         this.swapped.clear();
         let heldEntity = this.mouseSystem.heldEntity;
         // Check to make sure that there is a held entity and that it is a gem
@@ -33,6 +35,7 @@ class GemGrabSystem extends UnorderedSystem {
                 this.swapped.add(heldEntity);
                 this.mouseSystem.heldEntity = null;
                 this.mouseSystem.wrenched = true;
+                this.updateNeeded = true;
                 break;
             }
         }

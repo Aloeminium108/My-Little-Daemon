@@ -10,11 +10,16 @@ import { UnorderedSystem } from "./system.js";
 class GemSlotSystem extends UnorderedSystem {
     public componentsRequired = new Set([GemSlot])
 
+    public updateNeeded: boolean = false
+
     constructor(private collisionDetection: CollisionDetection) {
         super()
     }
 
     public update(interval: number): void {
+
+        this.updateNeeded = false
+
         this.entities.forEach(entity => {
             if (this.collisionDetection.collisions.has(entity)) {
 
@@ -35,6 +40,7 @@ class GemSlotSystem extends UnorderedSystem {
                             collision.getComponent(Position).y = entity.getComponent(GemSlot).y + entity.getComponent(GemSlot).padding
                             entity.getComponent(GemSlot).jewel = collision
                             entity.getComponent(GemSlot).open = false
+                            this.updateNeeded = true
                         }
                     }
                 })

@@ -6,16 +6,19 @@ import { Group, PuzzleMatches } from "../component/puzzlematches.js";
 import { Jewel } from "../entity/puzzle/jewel.js";
 import { PuzzleCell } from "../entity/puzzle/puzzlegrid.js";
 import { GemGrabSystem } from "./gemgrabsystem.js";
+import { GemSlotSystem } from "./gemslotsystem.js";
 import { UnorderedSystem } from "./system.js";
 
 class Match3System extends UnorderedSystem {
     public componentsRequired = new Set([Grid, PuzzleMatches])
 
-    constructor() {
+    constructor(private slotSystem: GemSlotSystem, private grabSystem: GemGrabSystem) {
         super()
     }
 
     public update(interval: number): void {
+
+        if (!this.slotSystem.updateNeeded && !this.grabSystem.updateNeeded) return
 
         this.entities.forEach(entity => {
             let grid = entity.getComponent(Grid)

@@ -10,8 +10,10 @@ class GemSlotSystem extends UnorderedSystem {
         super();
         this.collisionDetection = collisionDetection;
         this.componentsRequired = new Set([GemSlot]);
+        this.updateNeeded = false;
     }
     update(interval) {
+        this.updateNeeded = false;
         this.entities.forEach(entity => {
             if (this.collisionDetection.collisions.has(entity)) {
                 let collisions = this.collisionDetection.collisions.get(entity);
@@ -30,6 +32,7 @@ class GemSlotSystem extends UnorderedSystem {
                             collision.getComponent(Position).y = entity.getComponent(GemSlot).y + entity.getComponent(GemSlot).padding;
                             entity.getComponent(GemSlot).jewel = collision;
                             entity.getComponent(GemSlot).open = false;
+                            this.updateNeeded = true;
                         }
                     }
                 });
