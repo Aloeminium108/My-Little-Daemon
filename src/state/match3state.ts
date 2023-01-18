@@ -16,6 +16,7 @@ import { GemGrabSystem } from "../ecs/system/gemgrabsystem.js";
 import { Match3System } from "../ecs/system/match3system.js";
 import { GemSlotSystem } from "../ecs/system/gemslotsystem.js";
 import { JewelCollision } from "../ecs/system/jewelcollision.js";
+import { SpatialHashing } from "../ecs/system/spatialhashing.js";
 
 class Match3State implements State {
     game: Game;
@@ -56,7 +57,8 @@ class Match3State implements State {
         this.ecs.addSystem(new GravitySystem())
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new FrictionSystem())
-        let collisionDetection = new CollisionDetection()
+        let spatialHashing = new SpatialHashing(100)
+        let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new JewelCollision(collisionDetection))
         let gemSlotSystem = new GemSlotSystem(collisionDetection)
