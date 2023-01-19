@@ -38,6 +38,12 @@ class SpatialHashing extends UnorderedSystem {
         })
     }
 
+    hashPoint = (x: number, y: number) => {
+        let cellX = Math.floor(x/this.cellSize)
+        let cellY = Math.floor(y/this.cellSize)
+        return cellX.toString() + ',' + cellY.toString()
+    }
+
 }
 
 export{SpatialHashing}

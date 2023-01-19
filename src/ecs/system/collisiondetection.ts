@@ -46,32 +46,6 @@ class CollisionDetection extends UnorderedSystem {
             })
         })
 
-        // this.entities.forEach(entity1 => {
-        //     if (!this.collisions.has(entity1)) this.collisions.set(entity1, new Set())
-        //     let collidedEntities = this.collisions.get(entity1)!!
-
-        //     this.entities.forEach(entity2 => {
-
-        //         if (entity1 === entity2) return
-        //         if (collidedEntities.has(entity2) ?? false) return
-                
-        //         if (this.checkCollision(entity1, entity2)) {
-        //             collidedEntities.add(entity2)
-
-        //             if (this.collisions.has(entity2)) {
-        //                 this.collisions.get(entity2)!!.add(entity1)
-        //             } else {
-        //                 this.collisions.set(entity2, new Set([entity1]))
-        //             }
-        //         }
-
-        //     })
-
-        //     if (collidedEntities.size === 0) {
-        //         this.collisions.delete(entity1)
-        //     }
-
-        // })
     }
 
     checkCollision = (entity1: Entity, entity2: Entity) => {
@@ -83,6 +57,22 @@ class CollisionDetection extends UnorderedSystem {
             rect1.y < rect2.y + rect2.height &&
             rect1.height + rect1.y > rect2.y
         )
+    }
+
+    senseAtPoint = (x: number, y: number, filter: Set<ComponentType<Component>> | null = null) => {
+        let hash = this.spatialHashing.hashPoint(x, y)
+        let sensedEntities = new Array<Entity>()
+        this.spatialHashing.proximityMap.get(hash)?.forEach(entity => {
+            if (entity.getComponent(Hitbox).inside(x, y)) {
+                sensedEntities.push(entity)
+            }
+        })
+        if (filter === null) {
+            return sensedEntities
+        } else {
+            return sensedEntities.filter(entity => entity.hasAll(filter))
+        }
+        
     }
     
 }
