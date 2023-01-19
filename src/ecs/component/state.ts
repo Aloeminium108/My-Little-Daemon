@@ -21,9 +21,9 @@ class Automaton extends Component {
 
 enum State {
     // Jewel states
-    FALLING, MATCHED, UNMATCHED,
+    FALLING, MATCHED, UNMATCHED, SWAPPING,
 
-    
+
 }
 
 export {Automaton, State}
