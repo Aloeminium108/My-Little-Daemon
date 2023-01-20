@@ -1,6 +1,5 @@
 import { Component } from "./component.js";
 import { Position } from "./position.js";
-import { Sprite } from "./sprite.js";
 
 class Hitbox extends Component {
 

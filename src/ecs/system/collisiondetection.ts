@@ -8,7 +8,7 @@ import { UnorderedSystem } from "./system.js";
 class CollisionDetection extends UnorderedSystem {
     public componentsRequired = new Set([Hitbox])
 
-    public collisions: Map<Entity, Set<Entity>> = new Map()
+    public collisions: Map<Entity, Array<Entity>> = new Map()
 
     constructor(private spatialHashing: SpatialHashing) {
         super()
@@ -20,27 +20,27 @@ class CollisionDetection extends UnorderedSystem {
 
         this.spatialHashing.proximityMap.forEach(cell => {
             cell.forEach(entity1 => {
-                if (!this.collisions.has(entity1)) this.collisions.set(entity1, new Set())
+                if (!this.collisions.has(entity1)) this.collisions.set(entity1, [])
                 let collidedEntities = this.collisions.get(entity1)!!
 
                 cell.forEach(entity2 => {
 
                     if (entity1 === entity2) return
-                    if (collidedEntities.has(entity2) ?? false) return
+                    if (collidedEntities.includes(entity2) ?? false) return
                     
                     if (this.checkCollision(entity1, entity2)) {
-                        collidedEntities.add(entity2)
+                        collidedEntities.push(entity2)
 
                         if (this.collisions.has(entity2)) {
-                            this.collisions.get(entity2)!!.add(entity1)
+                            this.collisions.get(entity2)!!.push(entity1)
                         } else {
-                            this.collisions.set(entity2, new Set([entity1]))
+                            this.collisions.set(entity2, [entity1])
                         }
                     }
 
                 })
 
-                if (collidedEntities.size === 0) {
+                if (collidedEntities.length === 0) {
                     this.collisions.delete(entity1)
                 }
             })
@@ -59,7 +59,7 @@ class CollisionDetection extends UnorderedSystem {
         )
     }
 
-    checkAllCollisions = (entity: Entity, filter: Set<ComponentType<Component>> | null = null) => {
+    checkAllCollisions = (entity: Entity) => {
         let hitbox = entity.getComponent(Hitbox)
         let cells = this.spatialHashing.hashHitbox(hitbox)
         let collidedEntities = new Array<Entity>()
@@ -69,7 +69,6 @@ class CollisionDetection extends UnorderedSystem {
             let nearbyEntities = this.spatialHashing.proximityMap.get(cell)
             nearbyEntities?.forEach(nearbyEntity => {
                 if (nearbyEntity === entity) return
-                if (filter !== null && !nearbyEntity.hasAll(filter)) return
                 if (this.checkCollision(entity, nearbyEntity)) collidedEntities.push(nearbyEntity)
 
             })
@@ -78,7 +77,7 @@ class CollisionDetection extends UnorderedSystem {
         return collidedEntities
     }
 
-    checkFirstCollision = (entity: Entity, filter: Set<ComponentType<Component>> | null = null) => {
+    checkFirstCollision = (entity: Entity) => {
         let hitbox = entity.getComponent(Hitbox)
         let cells = this.spatialHashing.hashHitbox(hitbox)
 
@@ -86,13 +85,12 @@ class CollisionDetection extends UnorderedSystem {
             if (!this.spatialHashing.proximityMap.has(cell)) continue
             for (let nearbyEntity of this.spatialHashing.proximityMap.get(cell)!!) {
                 if (nearbyEntity === entity) return
-                if (filter !== null && !nearbyEntity.hasAll(filter)) continue
                 if (this.checkCollision(entity, nearbyEntity)) return nearbyEntity
             }
         }
     }
 
-    senseAtPoint = (x: number, y: number, filter: Set<ComponentType<Component>> | null = null) => {
+    senseAtPoint = (x: number, y: number) => {
         let hash = this.spatialHashing.hashPoint(x, y)
         let sensedEntities = new Array<Entity>()
         this.spatialHashing.proximityMap.get(hash)?.forEach(entity => {
@@ -100,11 +98,8 @@ class CollisionDetection extends UnorderedSystem {
                 sensedEntities.push(entity)
             }
         })
-        if (filter === null) {
-            return sensedEntities
-        } else {
-            return sensedEntities.filter(entity => entity.hasAll(filter))
-        }
+        
+        return sensedEntities
         
     }
     

@@ -17,6 +17,8 @@ class Jewel extends Entity {
         })
     }
 
+    static width = 40
+
     static getImageSrc = (jewelType: JewelType) => {
         switch (jewelType.color as Color | null) {
             case Color.RED:

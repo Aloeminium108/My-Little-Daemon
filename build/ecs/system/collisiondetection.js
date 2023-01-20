@@ -14,7 +14,7 @@ class CollisionDetection extends UnorderedSystem {
                 rect1.y < rect2.y + rect2.height &&
                 rect1.height + rect1.y > rect2.y);
         };
-        this.checkAllCollisions = (entity, filter = null) => {
+        this.checkAllCollisions = (entity) => {
             let hitbox = entity.getComponent(Hitbox);
             let cells = this.spatialHashing.hashHitbox(hitbox);
             let collidedEntities = new Array();
@@ -23,15 +23,13 @@ class CollisionDetection extends UnorderedSystem {
                 nearbyEntities === null || nearbyEntities === void 0 ? void 0 : nearbyEntities.forEach(nearbyEntity => {
                     if (nearbyEntity === entity)
                         return;
-                    if (filter !== null && !nearbyEntity.hasAll(filter))
-                        return;
                     if (this.checkCollision(entity, nearbyEntity))
                         collidedEntities.push(nearbyEntity);
                 });
             });
             return collidedEntities;
         };
-        this.checkFirstCollision = (entity, filter = null) => {
+        this.checkFirstCollision = (entity) => {
             let hitbox = entity.getComponent(Hitbox);
             let cells = this.spatialHashing.hashHitbox(hitbox);
             for (let cell of cells) {
@@ -40,14 +38,12 @@ class CollisionDetection extends UnorderedSystem {
                 for (let nearbyEntity of this.spatialHashing.proximityMap.get(cell)) {
                     if (nearbyEntity === entity)
                         return;
-                    if (filter !== null && !nearbyEntity.hasAll(filter))
-                        continue;
                     if (this.checkCollision(entity, nearbyEntity))
                         return nearbyEntity;
                 }
             }
         };
-        this.senseAtPoint = (x, y, filter = null) => {
+        this.senseAtPoint = (x, y) => {
             var _a;
             let hash = this.spatialHashing.hashPoint(x, y);
             let sensedEntities = new Array();
@@ -56,12 +52,7 @@ class CollisionDetection extends UnorderedSystem {
                     sensedEntities.push(entity);
                 }
             });
-            if (filter === null) {
-                return sensedEntities;
-            }
-            else {
-                return sensedEntities.filter(entity => entity.hasAll(filter));
-            }
+            return sensedEntities;
         };
     }
     update(interval) {
@@ -69,25 +60,25 @@ class CollisionDetection extends UnorderedSystem {
         this.spatialHashing.proximityMap.forEach(cell => {
             cell.forEach(entity1 => {
                 if (!this.collisions.has(entity1))
-                    this.collisions.set(entity1, new Set());
+                    this.collisions.set(entity1, []);
                 let collidedEntities = this.collisions.get(entity1);
                 cell.forEach(entity2 => {
                     var _a;
                     if (entity1 === entity2)
                         return;
-                    if ((_a = collidedEntities.has(entity2)) !== null && _a !== void 0 ? _a : false)
+                    if ((_a = collidedEntities.includes(entity2)) !== null && _a !== void 0 ? _a : false)
                         return;
                     if (this.checkCollision(entity1, entity2)) {
-                        collidedEntities.add(entity2);
+                        collidedEntities.push(entity2);
                         if (this.collisions.has(entity2)) {
-                            this.collisions.get(entity2).add(entity1);
+                            this.collisions.get(entity2).push(entity1);
                         }
                         else {
-                            this.collisions.set(entity2, new Set([entity1]));
+                            this.collisions.set(entity2, [entity1]);
                         }
                     }
                 });
-                if (collidedEntities.size === 0) {
+                if (collidedEntities.length === 0) {
                     this.collisions.delete(entity1);
                 }
             });

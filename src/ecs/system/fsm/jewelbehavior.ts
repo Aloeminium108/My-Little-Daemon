@@ -1,22 +1,24 @@
 import { Bounds } from "../../component/bounds.js";
 import { Hitbox } from "../../component/hitbox.js";
 import { JewelType } from "../../component/jeweltype.js";
-import { Position } from "../../component/position.js";
 import { Automaton, State } from "../../component/state.js";
 import { Velocity } from "../../component/velocity.js";
 import { Entity } from "../../entity/entity.js";
-import { Jewel } from "../../entity/puzzle/jewel.js";
 import { CollisionDetection } from "../collisiondetection.js";
 import { FiniteStateMachine } from "./finitestatemachine.js";
 
 class JewelBehavior extends FiniteStateMachine {
 
+    public componentsRequired = new Set([Automaton, JewelType])
+
+    // Sets gems that are connected along the X and Y axis
+    public connectedGemsX = new Map<Entity, Entity>()
+    public connectedGemsY = new Map<Entity, Entity>()
+
     behaviorMap = new Map([
         [State.FALLING, (entity: Entity) => {
             let fsm = entity.getComponent(Automaton)
             let bounds = entity.getComponent(Bounds)
-
-            this.collisionDetectionAndResponse(entity)
 
             if (fsm.currentState !== State.FALLING) {
                 entity.getComponent(Velocity).dy = 0
@@ -38,11 +40,6 @@ class JewelBehavior extends FiniteStateMachine {
         [State.MATCHED, (entity: Entity) => {
             let age = entity.getComponent(Automaton).age
             if (age >= 100) {
-                let position = entity.getComponent(Position)
-                let bounds = entity.getComponent(Bounds)
-                let replacementJewel = new Jewel(position.x, position.y - (bounds.yUpperBound - bounds.yLowerBound), new JewelType())
-                replacementJewel.addComponent(bounds)
-                this.ecs?.addEntity(replacementJewel)
                 this.ecs?.removeEntity(entity)
             }
         }],
@@ -52,8 +49,6 @@ class JewelBehavior extends FiniteStateMachine {
             let hitbox = entity.getComponent(Hitbox)
             let center = hitbox.center
             let ground = entity.getComponent(Bounds).yUpperBound
-
-            this.collisionDetectionAndResponse(entity)
             
             // Send out a short ray to see what gems are immediately
             // underneath.
@@ -63,7 +58,7 @@ class JewelBehavior extends FiniteStateMachine {
             }
 
             let sensedDown = this.collisionDetection.senseAtPoint(
-                rayDown.x, rayDown.y, this.componentsRequired
+                rayDown.x, rayDown.y
             )
 
             // Only check gems underneath if this gem isn't on the ground
@@ -92,7 +87,7 @@ class JewelBehavior extends FiniteStateMachine {
             }
 
             let sensedRight = this.collisionDetection.senseAtPoint(
-                rayRight.x, rayRight.y, this.componentsRequired
+                rayRight.x, rayRight.y
             )
 
             let jewelType = entity.getComponent(JewelType)
@@ -118,12 +113,6 @@ class JewelBehavior extends FiniteStateMachine {
         }],
         
     ])
-
-    public componentsRequired = new Set([Automaton, JewelType])
-
-    // Sets gems that are connected along the X and Y axis
-    public connectedGemsX = new Map<Entity, Entity>()
-    public connectedGemsY = new Map<Entity, Entity>()
 
     constructor(private collisionDetection: CollisionDetection) {
         super()
@@ -185,32 +174,6 @@ class JewelBehavior extends FiniteStateMachine {
         })
 
         return matchSet
-    }
-
-    private collisionDetectionAndResponse = (entity: Entity) => {
-        let collisions = this.collisionDetection.checkAllCollisions(entity, this.componentsRequired)
-            .filter(collidedEntity => collidedEntity.getComponent(Automaton).currentState !== State.FALLING)
-
-        if (collisions.length > 0) {
-            this.collisionResponse(entity, collisions[0])
-            
-            entity.getComponent(Automaton).changeState(State.UNMATCHED)
-            return
-        }
-
-    }
-
-    private collisionResponse = (entity: Entity, collidedEntity: Entity) => {
-
-        let entityHitbox = entity.getComponent(Hitbox)
-        let collidedEntityHitbox = collidedEntity.getComponent(Hitbox)
-        let ceiling = entity.getComponent(Bounds).yLowerBound
-
-        entityHitbox.y = collidedEntityHitbox.y - entityHitbox.height 
-        if (entityHitbox.y < ceiling) {
-            entity.getComponent(Bounds).offScreen = true
-        }
-
     }
     
 }

@@ -4,12 +4,16 @@ import { Entity } from "../entity/entity.js";
 import { UnorderedSystem } from "./system.js";
 
 class SpatialHashing extends UnorderedSystem {
-    public componentsRequired = new Set([Hitbox])
+    public componentsRequired = new Set<ComponentType<Component>>([Hitbox])
 
     public proximityMap = new Map<string, Set<Entity>>()
 
-    constructor(private cellSize: number) {
+    constructor(private cellSize: number,
+        filter: Set<ComponentType<Component>> | null = null) {
         super()
+        filter?.forEach(requiredComponent => {
+            this.componentsRequired.add(requiredComponent)
+        })
     }
 
     public update(interval: number): void {
