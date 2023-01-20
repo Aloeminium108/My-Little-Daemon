@@ -13,9 +13,6 @@ import { Mouse } from "./mouse.js";
 import { GameState } from "./gamestate.js"
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { GemGrabSystem } from "../ecs/system/gemgrabsystem.js";
-import { Match3System } from "../ecs/system/match3system.js";
-import { GemSlotSystem } from "../ecs/system/gemslotsystem.js";
-import { JewelCollision } from "../ecs/system/jewelcollision.js";
 import { SpatialHashing } from "../ecs/system/spatialhashing.js";
 import { BoundarySystem } from "../ecs/system/boundarysystem.js";
 import { JewelBehavior } from "../ecs/system/fsm/jewelbehavior.js";
@@ -75,11 +72,7 @@ class Match3State implements GameState {
         this.ecs.addSystem(spatialHashing)
         let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
-        // this.ecs.addSystem(new JewelCollision(collisionDetection))
         this.ecs.addSystem(new JewelBehavior(collisionDetection))
-        // let gemSlotSystem = new GemSlotSystem(collisionDetection)
-        // this.ecs.addSystem(gemSlotSystem)
-        // this.ecs.addSystem(new Match3System(gemSlotSystem, gemGrabSystem))
         this.ecs.addSystem(new DrawingSystem(this.ctx))
         this.ecs.addSystem(new SpriteSystem(this.ctx))
     }
