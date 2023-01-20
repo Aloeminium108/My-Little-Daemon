@@ -39,8 +39,6 @@ class JewelCollision extends UnorderedSystem {
         } else {
             jewel2Pos.y = jewel1Pos.y - jewel2Box.height
         }
-
-        
     }
     
 }

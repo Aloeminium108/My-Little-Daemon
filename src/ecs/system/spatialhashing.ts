@@ -17,12 +17,12 @@ class SpatialHashing extends UnorderedSystem {
 
         this.entities.forEach(entity => {
             let hitbox = entity.getComponent(Hitbox)
+            // TODO: replace this with a call to hashHitbox
             let minX = Math.floor(hitbox.x/this.cellSize)
             let minY = Math.floor(hitbox.y/this.cellSize)
             let maxX = Math.floor((hitbox.x + hitbox.width)/this.cellSize)
             let maxY = Math.floor((hitbox.y + hitbox.height)/this.cellSize)
 
-            let cells = new Set<string>
             for (let i = minX; i <= maxX; i++) {
                 for (let j = minY; j <= maxY; j++) {
                     let hash = i.toString() + ',' + j.toString()
@@ -42,6 +42,23 @@ class SpatialHashing extends UnorderedSystem {
         let cellX = Math.floor(x/this.cellSize)
         let cellY = Math.floor(y/this.cellSize)
         return cellX.toString() + ',' + cellY.toString()
+    }
+
+    hashHitbox = (hitbox: Hitbox) => {
+        let minX = Math.floor(hitbox.x/this.cellSize)
+        let minY = Math.floor(hitbox.y/this.cellSize)
+        let maxX = Math.floor((hitbox.x + hitbox.width)/this.cellSize)
+        let maxY = Math.floor((hitbox.y + hitbox.height)/this.cellSize)
+
+        let cells = new Set<string>
+        for (let i = minX; i <= maxX; i++) {
+            for (let j = minY; j <= maxY; j++) {
+                let hash = i.toString() + ',' + j.toString()
+                cells.add(hash)
+            }
+        }
+
+        return cells
     }
 
 }

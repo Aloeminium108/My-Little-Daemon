@@ -45,6 +45,14 @@ class Hitbox extends Component {
         return this.position.y
     }
 
+    public set x(x: number) {
+        this.position.x = x
+    }
+
+    public set y(y: number) {
+        this.position.y = y
+    }
+
     public get center() {
         return {
             x: Math.floor(this.position.x + this.width/2), 

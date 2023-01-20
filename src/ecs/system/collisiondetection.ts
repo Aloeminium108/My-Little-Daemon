@@ -59,6 +59,39 @@ class CollisionDetection extends UnorderedSystem {
         )
     }
 
+    checkAllCollisions = (entity: Entity, filter: Set<ComponentType<Component>> | null = null) => {
+        let hitbox = entity.getComponent(Hitbox)
+        let cells = this.spatialHashing.hashHitbox(hitbox)
+        let collidedEntities = new Array<Entity>()
+
+        cells.forEach(cell => {
+
+            let nearbyEntities = this.spatialHashing.proximityMap.get(cell)
+            nearbyEntities?.forEach(nearbyEntity => {
+                if (nearbyEntity === entity) return
+                if (filter !== null && !nearbyEntity.hasAll(filter)) return
+                if (this.checkCollision(entity, nearbyEntity)) collidedEntities.push(nearbyEntity)
+
+            })
+
+        })
+        return collidedEntities
+    }
+
+    checkFirstCollision = (entity: Entity, filter: Set<ComponentType<Component>> | null = null) => {
+        let hitbox = entity.getComponent(Hitbox)
+        let cells = this.spatialHashing.hashHitbox(hitbox)
+
+        for (let cell of cells) {
+            if (!this.spatialHashing.proximityMap.has(cell)) continue
+            for (let nearbyEntity of this.spatialHashing.proximityMap.get(cell)!!) {
+                if (nearbyEntity === entity) return
+                if (filter !== null && !nearbyEntity.hasAll(filter)) continue
+                if (this.checkCollision(entity, nearbyEntity)) return nearbyEntity
+            }
+        }
+    }
+
     senseAtPoint = (x: number, y: number, filter: Set<ComponentType<Component>> | null = null) => {
         let hash = this.spatialHashing.hashPoint(x, y)
         let sensedEntities = new Array<Entity>()

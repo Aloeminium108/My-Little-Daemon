@@ -1,5 +1,7 @@
 import { Bounds } from "../component/bounds.js";
 import { Hitbox } from "../component/hitbox.js";
+import { OffScreen } from "../component/offscreen.js";
+import { OnGround } from "../component/onground.js";
 import { Position } from "../component/position.js";
 import { Velocity } from "../component/velocity.js";
 import { UnorderedSystem } from "./system.js";
@@ -16,18 +18,30 @@ class BoundarySystem extends UnorderedSystem {
 
             if (position.x < bounds.xLowerBound) {
                 position.x = bounds.xLowerBound
-                velocity?.dxInvert()
+                if (bounds.bouncy) velocity?.dxInvert()
             } else if (position.x + hitbox.width > bounds.xUpperBound) {
                 position.x = bounds.xUpperBound - hitbox.width
-                velocity?.dxInvert()
+                if (bounds.bouncy) velocity?.dxInvert()
             }
 
             if (position.y < bounds.yLowerBound) {
-                position.y = bounds.yLowerBound
-                velocity?.dyInvert()
-            } else if (position.y + hitbox.height > bounds.yUpperBound) {
-                position.y = bounds.yUpperBound - hitbox.height
-                velocity?.dyInvert()
+                if (bounds.ceiling) {
+                    position.y = bounds.yLowerBound
+                    if (bounds.bouncy) velocity?.dyInvert()
+                } else {
+                    entity.addComponent(new OffScreen())
+                }
+                
+            } else {
+                entity.deleteComponent(OffScreen)
+                if (position.y + hitbox.height > bounds.yUpperBound) {
+                    position.y = bounds.yUpperBound - hitbox.height
+                    if (bounds.bouncy) {
+                        velocity?.dyInvert()
+                    } else {
+                        entity.addComponent(new OnGround())
+                    }
+                }
             }
         })
     }

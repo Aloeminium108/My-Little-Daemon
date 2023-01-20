@@ -6,17 +6,36 @@ class SpatialHashing extends UnorderedSystem {
         this.cellSize = cellSize;
         this.componentsRequired = new Set([Hitbox]);
         this.proximityMap = new Map();
+        this.hashPoint = (x, y) => {
+            let cellX = Math.floor(x / this.cellSize);
+            let cellY = Math.floor(y / this.cellSize);
+            return cellX.toString() + ',' + cellY.toString();
+        };
+        this.hashHitbox = (hitbox) => {
+            let minX = Math.floor(hitbox.x / this.cellSize);
+            let minY = Math.floor(hitbox.y / this.cellSize);
+            let maxX = Math.floor((hitbox.x + hitbox.width) / this.cellSize);
+            let maxY = Math.floor((hitbox.y + hitbox.height) / this.cellSize);
+            let cells = new Set;
+            for (let i = minX; i <= maxX; i++) {
+                for (let j = minY; j <= maxY; j++) {
+                    let hash = i.toString() + ',' + j.toString();
+                    cells.add(hash);
+                }
+            }
+            return cells;
+        };
     }
     update(interval) {
         this.proximityMap.clear();
         this.entities.forEach(entity => {
             var _a;
             let hitbox = entity.getComponent(Hitbox);
+            // TODO: replace this with a call to hashHitbox
             let minX = Math.floor(hitbox.x / this.cellSize);
             let minY = Math.floor(hitbox.y / this.cellSize);
             let maxX = Math.floor((hitbox.x + hitbox.width) / this.cellSize);
             let maxY = Math.floor((hitbox.y + hitbox.height) / this.cellSize);
-            let cells = new Set;
             for (let i = minX; i <= maxX; i++) {
                 for (let j = minY; j <= maxY; j++) {
                     let hash = i.toString() + ',' + j.toString();
