@@ -45,11 +45,7 @@ class Match3State {
             this.ecs.addSystem(spatialHashing);
             let collisionDetection = new CollisionDetection(spatialHashing);
             this.ecs.addSystem(collisionDetection);
-            // this.ecs.addSystem(new JewelCollision(collisionDetection))
             this.ecs.addSystem(new JewelBehavior(collisionDetection));
-            // let gemSlotSystem = new GemSlotSystem(collisionDetection)
-            // this.ecs.addSystem(gemSlotSystem)
-            // this.ecs.addSystem(new Match3System(gemSlotSystem, gemGrabSystem))
             this.ecs.addSystem(new DrawingSystem(this.ctx));
             this.ecs.addSystem(new SpriteSystem(this.ctx));
         };

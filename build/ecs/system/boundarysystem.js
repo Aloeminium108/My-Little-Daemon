@@ -1,7 +1,5 @@
 import { Bounds } from "../component/bounds.js";
 import { Hitbox } from "../component/hitbox.js";
-import { OffScreen } from "../component/offscreen.js";
-import { OnGround } from "../component/onground.js";
 import { Position } from "../component/position.js";
 import { Velocity } from "../component/velocity.js";
 import { UnorderedSystem } from "./system.js";
@@ -33,18 +31,18 @@ class BoundarySystem extends UnorderedSystem {
                         velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
                 }
                 else {
-                    entity.addComponent(new OffScreen());
+                    bounds.offScreen = true;
                 }
             }
             else {
-                entity.deleteComponent(OffScreen);
+                bounds.offScreen = false;
                 if (position.y + hitbox.height > bounds.yUpperBound) {
                     position.y = bounds.yUpperBound - hitbox.height;
                     if (bounds.bouncy) {
                         velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
                     }
                     else {
-                        entity.addComponent(new OnGround());
+                        bounds.onGround = true;
                     }
                 }
             }

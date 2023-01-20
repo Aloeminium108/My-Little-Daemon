@@ -8,6 +8,8 @@ class Bounds extends Component {
         this.yUpperBound = yUpperBound;
         this.bouncy = bouncy;
         this.ceiling = ceiling;
+        this.onGround = false;
+        this.offScreen = false;
     }
 }
 export { Bounds };

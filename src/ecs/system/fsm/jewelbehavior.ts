@@ -1,8 +1,6 @@
 import { Bounds } from "../../component/bounds.js";
 import { Hitbox } from "../../component/hitbox.js";
 import { JewelType } from "../../component/jeweltype.js";
-import { OffScreen } from "../../component/offscreen.js";
-import { OnGround } from "../../component/onground.js";
 import { Position } from "../../component/position.js";
 import { Automaton, State } from "../../component/state.js";
 import { Velocity } from "../../component/velocity.js";
@@ -16,20 +14,21 @@ class JewelBehavior extends FiniteStateMachine {
     behaviorMap = new Map([
         [State.FALLING, (entity: Entity) => {
             let fsm = entity.getComponent(Automaton)
+            let bounds = entity.getComponent(Bounds)
 
             this.collisionDetectionAndResponse(entity)
 
             if (fsm.currentState !== State.FALLING) {
                 entity.getComponent(Velocity).dy = 0
                 fsm.changeState(State.UNMATCHED)
-                entity.deleteComponent(OnGround)
+                bounds.onGround = false
                 return
             }
 
-            if (entity.hasComponent(OnGround)) {
+            if (bounds.onGround) {
                 entity.getComponent(Velocity).dy = 0
                 fsm.changeState(State.UNMATCHED)
-                entity.deleteComponent(OnGround)
+                bounds.onGround = false
                 return
             }
 
@@ -83,7 +82,7 @@ class JewelBehavior extends FiniteStateMachine {
                 }
             }
 
-            if (entity.hasComponent(OffScreen)) return
+            if (entity.getComponent(Bounds).offScreen) return
             
             // Similarly send a short ray to see what gems are immediately
             // to the right
@@ -209,7 +208,7 @@ class JewelBehavior extends FiniteStateMachine {
 
         entityHitbox.y = collidedEntityHitbox.y - entityHitbox.height 
         if (entityHitbox.y < ceiling) {
-            entity.addComponent(OffScreen)
+            entity.getComponent(Bounds).offScreen = true
         }
 
     }
