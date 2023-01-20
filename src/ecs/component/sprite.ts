@@ -7,10 +7,10 @@ class Sprite extends OrderingComponent {
 
     constructor(index: number, private src: string) {
         super(index)
-        this.updateSprite(src)
+        this.loadSprite(src)
     }
 
-    loadImage = (src: string) => {
+    static loadImage = (src: string) => {
         return new Promise((resolve, reject) => {
             const image = new Image();
             image.onload = () => resolve(image);
@@ -19,7 +19,7 @@ class Sprite extends OrderingComponent {
         }) as Promise<HTMLImageElement>
     }
 
-    updateSprite = (src: string) => {
+    loadSprite = (src: string) => {
         if (Sprite.loadedBitmaps.has(src)) {
             return  new Promise(resolve => {
                 this.sprite = Sprite.loadedBitmaps.get(src)!!
@@ -28,7 +28,7 @@ class Sprite extends OrderingComponent {
         } 
 
         this.loadingPromise = this.loadingPromise.then(() => {
-            return this.loadImage(src)
+            return Sprite.loadImage(src)
         })
         .then(image => {
             return createImageBitmap(image)
@@ -36,9 +36,30 @@ class Sprite extends OrderingComponent {
         .then(sprite => {
             this.sprite = sprite
             Sprite.loadedBitmaps.set(src, sprite)
-            console.log("Sprite generated from", src)
             return new Promise(resolve => resolve(null))
         })
+    }
+
+    static loadSprite = (src: string) => {
+        if (Sprite.loadedBitmaps.has(src)) {
+            return new Promise<ImageBitmap>(resolve => {
+                let sprite = Sprite.loadedBitmaps.get(src)!!
+                resolve(sprite)
+            })
+        }
+
+        return Sprite.loadImage(src)
+        .then(image => {
+            return createImageBitmap(image)
+        })
+        .then(sprite => {
+            Sprite.loadedBitmaps.set(src, sprite)
+            return sprite
+        })
+    }
+
+    updateSprite = (newSprite: ImageBitmap) => {
+        this.sprite = newSprite
     }
 
     static loadedBitmaps = new Map<string, ImageBitmap>()

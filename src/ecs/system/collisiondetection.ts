@@ -1,6 +1,4 @@
-import { ComponentType, Component } from "../component/component.js";
 import { Hitbox } from "../component/hitbox.js";
-import { Position } from "../component/position.js";
 import { Entity } from "../entity/entity.js";
 import { SpatialHashing } from "./spatialhashing.js";
 import { UnorderedSystem } from "./system.js";

@@ -5,15 +5,7 @@ class Sprite extends OrderingComponent {
         this.src = src;
         this.loadingPromise = new Promise(resolve => resolve(null));
         this.sprite = null;
-        this.loadImage = (src) => {
-            return new Promise((resolve, reject) => {
-                const image = new Image();
-                image.onload = () => resolve(image);
-                image.onerror = reject;
-                image.src = src;
-            });
-        };
-        this.updateSprite = (src) => {
+        this.loadSprite = (src) => {
             if (Sprite.loadedBitmaps.has(src)) {
                 return new Promise(resolve => {
                     this.sprite = Sprite.loadedBitmaps.get(src);
@@ -21,7 +13,7 @@ class Sprite extends OrderingComponent {
                 });
             }
             this.loadingPromise = this.loadingPromise.then(() => {
-                return this.loadImage(src);
+                return Sprite.loadImage(src);
             })
                 .then(image => {
                 return createImageBitmap(image);
@@ -29,12 +21,38 @@ class Sprite extends OrderingComponent {
                 .then(sprite => {
                 this.sprite = sprite;
                 Sprite.loadedBitmaps.set(src, sprite);
-                console.log("Sprite generated from", src);
                 return new Promise(resolve => resolve(null));
             });
         };
-        this.updateSprite(src);
+        this.updateSprite = (newSprite) => {
+            this.sprite = newSprite;
+        };
+        this.loadSprite(src);
     }
 }
+Sprite.loadImage = (src) => {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = src;
+    });
+};
+Sprite.loadSprite = (src) => {
+    if (Sprite.loadedBitmaps.has(src)) {
+        return new Promise(resolve => {
+            let sprite = Sprite.loadedBitmaps.get(src);
+            resolve(sprite);
+        });
+    }
+    return Sprite.loadImage(src)
+        .then(image => {
+        return createImageBitmap(image);
+    })
+        .then(sprite => {
+        Sprite.loadedBitmaps.set(src, sprite);
+        return sprite;
+    });
+};
 Sprite.loadedBitmaps = new Map();
 export { Sprite };
