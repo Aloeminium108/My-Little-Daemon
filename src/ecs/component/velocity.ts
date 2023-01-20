@@ -10,6 +10,14 @@ class Velocity extends Component {
         this.dy = 0
     }
 
+    holdX = () => {
+        this.dx = 0
+    }
+
+    holdY = () => {
+        this.dy = 0
+    }
+
     setDX = (dx: number) => {
         this.dx = dx
     }

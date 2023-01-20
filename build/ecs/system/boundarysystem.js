@@ -16,19 +16,31 @@ class BoundarySystem extends UnorderedSystem {
             let velocity = entity.getPossibleComponent(Velocity);
             if (position.x < bounds.xLowerBound) {
                 position.x = bounds.xLowerBound;
-                if (bounds.bouncy)
+                if (bounds.bouncy) {
                     velocity === null || velocity === void 0 ? void 0 : velocity.dxInvert();
+                }
+                else {
+                    velocity === null || velocity === void 0 ? void 0 : velocity.holdX();
+                }
             }
             else if (position.x + hitbox.width > bounds.xUpperBound) {
                 position.x = bounds.xUpperBound - hitbox.width;
-                if (bounds.bouncy)
+                if (bounds.bouncy) {
                     velocity === null || velocity === void 0 ? void 0 : velocity.dxInvert();
+                }
+                else {
+                    velocity === null || velocity === void 0 ? void 0 : velocity.holdX();
+                }
             }
             if (position.y < bounds.yLowerBound) {
                 if (bounds.ceiling) {
                     position.y = bounds.yLowerBound;
-                    if (bounds.bouncy)
+                    if (bounds.bouncy) {
                         velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
+                    }
+                    else {
+                        velocity === null || velocity === void 0 ? void 0 : velocity.holdY();
+                    }
                 }
                 else {
                     bounds.offScreen = true;
@@ -42,6 +54,7 @@ class BoundarySystem extends UnorderedSystem {
                         velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
                     }
                     else {
+                        velocity === null || velocity === void 0 ? void 0 : velocity.holdY();
                         bounds.onGround = true;
                     }
                 }

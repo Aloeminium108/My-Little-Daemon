@@ -1,3 +1,4 @@
+import { Hitbox } from "../component/hitbox.js";
 import { Entity } from "./entity.js";
 
 class Ball extends Entity {

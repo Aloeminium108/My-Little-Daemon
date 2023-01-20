@@ -28,11 +28,11 @@ class HomeState {
         };
         this.initEntities = () => {
             let ball = new Ball(200, 100);
-            ball.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
+            ball.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height, true, true));
             let ball1 = new Ball(400, 100);
-            ball1.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
+            ball1.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height, true, true));
             let ball2 = new Ball(600, 100);
-            ball2.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
+            ball2.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height, true, true));
             this.ecs.addEntity(ball);
             this.ecs.addEntity(ball1);
             this.ecs.addEntity(ball2);
