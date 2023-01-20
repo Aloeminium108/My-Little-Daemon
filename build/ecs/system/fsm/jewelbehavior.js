@@ -80,10 +80,14 @@ class JewelBehavior extends FiniteStateMachine {
                     let jewelType = entity.getComponent(JewelType);
                     // If the gem immediately to the right or down is the same color
                     // save it and that gem to the appropriate map
-                    if (sensedRight.length > 0 && sensedRight[0].getComponent(JewelType).color === jewelType.color) {
+                    if (sensedRight.length > 0 &&
+                        sensedRight[0].getComponent(Automaton).currentState === State.UNMATCHED &&
+                        sensedRight[0].getComponent(JewelType).color === jewelType.color) {
                         this.connectedGemsX.set(entity, sensedRight[0]);
                     }
-                    if (sensedDown.length > 0 && sensedDown[0].getComponent(JewelType).color === jewelType.color) {
+                    if (sensedDown.length > 0 &&
+                        sensedDown[0].getComponent(Automaton).currentState === State.UNMATCHED &&
+                        sensedDown[0].getComponent(JewelType).color === jewelType.color) {
                         this.connectedGemsY.set(entity, sensedDown[0]);
                     }
                 }],
