@@ -1,4 +1,3 @@
-import { ECS } from "../ecs/ecs";
 import { Game } from "../game";
 import { Pet } from "../Pet/pet";
 import { GameState } from "./gamestate";

@@ -2,7 +2,6 @@ import { PetStats } from "../../Pet/petstats.js";
 import { Consumer } from "../component/consumable.js";
 import { MouseInteractable } from "../component/mouseinteractable.js";
 import { Sprite } from "../component/sprite.js";
-import { ECS } from "../ecs.js";
 import { Entity } from "./entity.js";
 
 class PetEntity extends Entity {

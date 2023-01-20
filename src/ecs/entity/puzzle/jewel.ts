@@ -1,9 +1,7 @@
-import { Gravity } from "../../component/gravity.js";
-import { Hitbox } from "../../component/hitbox.js";
 import { Color, JewelType } from "../../component/jeweltype.js";
 import { MouseInteractable } from "../../component/mouseinteractable.js";
-import { Position } from "../../component/position.js";
 import { Sprite } from "../../component/sprite.js";
+import { Automaton, State } from "../../component/state.js";
 import { Entity } from "../entity.js";
 
 
@@ -15,8 +13,11 @@ class Jewel extends Entity {
         this.addZeroGPhysicsBody(x, y, 5, Jewel.getImageSrc(jewelType))
         .then(() => {
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)))
+            this.addComponent(new Automaton(State.FALLING))
         })
     }
+
+    static width = 40
 
     static getImageSrc = (jewelType: JewelType) => {
         switch (jewelType.color as Color | null) {

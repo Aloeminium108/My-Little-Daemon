@@ -16,18 +16,30 @@ class BoundarySystem extends UnorderedSystem {
 
             if (position.x < bounds.xLowerBound) {
                 position.x = bounds.xLowerBound
-                velocity?.dxInvert()
+                if (bounds.bouncy) velocity?.dxInvert()
             } else if (position.x + hitbox.width > bounds.xUpperBound) {
                 position.x = bounds.xUpperBound - hitbox.width
-                velocity?.dxInvert()
+                if (bounds.bouncy) velocity?.dxInvert()
             }
 
             if (position.y < bounds.yLowerBound) {
-                position.y = bounds.yLowerBound
-                velocity?.dyInvert()
-            } else if (position.y + hitbox.height > bounds.yUpperBound) {
-                position.y = bounds.yUpperBound - hitbox.height
-                velocity?.dyInvert()
+                if (bounds.ceiling) {
+                    position.y = bounds.yLowerBound
+                    if (bounds.bouncy) velocity?.dyInvert()
+                } else {
+                    bounds.offScreen = true
+                }
+                
+            } else {
+                bounds.offScreen = false
+                if (position.y + hitbox.height > bounds.yUpperBound) {
+                    position.y = bounds.yUpperBound - hitbox.height
+                    if (bounds.bouncy) {
+                        velocity?.dyInvert()
+                    } else {
+                        bounds.onGround = true
+                    }
+                }
             }
         })
     }

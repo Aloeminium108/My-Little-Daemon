@@ -16,19 +16,35 @@ class BoundarySystem extends UnorderedSystem {
             let velocity = entity.getPossibleComponent(Velocity);
             if (position.x < bounds.xLowerBound) {
                 position.x = bounds.xLowerBound;
-                velocity === null || velocity === void 0 ? void 0 : velocity.dxInvert();
+                if (bounds.bouncy)
+                    velocity === null || velocity === void 0 ? void 0 : velocity.dxInvert();
             }
             else if (position.x + hitbox.width > bounds.xUpperBound) {
                 position.x = bounds.xUpperBound - hitbox.width;
-                velocity === null || velocity === void 0 ? void 0 : velocity.dxInvert();
+                if (bounds.bouncy)
+                    velocity === null || velocity === void 0 ? void 0 : velocity.dxInvert();
             }
             if (position.y < bounds.yLowerBound) {
-                position.y = bounds.yLowerBound;
-                velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
+                if (bounds.ceiling) {
+                    position.y = bounds.yLowerBound;
+                    if (bounds.bouncy)
+                        velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
+                }
+                else {
+                    bounds.offScreen = true;
+                }
             }
-            else if (position.y + hitbox.height > bounds.yUpperBound) {
-                position.y = bounds.yUpperBound - hitbox.height;
-                velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
+            else {
+                bounds.offScreen = false;
+                if (position.y + hitbox.height > bounds.yUpperBound) {
+                    position.y = bounds.yUpperBound - hitbox.height;
+                    if (bounds.bouncy) {
+                        velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert();
+                    }
+                    else {
+                        bounds.onGround = true;
+                    }
+                }
             }
         });
     }

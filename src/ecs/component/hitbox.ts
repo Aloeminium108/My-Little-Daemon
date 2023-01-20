@@ -1,6 +1,5 @@
 import { Component } from "./component.js";
 import { Position } from "./position.js";
-import { Sprite } from "./sprite.js";
 
 class Hitbox extends Component {
 
@@ -43,6 +42,14 @@ class Hitbox extends Component {
 
     public get y() {
         return this.position.y
+    }
+
+    public set x(x: number) {
+        this.position.x = x
+    }
+
+    public set y(y: number) {
+        this.position.y = y
     }
 
     public get center() {

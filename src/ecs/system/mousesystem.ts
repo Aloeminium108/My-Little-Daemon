@@ -1,7 +1,6 @@
 import { Mouse } from "../../gamestate/mouse.js";
 import { Hitbox } from "../component/hitbox.js";
 import { MouseInteractable } from "../component/mouseinteractable.js";
-import { Velocity } from "../component/velocity.js";
 import { Entity } from "../entity/entity.js";
 import { OrderedSystem } from "./system.js";
 
