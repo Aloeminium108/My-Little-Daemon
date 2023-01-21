@@ -12,6 +12,7 @@ class JewelBehavior extends FiniteStateMachine {
         // Sets gems that are connected along the X and Y axis
         this.connectedGemsX = new Map();
         this.connectedGemsY = new Map();
+        this.destroyedGems = new Array;
         this.behaviorMap = new Map([
             [EntityState.FALLING, (entity) => {
                     let fsm = entity.getComponent(Automaton);
@@ -28,13 +29,44 @@ class JewelBehavior extends FiniteStateMachine {
                         bounds.onGround = false;
                         return;
                     }
-                    entity.getComponent(Velocity).dy += 0.5;
+                    entity.getComponent(Velocity).dy += 0.7;
                 }],
             [EntityState.MATCHED, (entity) => {
                     var _a;
                     let age = entity.getComponent(Automaton).age;
-                    if (age >= 100) {
+                    if (age >= 120) {
+                        this.destroyedGems.push(entity.getComponent(JewelType));
                         (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.removeEntity(entity);
+                    }
+                    let fsm = entity.getComponent(Automaton);
+                    let hitbox = entity.getComponent(Hitbox);
+                    let center = hitbox.center;
+                    // Send out a short ray to see what gems are immediately
+                    // underneath.
+                    let rayDown = {
+                        x: center.x,
+                        y: center.y + (hitbox.height)
+                    };
+                    let sensedDown = this.collisionDetection.senseAtPoint(rayDown.x, rayDown.y);
+                    // Similarly send a short ray to see what gems are immediately
+                    // to the right
+                    let rayRight = {
+                        x: center.x + (hitbox.width),
+                        y: center.y
+                    };
+                    let sensedRight = this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
+                    let jewelType = entity.getComponent(JewelType);
+                    // If the gem immediately to the right or down is the same color
+                    // save it and that gem to the appropriate map
+                    if (sensedRight.length > 0 &&
+                        availableForMatching(sensedRight[0]) &&
+                        sensedRight[0].getComponent(JewelType).color === jewelType.color) {
+                        this.connectedGemsX.set(entity, sensedRight[0]);
+                    }
+                    if (sensedDown.length > 0 &&
+                        availableForMatching(sensedDown[0]) &&
+                        sensedDown[0].getComponent(JewelType).color === jewelType.color) {
+                        this.connectedGemsY.set(entity, sensedDown[0]);
                     }
                 }],
             [EntityState.UNMATCHED, (entity) => {
@@ -75,12 +107,12 @@ class JewelBehavior extends FiniteStateMachine {
                     // If the gem immediately to the right or down is the same color
                     // save it and that gem to the appropriate map
                     if (sensedRight.length > 0 &&
-                        sensedRight[0].getComponent(Automaton).currentState === EntityState.UNMATCHED &&
+                        availableForMatching(sensedRight[0]) &&
                         sensedRight[0].getComponent(JewelType).color === jewelType.color) {
                         this.connectedGemsX.set(entity, sensedRight[0]);
                     }
                     if (sensedDown.length > 0 &&
-                        sensedDown[0].getComponent(Automaton).currentState === EntityState.UNMATCHED &&
+                        availableForMatching(sensedDown[0]) &&
                         sensedDown[0].getComponent(JewelType).color === jewelType.color) {
                         this.connectedGemsY.set(entity, sensedDown[0]);
                     }
@@ -109,7 +141,8 @@ class JewelBehavior extends FiniteStateMachine {
             matches = this.consolidateMatches(matches);
             matches.forEach(match => {
                 match.forEach(gem => {
-                    gem.getComponent(Automaton).changeState(EntityState.MATCHED);
+                    let fsm = gem.getComponent(Automaton);
+                    fsm.changeState(EntityState.MATCHED);
                 });
             });
         };
@@ -138,5 +171,12 @@ class JewelBehavior extends FiniteStateMachine {
             return matchSet;
         };
     }
+}
+function availableForMatching(entity) {
+    if (entity === undefined)
+        return false;
+    let state = entity.getComponent(Automaton).currentState;
+    return state === EntityState.MATCHED ||
+        state === EntityState.UNMATCHED;
 }
 export { JewelBehavior };

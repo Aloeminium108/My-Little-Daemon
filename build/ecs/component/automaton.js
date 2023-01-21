@@ -12,6 +12,8 @@ class Automaton extends Component {
     }
     changeState(state) {
         var _a;
+        if (this.currentState === state)
+            return;
         this.currentState = state;
         this.age = 0;
         if (this.stateSpriteMap !== null && this.stateSpriteMap.has(this.currentState)) {

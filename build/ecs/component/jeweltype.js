@@ -29,5 +29,8 @@ var Color;
 })(Color || (Color = {}));
 var SpecialProperty;
 (function (SpecialProperty) {
+    SpecialProperty[SpecialProperty["LINECLEAR"] = 0] = "LINECLEAR";
+    SpecialProperty[SpecialProperty["BOMB"] = 1] = "BOMB";
+    SpecialProperty[SpecialProperty["COLORBOMB"] = 2] = "COLORBOMB";
 })(SpecialProperty || (SpecialProperty = {}));
 export { JewelType, Color, SpecialProperty };

@@ -19,6 +19,7 @@ class JewelCollision extends UnorderedSystem {
             if (fsm.currentState !== EntityState.FALLING) return
 
             let hitbox = entity.getComponent(Hitbox)
+            let velocity = entity.getComponent(Velocity)
 
             let stableCollisions = collisions
             .filter(collidedEntity => {
@@ -27,9 +28,18 @@ class JewelCollision extends UnorderedSystem {
 
             if (stableCollisions.length > 0) {
                 hitbox.y = stableCollisions[0].getComponent(Hitbox).y - hitbox.height
-                entity.getComponent(Velocity).dy = 0
+                velocity.dy = 0
                 fsm.changeState(EntityState.UNMATCHED)
-            } 
+            } else {
+                collisions.forEach(collidedEntity => {
+                    let collidedHitbox = collidedEntity.getComponent(Hitbox)
+                    let collidedVelocity = collidedEntity.getComponent(Velocity)
+                    let impulse = (hitbox.height - Math.abs(hitbox.y - collidedHitbox.y))/2
+                    impulse *= hitbox.y > collidedHitbox.y ? 1 : -1
+                    velocity.dy += impulse
+                    collidedVelocity.dy -= impulse
+                })
+            }
         })
     }
     

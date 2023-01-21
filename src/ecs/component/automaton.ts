@@ -18,6 +18,8 @@ class Automaton extends Component {
     }
 
     changeState(state: EntityState) {
+        if (this.currentState === state) return
+
         this.currentState = state
         this.age = 0
 
