@@ -6,9 +6,9 @@ class Automaton extends Component {
     public age = 0
 
     constructor(
-        public currentState: State, 
+        public currentState: EntityState, 
         private sprite: Sprite | null = null,
-        private stateSpriteMap: Map<State, ImageBitmap> | null = null
+        private stateSpriteMap: Map<EntityState, ImageBitmap> | null = null
         ) {
         super()
     }
@@ -17,7 +17,7 @@ class Automaton extends Component {
         this.age += interval
     }
 
-    changeState(state: State) {
+    changeState(state: EntityState) {
         this.currentState = state
         this.age = 0
 
@@ -27,11 +27,11 @@ class Automaton extends Component {
     }
 }
 
-enum State {
+enum EntityState {
     // Jewel states
     FALLING, MATCHED, UNMATCHED, SWAPPING,
-
+    // Pet States
     NEUTRAL, HAPPY
 }
 
-export {Automaton, State}
+export {Automaton, EntityState}

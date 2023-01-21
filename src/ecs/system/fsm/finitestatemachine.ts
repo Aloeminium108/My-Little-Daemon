@@ -1,11 +1,11 @@
-import { Automaton, State } from "../../component/state.js";
+import { Automaton, EntityState } from "../../component/automaton.js";
 import { Entity } from "../../entity/entity.js";
 import { UnorderedSystem } from "../system.js";
 
 abstract class FiniteStateMachine extends UnorderedSystem {
 
     // Define the behavior that corresponds to each state
-    abstract behaviorMap: Map<State, (entity: Entity) => void>
+    abstract behaviorMap: Map<EntityState, (entity: Entity) => void>
 
     public update = (interval: number) => {
 

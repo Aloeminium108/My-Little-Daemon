@@ -2,7 +2,7 @@ import { Bounds } from "../component/bounds.js";
 import { Generator } from "../component/generator.js";
 import { JewelType } from "../component/jeweltype.js";
 import { Position } from "../component/position.js";
-import { Automaton, State } from "../component/state.js";
+import { Automaton, EntityState } from "../component/automaton.js";
 import { Jewel } from "../entity/puzzle/jewel.js";
 import { CollisionDetection } from "./collisiondetection.js";
 import { UnorderedSystem } from "./system.js"
@@ -31,7 +31,7 @@ class GeneratorSystem extends UnorderedSystem {
                     this.ecs?.addEntity(replacementJewel)
                     break
                 case 1:
-                    if (collisions[0].getComponent(Automaton).currentState !== State.FALLING) break
+                    if (collisions[0].getComponent(Automaton).currentState !== EntityState.FALLING) break
                     position = collisions[0].getComponent(Position)
                     position.y -= Jewel.width
                     replacementJewel = new Jewel(position.x, position.y, new JewelType())
