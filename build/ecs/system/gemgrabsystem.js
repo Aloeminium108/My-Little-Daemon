@@ -1,3 +1,4 @@
+import { Automaton, EntityState } from "../component/automaton.js";
 import { Gravity } from "../component/gravity.js";
 import { Hitbox } from "../component/hitbox.js";
 import { JewelType } from "../component/jeweltype.js";
@@ -7,7 +8,7 @@ class GemGrabSystem extends UnorderedSystem {
     constructor(mouseSystem) {
         super();
         this.mouseSystem = mouseSystem;
-        this.componentsRequired = new Set([JewelType, Hitbox]);
+        this.componentsRequired = new Set([Automaton, JewelType, Hitbox]);
         this.swapped = new Set();
         this.updateNeeded = false;
     }
@@ -18,9 +19,9 @@ class GemGrabSystem extends UnorderedSystem {
         // Check to make sure that there is a held entity and that it is a gem
         if (heldEntity === null)
             return;
-        if (!heldEntity.hasComponent(JewelType))
+        if (!this.entities.has(heldEntity))
             return;
-        if (heldEntity.hasComponent(Gravity))
+        if (heldEntity.getComponent(Automaton).currentState !== EntityState.UNMATCHED)
             return;
         let mouse = this.mouseSystem.mouse;
         for (let entity of this.entities) {

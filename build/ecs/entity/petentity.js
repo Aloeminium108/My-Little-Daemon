@@ -1,8 +1,8 @@
 import { Consumer } from "../component/consumable.js";
 import { MouseInteractable } from "../component/mouseinteractable.js";
-import { PetLink } from "../component/pet.js";
+import { PetLink } from "../component/petlink.js";
 import { Sprite } from "../component/sprite.js";
-import { Automaton, State } from "../component/state.js";
+import { Automaton, EntityState } from "../component/automaton.js";
 import { Entity } from "./entity.js";
 class PetEntity extends Entity {
     constructor(x, y, petStats) {
@@ -16,10 +16,10 @@ class PetEntity extends Entity {
         })
             .then(happySprite => {
             let stateSpriteMap = new Map([
-                [State.NEUTRAL, this.getComponent(Sprite).sprite],
-                [State.HAPPY, happySprite]
+                [EntityState.NEUTRAL, this.getComponent(Sprite).sprite],
+                [EntityState.HAPPY, happySprite]
             ]);
-            this.addComponent(new Automaton(State.NEUTRAL, this.getComponent(Sprite), stateSpriteMap));
+            this.addComponent(new Automaton(EntityState.NEUTRAL, this.getComponent(Sprite), stateSpriteMap));
         });
     }
 }

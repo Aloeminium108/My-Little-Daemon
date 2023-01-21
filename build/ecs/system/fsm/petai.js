@@ -1,5 +1,5 @@
-import { PetLink } from "../../component/pet.js";
-import { Automaton, State } from "../../component/state.js";
+import { PetLink } from "../../component/petlink.js";
+import { Automaton, EntityState } from "../../component/automaton.js";
 import { FiniteStateMachine } from "./finitestatemachine.js";
 class PetAI extends FiniteStateMachine {
     constructor(mouseSystem) {
@@ -7,13 +7,13 @@ class PetAI extends FiniteStateMachine {
         this.mouseSystem = mouseSystem;
         this.componentsRequired = new Set([Automaton, PetLink]);
         this.behaviorMap = new Map([
-            [State.NEUTRAL, (entity) => {
+            [EntityState.NEUTRAL, (entity) => {
                     if (entity === this.mouseSystem.heldEntity)
-                        entity.getComponent(Automaton).changeState(State.HAPPY);
+                        entity.getComponent(Automaton).changeState(EntityState.HAPPY);
                 }],
-            [State.HAPPY, (entity) => {
+            [EntityState.HAPPY, (entity) => {
                     if (entity !== this.mouseSystem.heldEntity)
-                        entity.getComponent(Automaton).changeState(State.NEUTRAL);
+                        entity.getComponent(Automaton).changeState(EntityState.NEUTRAL);
                 }]
         ]);
     }

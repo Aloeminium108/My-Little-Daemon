@@ -1,7 +1,7 @@
 import { Color } from "../../component/jeweltype.js";
 import { MouseInteractable } from "../../component/mouseinteractable.js";
 import { Sprite } from "../../component/sprite.js";
-import { Automaton, State } from "../../component/state.js";
+import { Automaton, EntityState } from "../../component/automaton.js";
 import { Entity } from "../entity.js";
 class Jewel extends Entity {
     constructor(x, y, jewelType) {
@@ -10,7 +10,7 @@ class Jewel extends Entity {
         this.addZeroGPhysicsBody(x, y, 5, Jewel.getImageSrc(jewelType))
             .then(() => {
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)));
-            this.addComponent(new Automaton(State.FALLING));
+            this.addComponent(new Automaton(EntityState.FALLING));
         });
     }
 }

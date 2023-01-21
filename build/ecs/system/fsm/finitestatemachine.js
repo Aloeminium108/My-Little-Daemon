@@ -1,4 +1,4 @@
-import { Automaton } from "../../component/state.js";
+import { Automaton } from "../../component/automaton.js";
 import { UnorderedSystem } from "../system.js";
 class FiniteStateMachine extends UnorderedSystem {
     constructor() {
