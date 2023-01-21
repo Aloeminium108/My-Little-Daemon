@@ -32,5 +32,6 @@ var SpecialProperty;
     SpecialProperty[SpecialProperty["LINECLEAR"] = 0] = "LINECLEAR";
     SpecialProperty[SpecialProperty["BOMB"] = 1] = "BOMB";
     SpecialProperty[SpecialProperty["COLORBOMB"] = 2] = "COLORBOMB";
+    SpecialProperty[SpecialProperty["ULTRABOMB"] = 3] = "ULTRABOMB";
 })(SpecialProperty || (SpecialProperty = {}));
 export { JewelType, Color, SpecialProperty };

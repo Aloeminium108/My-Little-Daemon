@@ -16,6 +16,9 @@ import { Automaton } from "../ecs/component/automaton.js";
 import { JewelCollision } from "../ecs/system/jewelcollision.js";
 import { JewelGenerator } from "../ecs/entity/puzzle/jewelgenerator.js";
 import { GeneratorSystem } from "../ecs/system/generatorsystem.js";
+import { Match3ScoringSystem } from "../ecs/system/match3scoring.js";
+import { DrawingSystem } from "../ecs/system/drawingsystem.js";
+import { Scoreboard } from "../ecs/entity/puzzle/scoreboard.js";
 class Match3State {
     constructor(game) {
         this.ecs = new ECS();
@@ -37,6 +40,8 @@ class Match3State {
                     this.ecs.addEntity(gem);
                 }
             }
+            let scoreboard = new Scoreboard(800, 300);
+            this.ecs.addEntity(scoreboard);
         };
         this.initSystems = () => {
             let mouseSystem = new MouseSystem(this.mouse, this.canvas);
@@ -51,8 +56,11 @@ class Match3State {
             let collisionDetection = new CollisionDetection(spatialHashing);
             this.ecs.addSystem(collisionDetection);
             this.ecs.addSystem(new JewelCollision(collisionDetection));
-            this.ecs.addSystem(new JewelBehavior(collisionDetection));
+            let jewelBehavior = new JewelBehavior(collisionDetection);
+            this.ecs.addSystem(jewelBehavior);
             this.ecs.addSystem(new GeneratorSystem(collisionDetection));
+            this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior));
+            this.ecs.addSystem(new DrawingSystem(this.ctx));
             this.ecs.addSystem(new SpriteSystem(this.ctx));
         };
         this.pause = () => { };

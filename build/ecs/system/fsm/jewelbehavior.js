@@ -12,7 +12,7 @@ class JewelBehavior extends FiniteStateMachine {
         // Sets gems that are connected along the X and Y axis
         this.connectedGemsX = new Map();
         this.connectedGemsY = new Map();
-        this.destroyedGems = new Array;
+        this.destroyedGems = new Array();
         this.behaviorMap = new Map([
             [EntityState.FALLING, (entity) => {
                     let fsm = entity.getComponent(Automaton);

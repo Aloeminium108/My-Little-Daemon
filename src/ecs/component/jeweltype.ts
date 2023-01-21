@@ -31,7 +31,8 @@ enum Color {
 enum SpecialProperty {
     LINECLEAR,
     BOMB,
-    COLORBOMB
+    COLORBOMB,
+    ULTRABOMB
 }
 
 export {JewelType, Color, SpecialProperty}

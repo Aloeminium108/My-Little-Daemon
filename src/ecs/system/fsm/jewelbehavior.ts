@@ -15,7 +15,7 @@ class JewelBehavior extends FiniteStateMachine {
     public connectedGemsX = new Map<Entity, Entity>()
     public connectedGemsY = new Map<Entity, Entity>()
 
-    public destroyedGems = new Array<JewelType>
+    public destroyedGems = new Array<JewelType>()
 
     behaviorMap = new Map([
         [EntityState.FALLING, (entity: Entity) => {
