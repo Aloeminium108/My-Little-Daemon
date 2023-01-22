@@ -5,15 +5,19 @@ import { Position } from "../component/position.js";
 import { Automaton, EntityState } from "../component/automaton.js";
 import { Jewel } from "../entity/puzzle/jewel.js";
 import { UnorderedSystem } from "./system.js";
+import { Hitbox } from "../component/hitbox.js";
 class GeneratorSystem extends UnorderedSystem {
     constructor(collisionDetection) {
         super();
         this.collisionDetection = collisionDetection;
-        this.componentsRequired = new Set([Generator]);
+        this.componentsRequired = new Set([Generator, Hitbox]);
         this.update = (interval) => {
             this.entities.forEach(entity => {
                 var _a, _b;
                 let collisions = this.collisionDetection.checkAllCollisions(entity);
+                collisions.forEach(entity => {
+                    entity.getComponent(JewelType).active = false;
+                });
                 let position;
                 let bounds = entity.getComponent(Bounds);
                 let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound, 0, false);

@@ -94,7 +94,8 @@ class JewelBehavior extends FiniteStateMachine {
                             return;
                         }
                     }
-                    if (entity.getComponent(Bounds).offScreen)
+                    let jewelType = entity.getComponent(JewelType);
+                    if (!jewelType.active)
                         return;
                     // Similarly send a short ray to see what gems are immediately
                     // to the right
@@ -103,7 +104,6 @@ class JewelBehavior extends FiniteStateMachine {
                         y: center.y
                     };
                     let sensedRight = this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
-                    let jewelType = entity.getComponent(JewelType);
                     // If the gem immediately to the right or down is the same color
                     // save it and that gem to the appropriate map
                     if (sensedRight.length > 0 &&
@@ -144,6 +144,9 @@ class JewelBehavior extends FiniteStateMachine {
                     let fsm = gem.getComponent(Automaton);
                     fsm.changeState(EntityState.MATCHED);
                 });
+            });
+            this.entities.forEach(entity => {
+                entity.getComponent(JewelType).active = true;
             });
         };
         this.consolidateMatches = (matches) => {

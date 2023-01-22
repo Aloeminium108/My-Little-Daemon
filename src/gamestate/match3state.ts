@@ -55,16 +55,7 @@ class Match3State implements GameState {
 
     initEntities = () => {
 
-        for (let i = 0; i < this.numColumns; i++) {
-            let generator = new JewelGenerator(i * Jewel.width, -Jewel.width)
-            generator.addComponent(new Bounds(0, Jewel.width * this.numColumns, 0, Jewel.width * this.numRows, 0, false))
-            this.ecs.addEntity(generator)
-            for (let j = 0; j < this.numRows; j++) {
-                let gem = new Jewel(i * Jewel.width, j * Jewel.width, new JewelType())
-                gem.addComponent(new Bounds(0, Jewel.width * this.numColumns, 0, Jewel.width * this.numRows, 0, false))
-                this.ecs.addEntity(gem)
-            }
-        }
+        this.createGemGrid(100, 100, 8, 8)
 
         let scoreboard = new Scoreboard(800, 300)
         this.ecs.addEntity(scoreboard)
@@ -84,9 +75,10 @@ class Match3State implements GameState {
         let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new JewelCollision(collisionDetection))
+        this.ecs.addSystem(new GeneratorSystem(collisionDetection))
         let jewelBehavior = new JewelBehavior(collisionDetection)
         this.ecs.addSystem(jewelBehavior)
-        this.ecs.addSystem(new GeneratorSystem(collisionDetection))
+        
         this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior))
         this.ecs.addSystem(new DrawingSystem(this.ctx))
         this.ecs.addSystem(new SpriteSystem(this.ctx))
@@ -104,6 +96,19 @@ class Match3State implements GameState {
     mouseDown = (e: MouseEvent) =>  {}
     mouseMove = (e: MouseEvent) =>  {}
     mouseLeave = (e: MouseEvent) =>  {}
+
+    private createGemGrid = (x: number, y: number, numRows: number, numColumns: number) => {
+        for (let i = 0; i < this.numColumns; i++) {
+            let generator = new JewelGenerator(x + (i * Jewel.width), y - Jewel.width)
+            generator.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y, y + (Jewel.width * numRows), 0, false))
+            this.ecs.addEntity(generator)
+            for (let j = 0; j < this.numRows; j++) {
+                let gem = new Jewel(x + (i * Jewel.width), y + (j * Jewel.width), new JewelType())
+                gem.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y, y + (Jewel.width * numRows), 0, false))
+                this.ecs.addEntity(gem)
+            }
+        }
+    }
     
 }
 

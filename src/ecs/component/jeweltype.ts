@@ -1,6 +1,9 @@
 import { Component } from "./component.js";
 
 class JewelType extends Component {
+
+    public active: boolean = true
+
     constructor(public color: Color | null = null, public special: SpecialProperty | null = null) {
         super ()
         if (this.special === null && this.color === null) this.color = JewelType.randomColor()
