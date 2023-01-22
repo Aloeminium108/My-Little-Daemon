@@ -9,8 +9,8 @@ class Bounds extends Component {
         public xUpperBound: number, 
         public yLowerBound: number,
         public yUpperBound: number,
-        public bouncy: boolean = false,
-        public ceiling: boolean = false
+        public bounciness: number = 1,
+        public ceiling: boolean = true
         ) {
         super()
     }

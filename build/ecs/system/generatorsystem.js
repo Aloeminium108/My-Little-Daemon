@@ -16,7 +16,7 @@ class GeneratorSystem extends UnorderedSystem {
                 let collisions = this.collisionDetection.checkAllCollisions(entity);
                 let position;
                 let bounds = entity.getComponent(Bounds);
-                let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound);
+                let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound, 0, false);
                 let replacementJewel;
                 switch (collisions.length) {
                     case 0:

@@ -53,11 +53,11 @@ class HomeState implements GameState {
 
     private initEntities = () => {
         let ball = new Ball(200, 100)
-        ball.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height, true, true))
+        ball.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
         let ball1 = new Ball(400, 100)
-        ball1.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height, true, true))
+        ball1.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
         let ball2 = new Ball(600, 100)
-        ball2.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height, true, true))
+        ball2.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
         this.ecs.addEntity(ball)
         this.ecs.addEntity(ball1)
         this.ecs.addEntity(ball2)

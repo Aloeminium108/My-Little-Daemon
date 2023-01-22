@@ -26,12 +26,12 @@ class Velocity extends Component {
         this.dy = dy
     }
 
-    dxInvert = () => {
-        this.dx *= -1
+    dxInvert = (bounciness: number) => {
+        this.dx *= -bounciness
     }
 
-    dyInvert = () => {
-        this.dy *= -1
+    dyInvert = (bounciness: number) => {
+        this.dy *= -bounciness
     }
 
 }

@@ -32,11 +32,11 @@ class Match3State {
         this.initEntities = () => {
             for (let i = 0; i < this.numColumns; i++) {
                 let generator = new JewelGenerator(i * Jewel.width, -Jewel.width);
-                generator.addComponent(new Bounds(0, Jewel.width * this.numColumns, 0, Jewel.width * this.numRows));
+                generator.addComponent(new Bounds(0, Jewel.width * this.numColumns, 0, Jewel.width * this.numRows, 0, false));
                 this.ecs.addEntity(generator);
                 for (let j = 0; j < this.numRows; j++) {
                     let gem = new Jewel(i * Jewel.width, j * Jewel.width, new JewelType());
-                    gem.addComponent(new Bounds(0, Jewel.width * this.numColumns, 0, Jewel.width * this.numRows));
+                    gem.addComponent(new Bounds(0, Jewel.width * this.numColumns, 0, Jewel.width * this.numRows, 0, false));
                     this.ecs.addEntity(gem);
                 }
             }

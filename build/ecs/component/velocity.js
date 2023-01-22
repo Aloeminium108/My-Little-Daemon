@@ -20,11 +20,11 @@ class Velocity extends Component {
         this.setDY = (dy) => {
             this.dy = dy;
         };
-        this.dxInvert = () => {
-            this.dx *= -1;
+        this.dxInvert = (bounciness) => {
+            this.dx *= -bounciness;
         };
-        this.dyInvert = () => {
-            this.dy *= -1;
+        this.dyInvert = (bounciness) => {
+            this.dy *= -bounciness;
         };
     }
 }
