@@ -17,12 +17,6 @@ class JewelBehavior extends FiniteStateMachine {
             [EntityState.FALLING, (entity) => {
                     let fsm = entity.getComponent(Automaton);
                     let bounds = entity.getComponent(Bounds);
-                    // if (fsm.currentState !== EntityState.FALLING) {
-                    //     entity.getComponent(Velocity).dy = 0
-                    //     fsm.changeState(EntityState.UNMATCHED)
-                    //     bounds.onGround = false
-                    //     return
-                    // }
                     if (bounds.onGround) {
                         entity.getComponent(Velocity).dy = 0;
                         fsm.changeState(EntityState.UNMATCHED);
@@ -38,58 +32,23 @@ class JewelBehavior extends FiniteStateMachine {
                         this.destroyedGems.push(entity.getComponent(JewelType));
                         (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.removeEntity(entity);
                     }
-                    let fsm = entity.getComponent(Automaton);
-                    let hitbox = entity.getComponent(Hitbox);
-                    let center = hitbox.center;
-                    // Send out a short ray to see what gems are immediately
-                    // underneath.
-                    let rayDown = {
-                        x: center.x,
-                        y: center.y + (hitbox.height)
-                    };
-                    let sensedDown = this.collisionDetection.senseAtPoint(rayDown.x, rayDown.y);
-                    // Similarly send a short ray to see what gems are immediately
-                    // to the right
-                    let rayRight = {
-                        x: center.x + (hitbox.width),
-                        y: center.y
-                    };
-                    let sensedRight = this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
                     let jewelType = entity.getComponent(JewelType);
-                    // If the gem immediately to the right or down is the same color
-                    // save it and that gem to the appropriate map
-                    if (sensedRight.length > 0 &&
-                        availableForMatching(sensedRight[0]) &&
-                        sensedRight[0].getComponent(JewelType).color === jewelType.color) {
-                        this.connectedGemsX.set(entity, sensedRight[0]);
-                    }
-                    if (sensedDown.length > 0 &&
-                        availableForMatching(sensedDown[0]) &&
-                        sensedDown[0].getComponent(JewelType).color === jewelType.color) {
-                        this.connectedGemsY.set(entity, sensedDown[0]);
-                    }
+                    let hitbox = entity.getComponent(Hitbox);
+                    let sensedDown = this.senseDown(hitbox);
+                    let sensedRight = this.senseRight(hitbox);
+                    this.connectDown(entity, jewelType, sensedDown);
+                    this.connectRight(entity, jewelType, sensedRight);
                 }],
             [EntityState.UNMATCHED, (entity) => {
                     let fsm = entity.getComponent(Automaton);
                     let hitbox = entity.getComponent(Hitbox);
-                    let center = hitbox.center;
-                    let ground = entity.getComponent(Bounds).yUpperBound;
-                    // Send out a short ray to see what gems are immediately
-                    // underneath.
-                    let rayDown = {
-                        x: center.x,
-                        y: center.y + (hitbox.height)
-                    };
-                    let sensedDown = this.collisionDetection.senseAtPoint(rayDown.x, rayDown.y);
+                    let sensedDown = this.senseDown(hitbox);
                     // Only check gems underneath if this gem isn't on the ground
-                    if (rayDown.y < ground) {
+                    if (!entity.getComponent(Bounds).onGround) {
                         // If there are no gems underneath, or if the first gem
                         // detected is in a FALLING state, change state to FALLING
-                        if (sensedDown.length === 0) {
-                            fsm.changeState(EntityState.FALLING);
-                            return;
-                        }
-                        if (sensedDown[0].getComponent(Automaton).currentState === EntityState.FALLING) {
+                        if (sensedDown.length === 0 ||
+                            sensedDown[0].getComponent(Automaton).currentState === EntityState.FALLING) {
                             fsm.changeState(EntityState.FALLING);
                             return;
                         }
@@ -97,25 +56,9 @@ class JewelBehavior extends FiniteStateMachine {
                     let jewelType = entity.getComponent(JewelType);
                     if (!jewelType.active)
                         return;
-                    // Similarly send a short ray to see what gems are immediately
-                    // to the right
-                    let rayRight = {
-                        x: center.x + (hitbox.width),
-                        y: center.y
-                    };
-                    let sensedRight = this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
-                    // If the gem immediately to the right or down is the same color
-                    // save it and that gem to the appropriate map
-                    if (sensedRight.length > 0 &&
-                        availableForMatching(sensedRight[0]) &&
-                        sensedRight[0].getComponent(JewelType).color === jewelType.color) {
-                        this.connectedGemsX.set(entity, sensedRight[0]);
-                    }
-                    if (sensedDown.length > 0 &&
-                        availableForMatching(sensedDown[0]) &&
-                        sensedDown[0].getComponent(JewelType).color === jewelType.color) {
-                        this.connectedGemsY.set(entity, sensedDown[0]);
-                    }
+                    let sensedRight = this.senseRight(hitbox);
+                    this.connectDown(entity, jewelType, sensedDown);
+                    this.connectRight(entity, jewelType, sensedRight);
                 }],
             [EntityState.SWAPPING, (entity) => {
                 }],
@@ -173,6 +116,36 @@ class JewelBehavior extends FiniteStateMachine {
             });
             return matchSet;
         };
+        this.senseDown = (hitbox) => {
+            let center = hitbox.center;
+            let rayDown = {
+                x: center.x,
+                y: center.y + (hitbox.height)
+            };
+            return this.collisionDetection.senseAtPoint(rayDown.x, rayDown.y);
+        };
+        this.senseRight = (hitbox) => {
+            let center = hitbox.center;
+            let rayRight = {
+                x: center.x + (hitbox.width),
+                y: center.y
+            };
+            return this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
+        };
+    }
+    connectDown(entity, jewelType, sensedDown) {
+        if (sensedDown.length > 0 &&
+            availableForMatching(sensedDown[0]) &&
+            sensedDown[0].getComponent(JewelType).color === jewelType.color) {
+            this.connectedGemsY.set(entity, sensedDown[0]);
+        }
+    }
+    connectRight(entity, jewelType, sensedRight) {
+        if (sensedRight.length > 0 &&
+            availableForMatching(sensedRight[0]) &&
+            sensedRight[0].getComponent(JewelType).color === jewelType.color) {
+            this.connectedGemsX.set(entity, sensedRight[0]);
+        }
     }
 }
 function availableForMatching(entity) {
