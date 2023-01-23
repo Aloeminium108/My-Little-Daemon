@@ -17,12 +17,12 @@ class JewelBehavior extends FiniteStateMachine {
             [EntityState.FALLING, (entity) => {
                     let fsm = entity.getComponent(Automaton);
                     let bounds = entity.getComponent(Bounds);
-                    if (fsm.currentState !== EntityState.FALLING) {
-                        entity.getComponent(Velocity).dy = 0;
-                        fsm.changeState(EntityState.UNMATCHED);
-                        bounds.onGround = false;
-                        return;
-                    }
+                    // if (fsm.currentState !== EntityState.FALLING) {
+                    //     entity.getComponent(Velocity).dy = 0
+                    //     fsm.changeState(EntityState.UNMATCHED)
+                    //     bounds.onGround = false
+                    //     return
+                    // }
                     if (bounds.onGround) {
                         entity.getComponent(Velocity).dy = 0;
                         fsm.changeState(EntityState.UNMATCHED);
