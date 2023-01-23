@@ -23,6 +23,7 @@ import { GeneratorSystem } from "../ecs/system/generatorsystem.js";
 import { Match3ScoringSystem } from "../ecs/system/match3scoring.js";
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { Scoreboard } from "../ecs/entity/puzzle/scoreboard.js";
+import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 
 class Match3State implements GameState {
     game: Game;
@@ -71,11 +72,10 @@ class Match3State implements GameState {
         this.ecs.addSystem(spatialHashing)
         let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
-        this.ecs.addSystem(new JewelCollision(collisionDetection))
+        this.ecs.addSystem(new CollisionResponse(collisionDetection))
         this.ecs.addSystem(new GeneratorSystem(collisionDetection))
         let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem)
         this.ecs.addSystem(jewelBehavior)
-        
         this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior))
         this.ecs.addSystem(new DrawingSystem(this.ctx))
         this.ecs.addSystem(new SpriteSystem(this.ctx))

@@ -1,8 +1,11 @@
+import { Bounds } from "../component/bounds.js";
 import { CollisionBody } from "../component/collisionbody.js";
 import { Hitbox } from "../component/hitbox.js";
 import { Velocity } from "../component/velocity.js";
 import { CollisionDetection } from "./collisiondetection.js";
 import { UnorderedSystem } from "./system.js";
+
+const EPSILON = 0.001
 
 class CollisionResponse extends UnorderedSystem {
 
@@ -125,8 +128,8 @@ function collisionImpulse(body1: CollisionBody, body2: CollisionBody) {
             body2.dy = impulse2
         }
 
-        if (body1.y === body2.y + body1.height) body1.onGround = true
-        if (body2.y === body1.y + body2.height) body2.onGround = true
+        if (Math.abs(body1.y - (body2.y - body1.height)) < EPSILON) body1.onGround = true
+        if (Math.abs(body2.y - (body1.y - body2.height)) < EPSILON) body2.onGround = true
     }
 }
 

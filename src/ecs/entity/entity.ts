@@ -1,3 +1,4 @@
+import { CollisionBody } from "../component/collisionbody.js"
 import { Component, ComponentType } from "../component/component.js"
 import { Friction } from "../component/friction.js"
 import { Gravity } from "../component/gravity.js"
@@ -70,13 +71,17 @@ class Entity {
     addZeroGPhysicsBody = (x: number, y: number, z: number, spriteSrc: string) => {
         let position = new Position(x, y)
         this.addComponent(new Friction(0.8))
-        this.addComponent(new Velocity(0, 0))
+        let velocity = new Velocity(0, 0)
+        this.addComponent(velocity)
 
         let sprite = new Sprite(z, spriteSrc)
         this.addComponent(sprite)
         return sprite.loadingPromise.then(() => {
             this.addComponent(position)
-            this.addComponent(new Hitbox(position, sprite.sprite!!.width, sprite.sprite!!.height))
+            let hitbox = new Hitbox(position, sprite.sprite!!.width, sprite.sprite!!.height)
+            this.addComponent(hitbox)
+            this.addComponent(new CollisionBody(hitbox, velocity, 1, 0))
+
         })
     }
 

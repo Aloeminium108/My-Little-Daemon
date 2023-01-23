@@ -16,6 +16,9 @@ class BoundarySystem extends UnorderedSystem {
             let bounds = entity.getComponent(Bounds)
             let velocity = entity.getPossibleComponent(Velocity)
 
+            body.onGround = false
+            bounds.onGround = false
+
             if (position.x < bounds.xLowerBound) {
                 position.x = bounds.xLowerBound
                 velocity?.dxInvert(body.elasticity)
@@ -34,6 +37,7 @@ class BoundarySystem extends UnorderedSystem {
             }
 
             body.onGround = (hitbox.y + hitbox.height === bounds.yUpperBound)
+            bounds.onGround = body.onGround
         })
     }
 

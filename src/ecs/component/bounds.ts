@@ -1,8 +1,7 @@
 import { Component } from "./component.js";
 
 class Bounds extends Component {
-    public onGround: boolean = false
-
+    public onGround = false
     constructor(
         public xLowerBound: number, 
         public xUpperBound: number, 

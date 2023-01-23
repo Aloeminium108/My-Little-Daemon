@@ -6,11 +6,12 @@ import { Velocity } from "../../component/velocity.js";
 import { FiniteStateMachine } from "./finitestatemachine.js";
 import { Position } from "../../component/position.js";
 import { Jewel } from "../../entity/puzzle/jewel.js";
+import { CollisionBody } from "../../component/collisionbody.js";
 class JewelBehavior extends FiniteStateMachine {
     constructor(collisionDetection, gemGrabSystem) {
         super();
         this.collisionDetection = collisionDetection;
-        this.componentsRequired = new Set([Automaton, JewelType]);
+        this.componentsRequired = new Set([Automaton, JewelType, CollisionBody]);
         // Sets gems that are connected along the X and Y axis
         this.connectedGemsX = new Map();
         this.connectedGemsY = new Map();
@@ -18,11 +19,12 @@ class JewelBehavior extends FiniteStateMachine {
         this.behaviorMap = new Map([
             [EntityState.FALLING, (entity) => {
                     let fsm = entity.getComponent(Automaton);
-                    let bounds = entity.getComponent(Bounds);
-                    if (bounds.onGround) {
-                        entity.getComponent(Velocity).dy = 0;
+                    let body = entity.getComponent(CollisionBody);
+                    if (body.onGround) {
+                        body.dy = 0;
                         fsm.changeState(EntityState.UNMATCHED);
-                        bounds.onGround = false;
+                        body.immovable = true;
+                        body.onGround = false;
                         return;
                     }
                     entity.getComponent(Velocity).dy += 0.7;
@@ -51,14 +53,16 @@ class JewelBehavior extends FiniteStateMachine {
             [EntityState.UNMATCHED, (entity) => {
                     let fsm = entity.getComponent(Automaton);
                     let hitbox = entity.getComponent(Hitbox);
+                    let body = entity.getComponent(CollisionBody);
                     let sensedDown = this.senseDown(hitbox);
                     // Only check gems underneath if this gem isn't on the ground
-                    if (!entity.getComponent(Bounds).onGround) {
+                    if (!body.onGround) {
                         // If there are no gems underneath, or if the first gem
                         // detected is in a FALLING state, change state to FALLING
                         if (sensedDown.length === 0 ||
                             sensedDown[0].getComponent(Automaton).currentState === EntityState.FALLING) {
                             fsm.changeState(EntityState.FALLING);
+                            body.immovable = false;
                             return;
                         }
                     }

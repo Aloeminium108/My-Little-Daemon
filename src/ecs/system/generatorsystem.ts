@@ -6,10 +6,9 @@ import { Automaton, EntityState } from "../component/automaton.js";
 import { Jewel } from "../entity/puzzle/jewel.js";
 import { CollisionDetection } from "./collisiondetection.js";
 import { UnorderedSystem } from "./system.js"
-import { Hitbox } from "../component/hitbox.js";
 
 class GeneratorSystem extends UnorderedSystem {
-    public componentsRequired = new Set([Generator, Hitbox])
+    public componentsRequired = new Set([Generator])
 
     constructor(private collisionDetection: CollisionDetection) {
         super()
@@ -19,13 +18,9 @@ class GeneratorSystem extends UnorderedSystem {
         this.entities.forEach(entity => {
             let collisions = this.collisionDetection.checkAllCollisions(entity)
 
-            collisions.forEach(entity => {
-                entity.getComponent(JewelType).active = false
-            })
-
             let position: Position
             let bounds = entity.getComponent(Bounds)
-            let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound, 0)
+            let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound)
             let replacementJewel: Jewel
 
             switch (collisions.length) {

@@ -16,6 +16,8 @@ class BoundarySystem extends UnorderedSystem {
             let hitbox = entity.getComponent(Hitbox);
             let bounds = entity.getComponent(Bounds);
             let velocity = entity.getPossibleComponent(Velocity);
+            body.onGround = false;
+            bounds.onGround = false;
             if (position.x < bounds.xLowerBound) {
                 position.x = bounds.xLowerBound;
                 velocity === null || velocity === void 0 ? void 0 : velocity.dxInvert(body.elasticity);
@@ -33,6 +35,7 @@ class BoundarySystem extends UnorderedSystem {
                 velocity === null || velocity === void 0 ? void 0 : velocity.dyInvert(body.elasticity);
             }
             body.onGround = (hitbox.y + hitbox.height === bounds.yUpperBound);
+            bounds.onGround = body.onGround;
         });
     }
 }
