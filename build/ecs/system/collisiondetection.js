@@ -60,25 +60,25 @@ class CollisionDetection extends UnorderedSystem {
         this.spatialHashing.proximityMap.forEach(cell => {
             cell.forEach(entity1 => {
                 if (!this.collisions.has(entity1))
-                    this.collisions.set(entity1, []);
+                    this.collisions.set(entity1, new Set());
                 let collidedEntities = this.collisions.get(entity1);
                 cell.forEach(entity2 => {
                     var _a;
                     if (entity1 === entity2)
                         return;
-                    if ((_a = collidedEntities.includes(entity2)) !== null && _a !== void 0 ? _a : false)
+                    if ((_a = collidedEntities.has(entity2)) !== null && _a !== void 0 ? _a : false)
                         return;
                     if (this.checkCollision(entity1, entity2)) {
-                        collidedEntities.push(entity2);
+                        collidedEntities.add(entity2);
                         if (this.collisions.has(entity2)) {
-                            this.collisions.get(entity2).push(entity1);
+                            this.collisions.get(entity2).add(entity1);
                         }
                         else {
-                            this.collisions.set(entity2, [entity1]);
+                            this.collisions.set(entity2, new Set([entity1]));
                         }
                     }
                 });
-                if (collidedEntities.length === 0) {
+                if (collidedEntities.size === 0) {
                     this.collisions.delete(entity1);
                 }
             });

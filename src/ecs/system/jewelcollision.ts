@@ -21,7 +21,7 @@ class JewelCollision extends UnorderedSystem {
             let hitbox = entity.getComponent(Hitbox)
             let velocity = entity.getComponent(Velocity)
 
-            let stableCollisions = collisions
+            let stableCollisions = Array.from(collisions)
             .filter(collidedEntity => {
                 return collidedEntity.getComponent(Automaton).currentState !== EntityState.FALLING
             })
