@@ -20,7 +20,7 @@ class GeneratorSystem extends UnorderedSystem {
                 });
                 let position;
                 let bounds = entity.getComponent(Bounds);
-                let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound, 0, false);
+                let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound, 0);
                 let replacementJewel;
                 switch (collisions.length) {
                     case 0:

@@ -23,19 +23,12 @@ class BoundarySystem extends UnorderedSystem {
             }
 
             if (position.y < bounds.yLowerBound) {
-                if (bounds.ceiling) {
-                    position.y = bounds.yLowerBound
-                    velocity?.dyInvert(bounds.bounciness)
-                } else {
-                    bounds.offScreen = true
-                }
+                position.y = bounds.yLowerBound
+                velocity?.dyInvert(bounds.bounciness)
                 
-            } else {
-                bounds.offScreen = false
-                if (position.y + hitbox.height > bounds.yUpperBound) {
-                    position.y = bounds.yUpperBound - hitbox.height
-                    velocity?.dyInvert(bounds.bounciness)
-                }
+            } else if (position.y + hitbox.height > bounds.yUpperBound) {
+                position.y = bounds.yUpperBound - hitbox.height
+                velocity?.dyInvert(bounds.bounciness)
             }
 
             if (hitbox.y + hitbox.height === bounds.yUpperBound) bounds.onGround = true

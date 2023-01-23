@@ -35,9 +35,6 @@ class Match3State implements GameState {
     canvas: HTMLCanvasElement
     timeElapsed: number = 0
 
-    numRows = 8
-    numColumns = 8
-
     constructor(game: Game) {
         this.game = game
         this.pet = game.pet
@@ -55,7 +52,7 @@ class Match3State implements GameState {
 
     initEntities = () => {
 
-        this.createGemGrid(100, 100, 8, 8)
+        this.createGemGrid(100, 0, 10, 10)
 
         let scoreboard = new Scoreboard(800, 300)
         this.ecs.addEntity(scoreboard)
@@ -98,13 +95,13 @@ class Match3State implements GameState {
     mouseLeave = (e: MouseEvent) =>  {}
 
     private createGemGrid = (x: number, y: number, numRows: number, numColumns: number) => {
-        for (let i = 0; i < this.numColumns; i++) {
+        for (let i = 0; i < numColumns; i++) {
             let generator = new JewelGenerator(x + (i * Jewel.width), y - Jewel.width)
-            generator.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y, y + (Jewel.width * numRows), 0, false))
+            generator.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y - Jewel.width, y + (Jewel.width * numRows), 0))
             this.ecs.addEntity(generator)
-            for (let j = 0; j < this.numRows; j++) {
+            for (let j = 0; j < numRows; j++) {
                 let gem = new Jewel(x + (i * Jewel.width), y + (j * Jewel.width), new JewelType())
-                gem.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y, y + (Jewel.width * numRows), 0, false))
+                gem.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y - Jewel.width, y + (Jewel.width * numRows), 0))
                 this.ecs.addEntity(gem)
             }
         }

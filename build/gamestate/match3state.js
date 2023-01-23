@@ -23,14 +23,12 @@ class Match3State {
     constructor(game) {
         this.ecs = new ECS();
         this.timeElapsed = 0;
-        this.numRows = 8;
-        this.numColumns = 8;
         this.init = () => {
             this.initEntities();
             this.initSystems();
         };
         this.initEntities = () => {
-            this.createGemGrid(100, 100, 8, 8);
+            this.createGemGrid(100, 0, 10, 10);
             let scoreboard = new Scoreboard(800, 300);
             this.ecs.addEntity(scoreboard);
         };
@@ -65,13 +63,13 @@ class Match3State {
         this.mouseMove = (e) => { };
         this.mouseLeave = (e) => { };
         this.createGemGrid = (x, y, numRows, numColumns) => {
-            for (let i = 0; i < this.numColumns; i++) {
+            for (let i = 0; i < numColumns; i++) {
                 let generator = new JewelGenerator(x + (i * Jewel.width), y - Jewel.width);
-                generator.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y, y + (Jewel.width * numRows), 0, false));
+                generator.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y - Jewel.width, y + (Jewel.width * numRows), 0));
                 this.ecs.addEntity(generator);
-                for (let j = 0; j < this.numRows; j++) {
+                for (let j = 0; j < numRows; j++) {
                     let gem = new Jewel(x + (i * Jewel.width), y + (j * Jewel.width), new JewelType());
-                    gem.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y, y + (Jewel.width * numRows), 0, false));
+                    gem.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y - Jewel.width, y + (Jewel.width * numRows), 0));
                     this.ecs.addEntity(gem);
                 }
             }
