@@ -8,6 +8,7 @@ class CollisionBody extends Component {
         this.elasticity = elasticity;
         this.immovable = immovable;
         this.corporeal = corporeal;
+        this.onGround = false;
         this.impulse = (dx, dy) => {
             this.dx += dx;
             this.dy += dy;

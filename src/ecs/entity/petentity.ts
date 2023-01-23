@@ -5,6 +5,9 @@ import { PetLink } from "../component/petlink.js";
 import { Sprite } from "../component/sprite.js";
 import { Automaton, EntityState } from "../component/automaton.js";
 import { Entity } from "./entity.js";
+import { CollisionBody } from "../component/collisionbody.js";
+import { Hitbox } from "../component/hitbox.js";
+import { Velocity } from "../component/velocity.js";
 
 class PetEntity extends Entity {
 
@@ -16,6 +19,7 @@ class PetEntity extends Entity {
         this.addComponent(new PetLink())
         this.addPhysicsBody(x, y, 0, PetEntity.spriteSource)
         .then(() => {
+            this.addComponent(new CollisionBody(this.getComponent(Hitbox), this.getComponent(Velocity), 1, 1, true, false))
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)))
             this.addComponent(new Consumer(petStats))
             return Sprite.loadSprite('./assets/pet-happy.png')

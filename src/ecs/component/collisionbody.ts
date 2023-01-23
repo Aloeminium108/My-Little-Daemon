@@ -3,6 +3,8 @@ import { Hitbox } from "./hitbox.js";
 import { Velocity } from "./velocity.js";
 
 class CollisionBody extends Component {
+    public onGround: boolean = false
+
     constructor(
         private hitbox: Hitbox,
         private velocity: Velocity,
