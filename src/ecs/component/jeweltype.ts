@@ -3,6 +3,8 @@ import { Component } from "./component.js";
 class JewelType extends Component {
 
     public active: boolean = true
+    public swapped: boolean = false
+    public conversion: SpecialProperty | null = null
 
     constructor(public color: Color | null = null, public special: SpecialProperty | null = null) {
         super ()

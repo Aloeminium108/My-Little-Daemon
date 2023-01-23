@@ -46,7 +46,7 @@ class Match3State {
             this.ecs.addSystem(collisionDetection);
             this.ecs.addSystem(new JewelCollision(collisionDetection));
             this.ecs.addSystem(new GeneratorSystem(collisionDetection));
-            let jewelBehavior = new JewelBehavior(collisionDetection);
+            let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem);
             this.ecs.addSystem(jewelBehavior);
             this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior));
             this.ecs.addSystem(new DrawingSystem(this.ctx));

@@ -5,6 +5,8 @@ class JewelType extends Component {
         this.color = color;
         this.special = special;
         this.active = true;
+        this.swapped = false;
+        this.conversion = null;
         this.randomizeColor = (color) => {
             let newColor;
             do {

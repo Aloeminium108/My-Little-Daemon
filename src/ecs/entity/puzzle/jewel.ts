@@ -1,4 +1,4 @@
-import { Color, JewelType } from "../../component/jeweltype.js";
+import { Color, JewelType, SpecialProperty } from "../../component/jeweltype.js";
 import { MouseInteractable } from "../../component/mouseinteractable.js";
 import { Sprite } from "../../component/sprite.js";
 import { Automaton, EntityState } from "../../component/automaton.js";
@@ -20,19 +20,38 @@ class Jewel extends Entity {
     static width = 40
 
     static getImageSrc = (jewelType: JewelType) => {
-        switch (jewelType.color as Color | null) {
-            case Color.RED:
-                return './assets/jewel-red.png'
-            case Color.YELLOW:
-                return './assets/jewel-yellow.png'
-            case Color.GREEN:
-                return './assets/jewel-green.png'
-            case Color.BLUE:
-                return './assets/jewel-blue.png'
-            case Color.PURPLE:
-                return './assets/jewel-purple.png'
+        switch (jewelType.special as SpecialProperty | null) {
+            case SpecialProperty.BOMB:
+                switch (jewelType.color as Color | null) {
+                    case Color.RED:
+                        return './assets/jewel-red-bomb.png'
+                    case Color.YELLOW:
+                        return './assets/jewel-yellow-bomb.png'
+                    case Color.GREEN:
+                        return './assets/jewel-green-bomb.png'
+                    case Color.BLUE:
+                        return './assets/jewel-blue-bomb.png'
+                    case Color.PURPLE:
+                        return './assets/jewel-purple-bomb.png'
+                    default:
+                        return './assets/jewel-black.png'
+                }
+
             default:
-                return './assets/jewel-black.png'
+                switch (jewelType.color as Color | null) {
+                    case Color.RED:
+                        return './assets/jewel-red.png'
+                    case Color.YELLOW:
+                        return './assets/jewel-yellow.png'
+                    case Color.GREEN:
+                        return './assets/jewel-green.png'
+                    case Color.BLUE:
+                        return './assets/jewel-blue.png'
+                    case Color.PURPLE:
+                        return './assets/jewel-purple.png'
+                    default:
+                        return './assets/jewel-black.png'
+                }
         }
     }
 

@@ -1,11 +1,14 @@
 import { Bounds } from "../../component/bounds.js";
 import { Hitbox } from "../../component/hitbox.js";
-import { JewelType } from "../../component/jeweltype.js";
+import { JewelType, SpecialProperty } from "../../component/jeweltype.js";
 import { Automaton, EntityState } from "../../component/automaton.js";
 import { Velocity } from "../../component/velocity.js";
 import { Entity } from "../../entity/entity.js";
 import { CollisionDetection } from "../collisiondetection.js";
 import { FiniteStateMachine } from "./finitestatemachine.js";
+import { GemGrabSystem } from "../gemgrabsystem.js";
+import { Position } from "../../component/position.js";
+import { Jewel } from "../../entity/puzzle/jewel.js";
 
 class JewelBehavior extends FiniteStateMachine {
 
@@ -34,12 +37,25 @@ class JewelBehavior extends FiniteStateMachine {
 
         [EntityState.MATCHED, (entity: Entity) => {
             let age = entity.getComponent(Automaton).age
+            let jewelType = entity.getComponent(JewelType)
             if (age >= 120) {
-                this.destroyedGems.push(entity.getComponent(JewelType))
+                this.destroyedGems.push(jewelType)
+
+                if (jewelType.conversion !== null) {
+                    let bounds = entity.getComponent(Bounds)
+                    let position = entity.getComponent(Position)
+                    let replacementJewel = new Jewel(
+                        position.x, 
+                        position.y, 
+                        new JewelType(jewelType.color, jewelType.conversion
+                    ))
+                    replacementJewel.addComponent(bounds)
+                    this.ecs?.addEntity(replacementJewel)
+                }
+
                 this.ecs?.removeEntity(entity)
             }
 
-            let jewelType = entity.getComponent(JewelType)
             let hitbox = entity.getComponent(Hitbox)
             
             let sensedDown = this.senseDown(hitbox)
@@ -82,7 +98,7 @@ class JewelBehavior extends FiniteStateMachine {
         
     ])
 
-    constructor(private collisionDetection: CollisionDetection) {
+    constructor(private collisionDetection: CollisionDetection, gemGrabSystem: GemGrabSystem) {
         super()
     }
 
@@ -109,10 +125,24 @@ class JewelBehavior extends FiniteStateMachine {
         matches = this.consolidateMatches(matches)
 
         matches.forEach(match => {
+
             match.forEach(gem => {
                 let fsm = gem.getComponent(Automaton)
                 fsm.changeState(EntityState.MATCHED)
             })
+
+            let specialMatch = this.checkMatchType(match)
+
+            if (specialMatch === null) return
+            
+            let matchArray = Array.from(match)
+            matchArray.sort((a, b) => {
+                let aPos = a.getComponent(Position)
+                let bPos = b.getComponent(Position)
+                return (aPos.x - bPos.x) + (aPos.y - bPos.y)
+            })
+
+            matchArray[Math.floor(matchArray.length/2)].getComponent(JewelType).conversion = specialMatch
         })
 
         this.entities.forEach(entity => {
@@ -191,6 +221,23 @@ class JewelBehavior extends FiniteStateMachine {
         }
     }
     
+    private checkMatchType = (match: Set<Entity>) => {
+        if (match.size === 3) return null 
+
+        if (match.size === 4) return SpecialProperty.LINECLEAR
+
+        let counter = 0
+        match.forEach(gem => {
+            if (this.connectedGemsX.has(gem) &&
+            match.has(this.connectedGemsX.get(gem)!!)) counter++
+        })
+
+        if (counter >= 4 || match.size - counter >= 4) return SpecialProperty.COLORBOMB
+        
+        return SpecialProperty.BOMB
+
+    }
+
 }
 
 function availableForMatching(entity: Entity) {

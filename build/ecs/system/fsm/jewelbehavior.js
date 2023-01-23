@@ -1,11 +1,13 @@
 import { Bounds } from "../../component/bounds.js";
 import { Hitbox } from "../../component/hitbox.js";
-import { JewelType } from "../../component/jeweltype.js";
+import { JewelType, SpecialProperty } from "../../component/jeweltype.js";
 import { Automaton, EntityState } from "../../component/automaton.js";
 import { Velocity } from "../../component/velocity.js";
 import { FiniteStateMachine } from "./finitestatemachine.js";
+import { Position } from "../../component/position.js";
+import { Jewel } from "../../entity/puzzle/jewel.js";
 class JewelBehavior extends FiniteStateMachine {
-    constructor(collisionDetection) {
+    constructor(collisionDetection, gemGrabSystem) {
         super();
         this.collisionDetection = collisionDetection;
         this.componentsRequired = new Set([Automaton, JewelType]);
@@ -26,13 +28,20 @@ class JewelBehavior extends FiniteStateMachine {
                     entity.getComponent(Velocity).dy += 0.7;
                 }],
             [EntityState.MATCHED, (entity) => {
-                    var _a;
+                    var _a, _b;
                     let age = entity.getComponent(Automaton).age;
-                    if (age >= 120) {
-                        this.destroyedGems.push(entity.getComponent(JewelType));
-                        (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.removeEntity(entity);
-                    }
                     let jewelType = entity.getComponent(JewelType);
+                    if (age >= 120) {
+                        this.destroyedGems.push(jewelType);
+                        if (jewelType.conversion !== null) {
+                            let bounds = entity.getComponent(Bounds);
+                            let position = entity.getComponent(Position);
+                            let replacementJewel = new Jewel(position.x, position.y, new JewelType(jewelType.color, jewelType.conversion));
+                            replacementJewel.addComponent(bounds);
+                            (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.addEntity(replacementJewel);
+                        }
+                        (_b = this.ecs) === null || _b === void 0 ? void 0 : _b.removeEntity(entity);
+                    }
                     let hitbox = entity.getComponent(Hitbox);
                     let sensedDown = this.senseDown(hitbox);
                     let sensedRight = this.senseRight(hitbox);
@@ -87,6 +96,16 @@ class JewelBehavior extends FiniteStateMachine {
                     let fsm = gem.getComponent(Automaton);
                     fsm.changeState(EntityState.MATCHED);
                 });
+                let specialMatch = this.checkMatchType(match);
+                if (specialMatch === null)
+                    return;
+                let matchArray = Array.from(match);
+                matchArray.sort((a, b) => {
+                    let aPos = a.getComponent(Position);
+                    let bPos = b.getComponent(Position);
+                    return (aPos.x - bPos.x) + (aPos.y - bPos.y);
+                });
+                matchArray[Math.floor(matchArray.length / 2)].getComponent(JewelType).conversion = specialMatch;
             });
             this.entities.forEach(entity => {
                 entity.getComponent(JewelType).active = true;
@@ -131,6 +150,21 @@ class JewelBehavior extends FiniteStateMachine {
                 y: center.y
             };
             return this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
+        };
+        this.checkMatchType = (match) => {
+            if (match.size === 3)
+                return null;
+            if (match.size === 4)
+                return SpecialProperty.LINECLEAR;
+            let counter = 0;
+            match.forEach(gem => {
+                if (this.connectedGemsX.has(gem) &&
+                    match.has(this.connectedGemsX.get(gem)))
+                    counter++;
+            });
+            if (counter >= 4 || match.size - counter >= 4)
+                return SpecialProperty.COLORBOMB;
+            return SpecialProperty.BOMB;
         };
     }
     connectDown(entity, jewelType, sensedDown) {

@@ -73,7 +73,7 @@ class Match3State implements GameState {
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new JewelCollision(collisionDetection))
         this.ecs.addSystem(new GeneratorSystem(collisionDetection))
-        let jewelBehavior = new JewelBehavior(collisionDetection)
+        let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem)
         this.ecs.addSystem(jewelBehavior)
         
         this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior))
