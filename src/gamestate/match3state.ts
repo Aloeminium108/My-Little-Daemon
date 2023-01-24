@@ -17,7 +17,6 @@ import { JewelType } from "../ecs/component/jeweltype.js";
 import { Bounds } from "../ecs/component/bounds.js";
 import { Hitbox } from "../ecs/component/hitbox.js";
 import { Automaton } from "../ecs/component/automaton.js";
-import { JewelCollision } from "../ecs/system/jewelcollision.js";
 import { JewelGenerator } from "../ecs/entity/puzzle/jewelgenerator.js";
 import { GeneratorSystem } from "../ecs/system/generatorsystem.js";
 import { Match3ScoringSystem } from "../ecs/system/match3scoring.js";
