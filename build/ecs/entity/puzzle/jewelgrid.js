@@ -66,8 +66,9 @@ class JewelGridTile extends Entity {
     constructor(x, y, tileType) {
         super();
         this.addComponent(new Position(x, y));
+        let layer = tileType === TileType.BACKGROUND ? 0 : 10;
         let spriteSrc = getImageSrc(tileType);
-        this.addComponent(new Sprite(0, spriteSrc));
+        this.addComponent(new Sprite(layer, spriteSrc));
     }
 }
 function getImageSrc(tileType) {
