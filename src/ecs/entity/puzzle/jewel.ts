@@ -17,7 +17,7 @@ class Jewel extends Entity {
         })
     }
 
-    static width = 100
+    static width = 80
 
     static getImageSrc = (jewelType: JewelType) => {
         switch (jewelType.special as SpecialProperty | null) {

@@ -69,36 +69,6 @@ function collisionImpulse(body1: CollisionBody, body2: CollisionBody) {
         + (((body2.mass - body1.mass) / (body1.mass + body2.mass)) * body2Velocity))
         * elasticity
 
-    // if (body1.immovable) {
-    //     if (xAxis) {
-    //         body2.x += -order * overlap
-    //         body2.dx = -impulse1
-    //     } else {
-    //         body2.y += -order * overlap
-    //         body2.dy = -impulse1
-    //     }
-    // } else if (body2.immovable) {
-    //     if (xAxis) {
-    //         body1.x += order * overlap
-    //         body1.dx = -impulse2
-    //     } else {
-    //         body1.y += order * overlap
-    //         body1.dy = -impulse2
-    //     }
-    // } else {
-    //     if (xAxis) {
-    //         body1.x += order * overlap / 2
-    //         body2.x += -order * overlap / 2
-    //         body1.dx = impulse1
-    //         body2.dx = impulse2
-    //     } else {
-    //         body1.y += order * overlap / 2
-    //         body2.y += -order * overlap / 2
-    //         body1.dy = impulse1
-    //         body2.dy = impulse2
-    //     }
-    // }   
-
     if (xAxis) {
         if (body1.immovable) {
             body2.x += -order * overlap
@@ -128,8 +98,14 @@ function collisionImpulse(body1: CollisionBody, body2: CollisionBody) {
             body2.dy = impulse2
         }
 
-        if (Math.abs(body1.y - (body2.y - body1.height)) < EPSILON) body1.onGround = true
-        if (Math.abs(body2.y - (body1.y - body2.height)) < EPSILON) body2.onGround = true
+        if (Math.abs(body1.y - (body2.y - body1.height)) < EPSILON
+            && Math.abs(body1.dy - body2.dy) < EPSILON) {
+                body1.onGround = true
+        } 
+        if (Math.abs(body2.y - (body1.y - body2.height)) < EPSILON
+            && Math.abs(body2.dy - body1.dy) < EPSILON) {
+                body2.onGround = true
+        }
     }
 }
 

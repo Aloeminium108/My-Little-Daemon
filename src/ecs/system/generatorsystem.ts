@@ -18,26 +18,13 @@ class GeneratorSystem extends UnorderedSystem {
         this.entities.forEach(entity => {
             let collisions = this.collisionDetection.checkAllCollisions(entity)
 
-            let position: Position
-            let bounds = entity.getComponent(Bounds)
-            let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound)
-            let replacementJewel: Jewel
-
-            switch (collisions.length) {
-                case 0:
-                    position = entity.getComponent(Position)
-                    replacementJewel = new Jewel(position.x, position.y, new JewelType())
-                    replacementJewel.addComponent(newBounds)
-                    this.ecs?.addEntity(replacementJewel)
-                    break
-                case 1:
-                    if (collisions[0].getComponent(Automaton).currentState !== EntityState.FALLING) break
-                    position = collisions[0].getComponent(Position)
-                    position.y -= Jewel.width
-                    replacementJewel = new Jewel(position.x, position.y, new JewelType())
-                    replacementJewel.addComponent(newBounds)
-                    this.ecs?.addEntity(replacementJewel)
-                    break
+            if (collisions.length === 0) {
+                let position = entity.getComponent(Position)
+                let bounds = entity.getComponent(Bounds)
+                let newBounds = new Bounds(bounds.xLowerBound, bounds.xUpperBound, bounds.yLowerBound, bounds.yUpperBound)
+                let replacementJewel = new Jewel(position.x, position.y, new JewelType())
+                replacementJewel.addComponent(newBounds)
+                this.ecs?.addEntity(replacementJewel)
             }
 
         })
