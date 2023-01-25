@@ -47,7 +47,7 @@ class JewelBehavior extends FiniteStateMachine {
                         }
                         (_b = this.ecs) === null || _b === void 0 ? void 0 : _b.removeEntity(entity);
                     }
-                    if (jewelType.color === null)
+                    if (!jewelType.active || jewelType.color === null)
                         return;
                     let hitbox = entity.getComponent(Hitbox);
                     let sensedDown = this.senseDown(hitbox);

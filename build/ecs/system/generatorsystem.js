@@ -21,6 +21,11 @@ class GeneratorSystem extends UnorderedSystem {
                     replacementJewel.addComponent(newBounds);
                     (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.addEntity(replacementJewel);
                 }
+                else {
+                    collisions.forEach(entity => {
+                        entity.getComponent(JewelType).active = false;
+                    });
+                }
             });
         };
     }

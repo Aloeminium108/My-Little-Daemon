@@ -25,6 +25,10 @@ class GeneratorSystem extends UnorderedSystem {
                 let replacementJewel = new Jewel(position.x, position.y, new JewelType())
                 replacementJewel.addComponent(newBounds)
                 this.ecs?.addEntity(replacementJewel)
+            } else {
+                collisions.forEach(entity => {
+                    entity.getComponent(JewelType).active = false
+                })
             }
 
         })
