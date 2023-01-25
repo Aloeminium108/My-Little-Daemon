@@ -84,12 +84,10 @@ function collisionImpulse(body1, body2) {
             body1.dy = impulse1;
             body2.dy = impulse2;
         }
-        if (Math.abs(body1.y - (body2.y - body1.height)) < EPSILON
-            && Math.abs(body1.dy - body2.dy) < EPSILON) {
+        if (Math.abs(body1.y - (body2.y - body1.height)) < EPSILON) {
             body1.onGround = true;
         }
-        if (Math.abs(body2.y - (body1.y - body2.height)) < EPSILON
-            && Math.abs(body2.dy - body1.dy) < EPSILON) {
+        if (Math.abs(body2.y - (body1.y - body2.height)) < EPSILON) {
             body2.onGround = true;
         }
     }

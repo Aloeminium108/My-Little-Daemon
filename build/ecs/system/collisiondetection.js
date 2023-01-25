@@ -1,5 +1,6 @@
 import { Hitbox } from "../component/hitbox.js";
 import { UnorderedSystem } from "./system.js";
+const EPSILON = 0.001;
 class CollisionDetection extends UnorderedSystem {
     constructor(spatialHashing) {
         super();
@@ -9,10 +10,10 @@ class CollisionDetection extends UnorderedSystem {
         this.checkCollision = (entity1, entity2) => {
             let rect1 = entity1.getComponent(Hitbox);
             let rect2 = entity2.getComponent(Hitbox);
-            return (rect1.x < rect2.x + rect2.width &&
-                rect1.x + rect1.width > rect2.x &&
-                rect1.y < rect2.y + rect2.height &&
-                rect1.height + rect1.y > rect2.y);
+            return (rect1.x + EPSILON < rect2.x + rect2.width &&
+                rect1.x + rect1.width > rect2.x + EPSILON &&
+                rect1.y + EPSILON < rect2.y + rect2.height &&
+                rect1.height + rect1.y > rect2.y + EPSILON);
         };
         this.checkAllCollisions = (entity) => {
             let hitbox = entity.getComponent(Hitbox);

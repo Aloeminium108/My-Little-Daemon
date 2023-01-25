@@ -17,6 +17,7 @@ import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { Scoreboard } from "../ecs/entity/puzzle/scoreboard.js";
 import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 import { JewelGrid } from "../ecs/entity/puzzle/jewelgrid.js";
+import { Jewel } from "../ecs/entity/puzzle/jewel.js";
 class Match3State {
     constructor(game) {
         this.ecs = new ECS();
@@ -26,8 +27,7 @@ class Match3State {
             this.initSystems();
         };
         this.initEntities = () => {
-            let jewelGrid = new JewelGrid(100, 100, 8, 8);
-            this.ecs.addEntity(jewelGrid);
+            this.createCenteredGemGrid(8, 8);
             let scoreboard = new Scoreboard(1200, 300);
             this.ecs.addEntity(scoreboard);
         };
@@ -57,10 +57,16 @@ class Match3State {
             this.timeElapsed += interval;
             this.ecs.update(interval);
         };
-        this.mouseUp = (e) => { };
-        this.mouseDown = (e) => { };
-        this.mouseMove = (e) => { };
-        this.mouseLeave = (e) => { };
+        this.createCenteredGemGrid = (numColumns, numRows) => {
+            let centerX = this.canvas.width / 2;
+            let centerY = this.canvas.height / 2;
+            let halfWidth = ((numColumns + 2) / 2) * Jewel.width;
+            let halfHeight = ((numRows + 2) / 2) * Jewel.width;
+            let x = Math.floor(centerX - halfWidth);
+            let y = Math.floor(centerY - halfHeight);
+            let jewelGrid = new JewelGrid(x, y, numColumns, numRows);
+            this.ecs.addEntity(jewelGrid);
+        };
         this.game = game;
         this.pet = game.pet;
         this.mouse = game.mouse;

@@ -3,6 +3,8 @@ import { Entity } from "../entity/entity.js";
 import { SpatialHashing } from "./spatialhashing.js";
 import { UnorderedSystem } from "./system.js";
 
+const EPSILON = 0.001
+
 class CollisionDetection extends UnorderedSystem {
     public componentsRequired = new Set([Hitbox])
 
@@ -50,10 +52,10 @@ class CollisionDetection extends UnorderedSystem {
         let rect1 = entity1.getComponent(Hitbox) 
         let rect2 = entity2.getComponent(Hitbox)
         return (
-            rect1.x < rect2.x + rect2.width &&
-            rect1.x + rect1.width > rect2.x &&
-            rect1.y < rect2.y + rect2.height &&
-            rect1.height + rect1.y > rect2.y
+            rect1.x + EPSILON < rect2.x + rect2.width &&
+            rect1.x + rect1.width > rect2.x + EPSILON &&
+            rect1.y + EPSILON < rect2.y + rect2.height &&
+            rect1.height + rect1.y > rect2.y + EPSILON
         )
     }
 

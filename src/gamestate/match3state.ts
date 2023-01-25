@@ -21,6 +21,7 @@ import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { Scoreboard } from "../ecs/entity/puzzle/scoreboard.js";
 import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 import { JewelGrid } from "../ecs/entity/puzzle/jewelgrid.js";
+import { Jewel } from "../ecs/entity/puzzle/jewel.js";
 
 class Match3State implements GameState {
     game: Game;
@@ -50,8 +51,7 @@ class Match3State implements GameState {
 
     initEntities = () => {
 
-        let jewelGrid = new JewelGrid(100, 100, 8, 8)
-        this.ecs.addEntity(jewelGrid)
+        this.createCenteredGemGrid(8, 8)
 
         let scoreboard = new Scoreboard(1200, 300)
         this.ecs.addEntity(scoreboard)
@@ -87,23 +87,19 @@ class Match3State implements GameState {
         this.ecs.update(interval)
     }
 
-    mouseUp = (e: MouseEvent) =>  {}
-    mouseDown = (e: MouseEvent) =>  {}
-    mouseMove = (e: MouseEvent) =>  {}
-    mouseLeave = (e: MouseEvent) =>  {}
+    createCenteredGemGrid = (numColumns: number, numRows: number) => {
+        let centerX = this.canvas.width/2
+        let centerY = this.canvas.height/2
 
-    // private createGemGrid = (x: number, y: number, numRows: number, numColumns: number) => {
-    //     for (let i = 0; i < numColumns; i++) {
-    //         let generator = new JewelGenerator(x + (i * Jewel.width), y - Jewel.width)
-    //         generator.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y - Jewel.width, y + (Jewel.width * numRows), 0))
-    //         this.ecs.addEntity(generator)
-    //         for (let j = 0; j < numRows; j++) {
-    //             let gem = new Jewel(x + (i * Jewel.width), y + (j * Jewel.width), new JewelType())
-    //             gem.addComponent(new Bounds(x, x + (Jewel.width * numColumns), y - Jewel.width, y + (Jewel.width * numRows), 0))
-    //             this.ecs.addEntity(gem)
-    //         }
-    //     }
-    // }
+        let halfWidth = ((numColumns + 2) / 2) * Jewel.width
+        let halfHeight = ((numRows + 2) / 2) * Jewel.width
+
+        let x = Math.floor(centerX - halfWidth)
+        let y = Math.floor(centerY - halfHeight)
+
+        let jewelGrid = new JewelGrid(x, y, numColumns, numRows)
+        this.ecs.addEntity(jewelGrid)
+    }
     
 }
 
