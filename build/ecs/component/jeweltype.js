@@ -29,12 +29,14 @@ var Color;
     Color[Color["GREEN"] = 2] = "GREEN";
     Color[Color["BLUE"] = 3] = "BLUE";
     Color[Color["PURPLE"] = 4] = "PURPLE";
+    Color[Color["ORANGE"] = 5] = "ORANGE";
 })(Color || (Color = {}));
 var SpecialProperty;
 (function (SpecialProperty) {
-    SpecialProperty[SpecialProperty["LINECLEAR"] = 0] = "LINECLEAR";
-    SpecialProperty[SpecialProperty["BOMB"] = 1] = "BOMB";
-    SpecialProperty[SpecialProperty["COLORBOMB"] = 2] = "COLORBOMB";
-    SpecialProperty[SpecialProperty["ULTRABOMB"] = 3] = "ULTRABOMB";
+    SpecialProperty[SpecialProperty["V_LINECLEAR"] = 0] = "V_LINECLEAR";
+    SpecialProperty[SpecialProperty["H_LINECLEAR"] = 1] = "H_LINECLEAR";
+    SpecialProperty[SpecialProperty["BOMB"] = 2] = "BOMB";
+    SpecialProperty[SpecialProperty["COLORBOMB"] = 3] = "COLORBOMB";
+    SpecialProperty[SpecialProperty["ULTRABOMB"] = 4] = "ULTRABOMB";
 })(SpecialProperty || (SpecialProperty = {}));
 export { JewelType, Color, SpecialProperty };

@@ -17,40 +17,84 @@ class Jewel extends Entity {
         })
     }
 
-    static width = 40
+    static width = 100
 
     static getImageSrc = (jewelType: JewelType) => {
         switch (jewelType.special as SpecialProperty | null) {
+
+            case SpecialProperty.COLORBOMB:
+                return './assets/gems/jewel-color-bomb.png'
+
             case SpecialProperty.BOMB:
                 switch (jewelType.color as Color | null) {
                     case Color.RED:
-                        return './assets/jewel-red-bomb.png'
+                        return './assets/gems/jewel-red-bomb.png'
                     case Color.YELLOW:
-                        return './assets/jewel-yellow-bomb.png'
+                        return './assets/gems/jewel-yellow-bomb.png'
                     case Color.GREEN:
-                        return './assets/jewel-green-bomb.png'
+                        return './assets/gems/jewel-green-bomb.png'
                     case Color.BLUE:
-                        return './assets/jewel-blue-bomb.png'
+                        return './assets/gems/jewel-blue-bomb.png'
                     case Color.PURPLE:
-                        return './assets/jewel-purple-bomb.png'
+                        return './assets/gems/jewel-purple-bomb.png'
+                    case Color.ORANGE:
+                        return './assets/gems/jewel-orange-bomb.png'
                     default:
-                        return './assets/jewel-black.png'
+                        return './assets/gems/jewel-red-2.png'
+                }
+            
+            case SpecialProperty.H_LINECLEAR:
+                switch (jewelType.color as Color | null) {
+                    case Color.RED:
+                        return './assets/gems/horizontal-line-clear-red.png'
+                    case Color.YELLOW:
+                        return './assets/gems/horizontal-line-clear-yellow.png'
+                    case Color.GREEN:
+                        return './assets/gems/horizontal-line-clear-green.png'
+                    case Color.BLUE:
+                        return './assets/gems/horizontal-line-clear-blue.png'
+                    case Color.PURPLE:
+                        return './assets/gems/horizontal-line-clear-purple.png'
+                    case Color.ORANGE:
+                        return './assets/gems/horizontal-line-clear-orange.png'
+                    default:
+                        return './assets/gems/jewel-red-2.png'
+                }
+
+            case SpecialProperty.V_LINECLEAR:
+                switch (jewelType.color as Color | null) {
+                    case Color.RED:
+                        return './assets/gems/vertical-line-clear-red.png'
+                    case Color.YELLOW:
+                        return './assets/gems/vertical-line-clear-yellow.png'
+                    case Color.GREEN:
+                        return './assets/gems/vertical-line-clear-green.png'
+                    case Color.BLUE:
+                        return './assets/gems/vertical-line-clear-blue.png'
+                    case Color.PURPLE:
+                        return './assets/gems/vertical-line-clear-purple.png'
+                    case Color.ORANGE:
+                        return './assets/gems/vertical-line-clear-orange.png'
+                    default:
+                        return './assets/gems/jewel-red-2.png'
                 }
 
             default:
                 switch (jewelType.color as Color | null) {
                     case Color.RED:
-                        return './assets/jewel-red.png'
+                        return './assets/gems/jewel-red-2.png'
                     case Color.YELLOW:
-                        return './assets/jewel-yellow.png'
+                        return './assets/gems/jewel-yellow-2.png'
                     case Color.GREEN:
-                        return './assets/jewel-green.png'
+                        return './assets/gems/jewel-green-2.png'
                     case Color.BLUE:
-                        return './assets/jewel-blue.png'
+                        return './assets/gems/jewel-blue-2.png'
                     case Color.PURPLE:
-                        return './assets/jewel-purple.png'
+                        return './assets/gems/jewel-purple-2.png'
+                    case Color.ORANGE:
+                        return './assets/gems/jewel-orange-3.png'
                     default:
-                        return './assets/jewel-black.png'
+                        return './assets/gems/jewel-red-2.png'
                 }
         }
     }

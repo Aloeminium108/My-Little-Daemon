@@ -7,6 +7,7 @@ import { FiniteStateMachine } from "./finitestatemachine.js";
 import { Position } from "../../component/position.js";
 import { Jewel } from "../../entity/puzzle/jewel.js";
 import { CollisionBody } from "../../component/collisionbody.js";
+const EPSILON = 0.001;
 class JewelBehavior extends FiniteStateMachine {
     constructor(collisionDetection, gemGrabSystem) {
         super();
@@ -27,7 +28,7 @@ class JewelBehavior extends FiniteStateMachine {
                         body.onGround = false;
                         return;
                     }
-                    entity.getComponent(Velocity).dy += 0.7;
+                    entity.getComponent(Velocity).dy += 1.5;
                 }],
             [EntityState.MATCHED, (entity) => {
                     var _a, _b;
@@ -36,6 +37,8 @@ class JewelBehavior extends FiniteStateMachine {
                     if (age >= 120) {
                         this.destroyedGems.push(jewelType);
                         if (jewelType.conversion !== null) {
+                            if (jewelType.conversion === SpecialProperty.COLORBOMB)
+                                jewelType.color = null;
                             let bounds = entity.getComponent(Bounds);
                             let position = entity.getComponent(Position);
                             let replacementJewel = new Jewel(position.x, position.y, new JewelType(jewelType.color, jewelType.conversion));
@@ -44,6 +47,8 @@ class JewelBehavior extends FiniteStateMachine {
                         }
                         (_b = this.ecs) === null || _b === void 0 ? void 0 : _b.removeEntity(entity);
                     }
+                    if (jewelType.color === null)
+                        return;
                     let hitbox = entity.getComponent(Hitbox);
                     let sensedDown = this.senseDown(hitbox);
                     let sensedRight = this.senseRight(hitbox);
@@ -67,7 +72,7 @@ class JewelBehavior extends FiniteStateMachine {
                         }
                     }
                     let jewelType = entity.getComponent(JewelType);
-                    if (!jewelType.active)
+                    if (!jewelType.active || jewelType.color === null)
                         return;
                     let sensedRight = this.senseRight(hitbox);
                     this.connectDown(entity, jewelType, sensedDown);
@@ -158,8 +163,15 @@ class JewelBehavior extends FiniteStateMachine {
         this.checkMatchType = (match) => {
             if (match.size === 3)
                 return null;
-            if (match.size === 4)
-                return SpecialProperty.LINECLEAR;
+            if (match.size === 4) {
+                let arrayForm = Array.from(match);
+                if (Math.abs(arrayForm[0].getComponent(Position).x - arrayForm[1].getComponent(Position).x) < EPSILON) {
+                    return SpecialProperty.H_LINECLEAR;
+                }
+                else {
+                    return SpecialProperty.V_LINECLEAR;
+                }
+            }
             let counter = 0;
             match.forEach(gem => {
                 if (this.connectedGemsX.has(gem) &&

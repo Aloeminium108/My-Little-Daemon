@@ -19,7 +19,8 @@ class Match3ScoringSystem extends UnorderedSystem {
                 case null:
                     score += 100
                     break
-                case SpecialProperty.LINECLEAR:
+                case SpecialProperty.H_LINECLEAR:
+                case SpecialProperty.V_LINECLEAR:
                     score += 1500
                     break
                 case SpecialProperty.BOMB:

@@ -11,6 +11,8 @@ import { Position } from "../../component/position.js";
 import { Jewel } from "../../entity/puzzle/jewel.js";
 import { CollisionBody } from "../../component/collisionbody.js";
 
+const EPSILON = 0.001
+
 class JewelBehavior extends FiniteStateMachine {
 
     public componentsRequired = new Set([Automaton, JewelType, CollisionBody])
@@ -34,7 +36,7 @@ class JewelBehavior extends FiniteStateMachine {
                 return
             }
 
-            entity.getComponent(Velocity).dy += 0.7
+            entity.getComponent(Velocity).dy += 1.5
         }],
 
         [EntityState.MATCHED, (entity: Entity) => {
@@ -44,6 +46,9 @@ class JewelBehavior extends FiniteStateMachine {
                 this.destroyedGems.push(jewelType)
 
                 if (jewelType.conversion !== null) {
+
+                    if (jewelType.conversion === SpecialProperty.COLORBOMB) jewelType.color = null
+
                     let bounds = entity.getComponent(Bounds)
                     let position = entity.getComponent(Position)
                     let replacementJewel = new Jewel(
@@ -57,6 +62,8 @@ class JewelBehavior extends FiniteStateMachine {
 
                 this.ecs?.removeEntity(entity)
             }
+
+            if (jewelType.color === null) return
 
             let hitbox = entity.getComponent(Hitbox)
             
@@ -87,7 +94,7 @@ class JewelBehavior extends FiniteStateMachine {
             }
 
             let jewelType = entity.getComponent(JewelType)
-            if (!jewelType.active) return
+            if (!jewelType.active || jewelType.color === null) return
             
             let sensedRight = this.senseRight(hitbox)
 
@@ -228,7 +235,14 @@ class JewelBehavior extends FiniteStateMachine {
     private checkMatchType = (match: Set<Entity>) => {
         if (match.size === 3) return null 
 
-        if (match.size === 4) return SpecialProperty.LINECLEAR
+        if (match.size === 4) {
+            let arrayForm = Array.from(match)
+            if (Math.abs(arrayForm[0].getComponent(Position).x - arrayForm[1].getComponent(Position).x) < EPSILON) {
+                return SpecialProperty.H_LINECLEAR
+            } else {
+                return SpecialProperty.V_LINECLEAR
+            }
+        }
 
         let counter = 0
         match.forEach(gem => {

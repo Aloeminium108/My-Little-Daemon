@@ -30,11 +30,13 @@ enum Color {
     YELLOW,
     GREEN,
     BLUE,
-    PURPLE
+    PURPLE,
+    ORANGE
 }
 
 enum SpecialProperty {
-    LINECLEAR,
+    V_LINECLEAR,
+    H_LINECLEAR,
     BOMB,
     COLORBOMB,
     ULTRABOMB

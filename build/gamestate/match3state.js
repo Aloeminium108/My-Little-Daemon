@@ -28,7 +28,7 @@ class Match3State {
             this.initSystems();
         };
         this.initEntities = () => {
-            this.createGemGrid(100, 0, 10, 10);
+            this.createGemGrid(100, 0, 8, 8);
             let scoreboard = new Scoreboard(800, 300);
             this.ecs.addEntity(scoreboard);
         };
