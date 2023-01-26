@@ -102,7 +102,8 @@ class Game {
     }
 
     changeState = (state: GameStateTransition<GameState>) => {
-        if (this.stateMap.has(state)) {
+        if (this.stateMap.has(state) 
+        && this.currentState !== this.stateMap.get(state)) {
             this.currentState.pause()
             this.currentState = this.stateMap.get(state)!!
             this.currentState.resume()
@@ -119,13 +120,34 @@ class Game {
     addButtonListeners = () => {
         let buttons = document.querySelectorAll('.button')
         buttons[0].addEventListener('click', (e) => {
-            this.changeState(StatMenuState)
+            this.changeState(HomeState)
         })
         buttons[1].addEventListener('click', (e) => {
-            this.currentState.foodButton?.()
+            this.changeState(StatMenuState)
         })
         buttons[2].addEventListener('click', (e) => {
+            this.currentState.foodButton?.()
+        })
+        buttons[3].addEventListener('click', (e) => {
+            // TOYS
+        })
+        buttons[4].addEventListener('click', (e) => {
+            // HEAL
+        })
+        buttons[5].addEventListener('click', (e) => {
             this.changeState(Match3State)
+        })
+        buttons[6].addEventListener('click', (e) => {
+            // STORE
+        })
+        buttons[7].addEventListener('click', (e) => {
+            // BATH
+        })
+        buttons[8].addEventListener('click', (e) => {
+            // SLEEP
+        })
+        buttons[9].addEventListener('click', (e) => {
+            // SAVE
         })
     }
 

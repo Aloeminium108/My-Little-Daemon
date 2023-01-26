@@ -68,7 +68,8 @@ class Game {
             this.stateMap.set(state.constructor, state);
         };
         this.changeState = (state) => {
-            if (this.stateMap.has(state)) {
+            if (this.stateMap.has(state)
+                && this.currentState !== this.stateMap.get(state)) {
                 this.currentState.pause();
                 this.currentState = this.stateMap.get(state);
                 this.currentState.resume();
@@ -83,14 +84,35 @@ class Game {
         this.addButtonListeners = () => {
             let buttons = document.querySelectorAll('.button');
             buttons[0].addEventListener('click', (e) => {
-                this.changeState(StatMenuState);
+                this.changeState(HomeState);
             });
             buttons[1].addEventListener('click', (e) => {
+                this.changeState(StatMenuState);
+            });
+            buttons[2].addEventListener('click', (e) => {
                 var _a, _b;
                 (_b = (_a = this.currentState).foodButton) === null || _b === void 0 ? void 0 : _b.call(_a);
             });
-            buttons[2].addEventListener('click', (e) => {
+            buttons[3].addEventListener('click', (e) => {
+                // TOYS
+            });
+            buttons[4].addEventListener('click', (e) => {
+                // HEAL
+            });
+            buttons[5].addEventListener('click', (e) => {
                 this.changeState(Match3State);
+            });
+            buttons[6].addEventListener('click', (e) => {
+                // STORE
+            });
+            buttons[7].addEventListener('click', (e) => {
+                // BATH
+            });
+            buttons[8].addEventListener('click', (e) => {
+                // SLEEP
+            });
+            buttons[9].addEventListener('click', (e) => {
+                // SAVE
             });
         };
         this.ctx = canvas.getContext("2d");
