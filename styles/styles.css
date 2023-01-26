@@ -28,17 +28,37 @@ body {
 }
 
 .button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 7vw;
     width: 7vw;
     background-color: #888;
-    border: 3px solid black;
+    border: 5px solid #555;
     border-radius: 2vw;
 }
 
+.button img {
+    height: 100%;
+    margin-top: 5%;
+}
+
+.button h2 {
+    margin: 0;
+}
+
+.button * {
+    opacity: 40%;
+}
+
 .button:hover {
-    background-color: #444;
-    border: 3px solid white;
+    border: 5px solid black;
     cursor: pointer;
+}
+
+.button:hover * {
+    opacity: 100%;
 }
 
 .game-screen {
