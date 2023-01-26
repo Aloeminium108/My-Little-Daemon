@@ -10,7 +10,8 @@ class Score extends Component {
 
 enum ScoreType {
     SCORE,
-    COMBO
+    COMBO,
+    MOVES
 }
 
 export {Score, ScoreType}

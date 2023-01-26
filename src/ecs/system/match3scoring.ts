@@ -1,7 +1,9 @@
 import { SpecialProperty } from "../component/jeweltype.js";
-import { Score } from "../component/score.js";
+import { Score, ScoreType } from "../component/score.js";
 import { JewelBehavior } from "./fsm/jewelbehavior.js";
 import { UnorderedSystem } from "./system.js";
+
+const COMBO_VALUE = 10
 
 class Match3ScoringSystem extends UnorderedSystem {
     public componentsRequired = new Set([Score])
@@ -11,10 +13,13 @@ class Match3ScoringSystem extends UnorderedSystem {
     }
 
     public update(interval: number): void {
+        let combo = this.jewelBehavior.comboCount
+        let moves = this.jewelBehavior.moveCount
         let score = 0
         let destroyedGems = this.jewelBehavior.destroyedGems
         while (destroyedGems.length > 0) {
             let gem = destroyedGems.pop()
+            score += combo * COMBO_VALUE
             switch (gem?.special as SpecialProperty | null) {
                 case null:
                     score += 100
@@ -36,7 +41,19 @@ class Match3ScoringSystem extends UnorderedSystem {
         }
 
         this.entities.forEach(entity => {
-            entity.getComponent(Score).score += score
+            let display = entity.getComponent(Score)
+
+            switch (display.scoreType as ScoreType) {
+                case ScoreType.SCORE:
+                    display.score += score
+                    break
+                case ScoreType.COMBO:
+                    display.score = combo
+                    break
+                case ScoreType.MOVES:
+                    display.score = moves
+                    break 
+            }
         })
     }
 

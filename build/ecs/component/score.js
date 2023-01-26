@@ -10,5 +10,6 @@ var ScoreType;
 (function (ScoreType) {
     ScoreType[ScoreType["SCORE"] = 0] = "SCORE";
     ScoreType[ScoreType["COMBO"] = 1] = "COMBO";
+    ScoreType[ScoreType["MOVES"] = 2] = "MOVES";
 })(ScoreType || (ScoreType = {}));
 export { Score, ScoreType };

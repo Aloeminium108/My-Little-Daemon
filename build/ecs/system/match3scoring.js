@@ -1,6 +1,7 @@
 import { SpecialProperty } from "../component/jeweltype.js";
-import { Score } from "../component/score.js";
+import { Score, ScoreType } from "../component/score.js";
 import { UnorderedSystem } from "./system.js";
+const COMBO_VALUE = 10;
 class Match3ScoringSystem extends UnorderedSystem {
     constructor(jewelBehavior) {
         super();
@@ -8,10 +9,13 @@ class Match3ScoringSystem extends UnorderedSystem {
         this.componentsRequired = new Set([Score]);
     }
     update(interval) {
+        let combo = this.jewelBehavior.comboCount;
+        let moves = this.jewelBehavior.moveCount;
         let score = 0;
         let destroyedGems = this.jewelBehavior.destroyedGems;
         while (destroyedGems.length > 0) {
             let gem = destroyedGems.pop();
+            score += combo * COMBO_VALUE;
             switch (gem === null || gem === void 0 ? void 0 : gem.special) {
                 case null:
                     score += 100;
@@ -32,7 +36,18 @@ class Match3ScoringSystem extends UnorderedSystem {
             }
         }
         this.entities.forEach(entity => {
-            entity.getComponent(Score).score += score;
+            let display = entity.getComponent(Score);
+            switch (display.scoreType) {
+                case ScoreType.SCORE:
+                    display.score += score;
+                    break;
+                case ScoreType.COMBO:
+                    display.score = combo;
+                    break;
+                case ScoreType.MOVES:
+                    display.score = moves;
+                    break;
+            }
         });
     }
 }

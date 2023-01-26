@@ -5,7 +5,7 @@ import { Sprite } from "../../component/sprite.js";
 import { Entity } from "../entity.js";
 import { Jewel } from "./jewel.js";
 import { JewelGenerator } from "./jewelgenerator.js";
-import { Scoreboard } from "./scoreboard.js";
+import { ComboCounter, Scoreboard } from "./scoreboard.js";
 class JewelGrid extends Entity {
     constructor(x, y, numColumns, numRows) {
         super();
@@ -116,6 +116,8 @@ class ScorePanel extends Entity {
         this.addComponent(new Sprite(11, spriteSrc));
         let scoreDisplay = new Scoreboard(x + 30, y + 150);
         this.childEntities.add(scoreDisplay);
+        let comboDisplay = new ComboCounter(x + 30, y + 300);
+        this.childEntities.add(comboDisplay);
     }
 }
 export { JewelGrid };

@@ -12,6 +12,7 @@ import { Jewel } from "../../entity/puzzle/jewel.js";
 import { CollisionBody } from "../../component/collisionbody.js";
 
 const EPSILON = 0.001
+const COMBO_TIME = 1000
 
 class JewelBehavior extends FiniteStateMachine {
 
@@ -22,6 +23,11 @@ class JewelBehavior extends FiniteStateMachine {
     public connectedGemsY = new Map<Entity, Entity>()
 
     public destroyedGems = new Array<JewelType>()
+
+    public moveCount = 0
+    public comboCount = 0
+
+    private comboTimer = 0
 
     behaviorMap = new Map([
         [EntityState.FALLING, (entity: Entity) => {
@@ -44,6 +50,8 @@ class JewelBehavior extends FiniteStateMachine {
             let jewelType = entity.getComponent(JewelType)
             if (age >= 120) {
                 this.destroyedGems.push(jewelType)
+                this.comboTimer = COMBO_TIME
+                this.comboCount++
 
                 if (jewelType.conversion !== null) {
 
@@ -159,6 +167,13 @@ class JewelBehavior extends FiniteStateMachine {
         this.entities.forEach(entity => {
             entity.getComponent(JewelType).active = true
         })
+
+        this.comboTimer -= interval
+        if (this.comboTimer <= 0) {
+            this.comboTimer = 0
+            this.comboCount = 0
+        }
+
     }
 
     private consolidateMatches = (matches: Set<Set<Entity>>) => {
