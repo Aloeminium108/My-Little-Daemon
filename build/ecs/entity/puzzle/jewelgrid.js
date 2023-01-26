@@ -40,6 +40,8 @@ class JewelGrid extends Entity {
                     }
                     else if (i === numColumns + 1) {
                         if (j === 0) {
+                            let scorePanel = new ScorePanel(x + (i * Jewel.width), y + (j * Jewel.width));
+                            this.childEntities.add(scorePanel);
                             tileType = TileType.TOP_RIGHT;
                         }
                         else if (j === numRows + 1) {
@@ -105,4 +107,12 @@ var TileType;
     TileType[TileType["BOTTOM_LEFT"] = 7] = "BOTTOM_LEFT";
     TileType[TileType["BOTTOM_RIGHT"] = 8] = "BOTTOM_RIGHT";
 })(TileType || (TileType = {}));
+class ScorePanel extends Entity {
+    constructor(x, y) {
+        super();
+        this.addComponent(new Position(x, y));
+        let spriteSrc = './assets/gems/score-panel-2.png';
+        this.addComponent(new Sprite(11, spriteSrc));
+    }
+}
 export { JewelGrid };

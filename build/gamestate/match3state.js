@@ -14,7 +14,6 @@ import { Automaton } from "../ecs/component/automaton.js";
 import { GeneratorSystem } from "../ecs/system/generatorsystem.js";
 import { Match3ScoringSystem } from "../ecs/system/match3scoring.js";
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
-import { Scoreboard } from "../ecs/entity/puzzle/scoreboard.js";
 import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 import { JewelGrid } from "../ecs/entity/puzzle/jewelgrid.js";
 import { Jewel } from "../ecs/entity/puzzle/jewel.js";
@@ -28,8 +27,6 @@ class Match3State {
         };
         this.initEntities = () => {
             this.createCenteredGemGrid(8, 8);
-            let scoreboard = new Scoreboard(1200, 300);
-            this.ecs.addEntity(scoreboard);
         };
         this.initSystems = () => {
             let mouseSystem = new MouseSystem(this.mouse, this.canvas);
@@ -48,8 +45,8 @@ class Match3State {
             let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem);
             this.ecs.addSystem(jewelBehavior);
             this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior));
-            this.ecs.addSystem(new DrawingSystem(this.ctx));
             this.ecs.addSystem(new SpriteSystem(this.ctx));
+            this.ecs.addSystem(new DrawingSystem(this.ctx));
         };
         this.pause = () => { };
         this.resume = () => { };
@@ -60,7 +57,7 @@ class Match3State {
         this.createCenteredGemGrid = (numColumns, numRows) => {
             let centerX = this.canvas.width / 2;
             let centerY = this.canvas.height / 2;
-            let halfWidth = ((numColumns + 2) / 2) * Jewel.width;
+            let halfWidth = ((numColumns + 6) / 2) * Jewel.width;
             let halfHeight = ((numRows + 2) / 2) * Jewel.width;
             let x = Math.floor(centerX - halfWidth);
             let y = Math.floor(centerY - halfHeight);

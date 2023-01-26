@@ -53,9 +53,6 @@ class Match3State implements GameState {
 
         this.createCenteredGemGrid(8, 8)
 
-        let scoreboard = new Scoreboard(1200, 300)
-        this.ecs.addEntity(scoreboard)
-
     }
 
     initSystems = () => {
@@ -75,8 +72,8 @@ class Match3State implements GameState {
         let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem)
         this.ecs.addSystem(jewelBehavior)
         this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior))
-        this.ecs.addSystem(new DrawingSystem(this.ctx))
         this.ecs.addSystem(new SpriteSystem(this.ctx))
+        this.ecs.addSystem(new DrawingSystem(this.ctx))
     }
 
     pause = () => {}
@@ -91,7 +88,7 @@ class Match3State implements GameState {
         let centerX = this.canvas.width/2
         let centerY = this.canvas.height/2
 
-        let halfWidth = ((numColumns + 2) / 2) * Jewel.width
+        let halfWidth = ((numColumns + 6) / 2) * Jewel.width
         let halfHeight = ((numRows + 2) / 2) * Jewel.width
 
         let x = Math.floor(centerX - halfWidth)
