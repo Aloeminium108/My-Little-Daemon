@@ -5,6 +5,7 @@ import { Sprite } from "../../component/sprite.js";
 import { Entity } from "../entity.js";
 import { Jewel } from "./jewel.js";
 import { JewelGenerator } from "./jewelgenerator.js";
+import { Scoreboard } from "./scoreboard.js";
 class JewelGrid extends Entity {
     constructor(x, y, numColumns, numRows) {
         super();
@@ -111,8 +112,10 @@ class ScorePanel extends Entity {
     constructor(x, y) {
         super();
         this.addComponent(new Position(x, y));
-        let spriteSrc = './assets/gems/score-panel-2.png';
+        let spriteSrc = './assets/gems/score-panel.png';
         this.addComponent(new Sprite(11, spriteSrc));
+        let scoreDisplay = new Scoreboard(x + 30, y + 150);
+        this.childEntities.add(scoreDisplay);
     }
 }
 export { JewelGrid };
