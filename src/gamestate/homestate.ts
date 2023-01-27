@@ -19,6 +19,11 @@ import { ConsumableSystem } from "../ecs/system/consumablesystem.js"
 import { SpatialHashing } from "../ecs/system/spatialhashing.js"
 import { PetAI } from "../ecs/system/fsm/petai.js"
 import { CollisionResponse } from "../ecs/system/collisionresponse.js"
+import { Hitbox } from "../ecs/component/hitbox.js"
+import { Position } from "../ecs/component/position.js"
+import { Sprite } from "../ecs/component/sprite.js"
+
+const RELATIVE_CUSHION_POSITION = 0.85
 
 class HomeState implements GameState {
 
@@ -63,8 +68,9 @@ class HomeState implements GameState {
         this.ecs.addEntity(ball1)
         this.ecs.addEntity(ball2)
 
-        let petEntity = new PetEntity(800, 100, this.pet.stats)
-        petEntity.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height))
+        let position = this.findCushionPosition(PetEntity.width, PetEntity.height)
+        let petEntity = new PetEntity(position.x, position.y, this.pet.stats)
+        
         this.ecs.addEntity(petEntity)
     }
 
@@ -93,6 +99,14 @@ class HomeState implements GameState {
     pause = () => {}
     resume = () => {}
     
+    findCushionPosition = (width: number, height: number) => {
+        let centerX = this.canvas.width / 2
+        let x = Math.floor(centerX - (width / 2))
+        let cushionHeight = this.canvas.height * (RELATIVE_CUSHION_POSITION)
+        let y = Math.floor(cushionHeight - height)
+        return {x: x, y: y}
+    }
+
 }
 
 export { HomeState }
