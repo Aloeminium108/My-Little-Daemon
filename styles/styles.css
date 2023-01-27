@@ -25,7 +25,7 @@ body {
     align-items: center;
     height: 100vh;
     width: 10vw;
-    background-color:  darkgray;
+    background-color:  #3b255b;
 }
 
 .button {
@@ -35,8 +35,8 @@ body {
     align-items: center;
     height: 7vw;
     width: 7vw;
-    background-color: #888;
-    border: 5px solid #555;
+    background-color: #613b96;
+    border: 5px solid #342548;
     border-radius: 2vw;
 }
 
