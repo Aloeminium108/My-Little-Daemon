@@ -4,6 +4,12 @@ canvas {
     z-index: 0;
 }
 
+#canvas-container {
+    background-image: url("../assets/room/living-room-blurred.png");
+    background-size: cover;
+    z-index: 0;
+}
+
 body {
     margin: 0; 
     height: 100%; 
