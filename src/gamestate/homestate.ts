@@ -96,8 +96,12 @@ class HomeState implements GameState {
         this.ecs.update(interval)
     }
 
-    pause = () => {}
-    resume = () => {}
+    pause = () => {
+        this.canvas.style.backgroundImage = "url(../assets/room/living-room-blurred.png)"
+    }
+    resume = () => {
+        this.canvas.style.backgroundImage = "url(../assets/room/living-room-scaled.png)"
+    }
     
     findCushionPosition = (width: number, height: number) => {
         let centerX = this.canvas.width / 2
