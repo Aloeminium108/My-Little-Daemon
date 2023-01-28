@@ -22,8 +22,6 @@ class StatMenuState {
             this.petName.textContent = this.pet.name;
             this.petGender.textContent = this.pet.gender;
             this.petAge.textContent = this.pet.age;
-            this.petWeight.textContent = this.pet.weight;
-            this.petHunger.textContent = this.pet.stats.getHunger().toString();
         };
         this.game = game;
         this.pet = game.pet;
@@ -32,8 +30,6 @@ class StatMenuState {
         this.petName = document.getElementById('pet-name');
         this.petGender = document.getElementById('pet-gender');
         this.petAge = document.getElementById('pet-age');
-        this.petWeight = document.getElementById('pet-weight');
-        this.petHunger = document.getElementById('pet-hunger');
         this.init();
     }
 }

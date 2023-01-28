@@ -34,33 +34,64 @@
             
         <div class="game-screen">
             <div id="menu">
-                <div>
-                    <img id="pet-image" src="" alt="A Funky Bird">
+
+                <div class="panel">
+                    <div class="stat-panel">
+                        <div class="stat-container pet-image-container">
+                            <img id="pet-image" src="" alt="">
+                        </div>
+
+                        <div class="stat-list">
+                            <div class="stat">
+                                <div class="stat-label">
+                                    <h2>Name:</h2>
+                                </div>
+                                <div class="stat-container stat-info-container">
+                                    <p id="pet-name"></p>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">
+                                    <h2>Age:</h2>
+                                </div>
+                                <div class="stat-container stat-info-container">
+                                    <p id="pet-age"></p>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-label">
+                                    <h2>Gender:</h2>
+                                </div>
+                                <div class="stat-container stat-info-container">
+                                    <p id="pet-gender"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+
+                    <div id="menu-exit"></div>
                 </div>
-                <div class="stat-bar">
-                    <div class="stat">
-                        <h2>Name:</h2>
-                        <p id="pet-name"></p>
+
+                <div class="stat-list stat-bar-list">
+                    <div class="stat-bar-container">
+                        <div class="stat-label">
+                            <h2>Hunger:</h2>         
+                        </div>
+                        <div class="stat-container stat-bar" id="hunger-bar"></div>
                     </div>
-                    <div class="stat">
-                        <h2>Gender:</h2>
-                        <p id="pet-gender"></p>
-                    </div>
-                    <div class="stat">
-                        <h2>Age:</h2>
-                        <p id="pet-age"></p>
-                    </div>
-                    <div class="stat">
-                        <h2>Weight:</h2>
-                        <p id="pet-weight"></p>
-                    </div>
-                    <div class="stat">
-                        <h2>Hunger:</h2>
-                        <p id="pet-hunger"></p>
+                    <div class="stat-bar-container">
+                        <div class="stat-label">
+                            <h2>Happiness:</h2>           
+                        </div>
+                        <div class="stat-container stat-bar" id="happiness-bar"></div>
                     </div>
                 </div>
-                <div id="menu-exit"></div>
+
+                
             </div>
+
             <div id="canvas-container"><canvas></canvas></div>
             
         </div>
