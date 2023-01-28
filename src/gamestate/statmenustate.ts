@@ -8,7 +8,6 @@ class StatMenuState implements GameState {
     menuHTML: HTMLElement
     petImage: HTMLImageElement
     petName: HTMLParagraphElement
-    petGender: HTMLParagraphElement
     petAge: HTMLParagraphElement
 
     game: Game
@@ -21,7 +20,6 @@ class StatMenuState implements GameState {
         this.menuHTML = document.getElementById('menu')!!
         this.petImage = document.getElementById('pet-image') as HTMLImageElement
         this.petName = document.getElementById('pet-name') as HTMLParagraphElement
-        this.petGender = document.getElementById('pet-gender') as HTMLParagraphElement
         this.petAge = document.getElementById('pet-age') as HTMLParagraphElement
 
         this.init()
@@ -51,7 +49,6 @@ class StatMenuState implements GameState {
     updateMenu = () => {
         this.petImage.src = this.pet.imageSrc
         this.petName.textContent = this.pet.name
-        this.petGender.textContent = this.pet.gender
         this.petAge.textContent = this.pet.age
     }
     

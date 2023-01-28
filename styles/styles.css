@@ -16,6 +16,19 @@ body {
     overflow: hidden;
 }
 
+h2 {
+    margin-block-start: 10px !important;
+    margin-block-end: 10px !important;
+}
+
+h3 {
+    margin-block-start: 0px !important;
+    margin-block-end: 0px !important;
+    font-family: 'Coiny', cursive;
+    font-size: 1.4em;
+}
+
+
 .fullscreen {
     width: 100%;
     height: 100vh;
@@ -89,7 +102,11 @@ body {
     justify-content: space-between;
 
     background-color: #8f49ff;
-    border: 5px outset #4d268d;
+    border: 5px solid;
+    border-top-color: white;
+    border-right-color: white;
+    border-bottom-color: #4d268d;
+    border-left-color: #4d268d;
     border-radius: 50px;
 
     visibility: hidden;
@@ -130,15 +147,18 @@ body {
 }
 
 .stat-list {
+    margin-top: 5%;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     flex-grow: 1;
 }
 
 .stat-label {
     margin-right: 20px;
-    
+    font-family: 'Coiny', cursive;
+    font-size: 1.7em;
+    text-shadow: 0.05em 0.05em white;
 }
 
 .stat {
@@ -151,22 +171,35 @@ body {
 .pet-image-container {
     min-width: 400px;
     min-height: 300px;
-    margin: 3%;
+    margin: 5% 5% 0% 5%;
 }
 
 .stat-container {
     color: white;
     background-color: #333;
     padding: 0px 10px 0px 10px;
-    border-radius: 30px;
+    border-radius: 15px;
+
+    border: 5px solid;
+    border-top-color: #4d268d;
+    border-right-color: #4d268d;
+    border-bottom-color: white;
+    border-left-color: white;
 }
 
 .stat-info-container {
     width: 70%;
     border-radius: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.7em;
+}
+
+.stat-icon-container {
+    border-radius: 10px;
 }
 
 .stat-bar-list {
+    margin-top: 0%;
     min-width: 90%;
     max-width: 90%;
     margin-bottom: 50px;
@@ -174,9 +207,14 @@ body {
 
 .stat-bar-container {
     flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }
 
 .stat-bar {
-    height: 60%;
+    flex-grow: 1;
     width: 100%;
+    padding: none;
 }

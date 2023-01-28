@@ -20,7 +20,6 @@ class StatMenuState {
         this.updateMenu = () => {
             this.petImage.src = this.pet.imageSrc;
             this.petName.textContent = this.pet.name;
-            this.petGender.textContent = this.pet.gender;
             this.petAge.textContent = this.pet.age;
         };
         this.game = game;
@@ -28,7 +27,6 @@ class StatMenuState {
         this.menuHTML = document.getElementById('menu');
         this.petImage = document.getElementById('pet-image');
         this.petName = document.getElementById('pet-name');
-        this.petGender = document.getElementById('pet-gender');
         this.petAge = document.getElementById('pet-age');
         this.init();
     }
