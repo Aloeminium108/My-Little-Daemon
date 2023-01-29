@@ -18,10 +18,8 @@ import { Automaton } from "../ecs/component/automaton.js";
 import { GeneratorSystem } from "../ecs/system/generatorsystem.js";
 import { Match3ScoringSystem } from "../ecs/system/match3scoring.js";
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
-import { Scoreboard } from "../ecs/entity/puzzle/scoreboard.js";
 import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 import { JewelGrid } from "../ecs/entity/puzzle/jewelgrid.js";
-import { Jewel } from "../ecs/entity/puzzle/jewel.js";
 
 class Match3State implements GameState {
     pet: Pet;
@@ -31,6 +29,8 @@ class Match3State implements GameState {
     mouse: Mouse
     canvas: HTMLCanvasElement
     timeElapsed: number = 0
+
+    scoreboard: HTMLDivElement = document.createElement('div')
 
     constructor(
         public game: Game, 
@@ -45,8 +45,15 @@ class Match3State implements GameState {
     }
 
     init = () => {
+        this.initScoreboard()
         this.initEntities()
         this.initSystems()
+    }
+
+    initScoreboard = () => {
+        //document.getElementById('scoreboard-padding')!!.style.visibility = 'visible'
+        //this.scoreboard.innerHTML = 
+        //''
     }
 
     initEntities = () => {

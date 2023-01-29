@@ -23,9 +23,16 @@ class Match3State {
         this.canvasContainer = canvasContainer;
         this.ecs = new ECS();
         this.timeElapsed = 0;
+        this.scoreboard = document.createElement('div');
         this.init = () => {
+            this.initScoreboard();
             this.initEntities();
             this.initSystems();
+        };
+        this.initScoreboard = () => {
+            //document.getElementById('scoreboard-padding')!!.style.visibility = 'visible'
+            //this.scoreboard.innerHTML = 
+            //''
         };
         this.initEntities = () => {
             let jewelGrid = new JewelGrid(0, 0, 8, 8);
