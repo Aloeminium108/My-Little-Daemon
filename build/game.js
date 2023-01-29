@@ -6,8 +6,10 @@ import { Match3State } from "./gamestate/match3state.js";
 import { Sprite } from "./ecs/component/sprite.js";
 import { LoadingState } from "./gamestate/loadingstate.js";
 class Game {
-    constructor(canvas) {
-        this.canvas = canvas;
+    constructor(mainCanvas, secondaryCanvas, canvasContainer) {
+        this.mainCanvas = mainCanvas;
+        this.secondaryCanvas = secondaryCanvas;
+        this.canvasContainer = canvasContainer;
         this.mouse = new Mouse();
         this.lastFrameTimeStamp = null;
         this.stateMap = new Map;
@@ -16,7 +18,8 @@ class Game {
             let lastFrameTimeStamp = (_a = this.lastFrameTimeStamp) !== null && _a !== void 0 ? _a : currentFrameTimeStamp;
             let interval = currentFrameTimeStamp - lastFrameTimeStamp;
             this.lastFrameTimeStamp = currentFrameTimeStamp;
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctxMain.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+            this.ctxSecondary.clearRect(0, 0, this.secondaryCanvas.width, this.secondaryCanvas.height);
             this.pet.update(interval);
             (_c = (_b = this.currentState).update) === null || _c === void 0 ? void 0 : _c.call(_b, interval);
             window.requestAnimationFrame(this.animate);
@@ -60,9 +63,9 @@ class Game {
             return assets;
         };
         this.initializeStates = () => {
-            this.addState(new HomeState(this));
+            this.addState(new HomeState(this, this.ctxMain));
             this.addState(new StatMenuState(this));
-            this.addState(new Match3State(this));
+            this.addState(new Match3State(this, this.ctxSecondary, this.canvasContainer));
         };
         this.addState = (state) => {
             this.stateMap.set(state.constructor, state);
@@ -76,10 +79,14 @@ class Game {
             }
         };
         this.addCanvasListeners = () => {
-            this.canvas.addEventListener('mousedown', (e) => this.mouse.pressed = true);
-            this.canvas.addEventListener('mouseup', (e) => this.mouse.pressed = false);
-            this.canvas.addEventListener('mousemove', (e) => this.mouse.move(e));
-            this.canvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false);
+            this.mainCanvas.addEventListener('mousedown', (e) => this.mouse.pressed = true);
+            this.mainCanvas.addEventListener('mouseup', (e) => this.mouse.pressed = false);
+            this.mainCanvas.addEventListener('mousemove', (e) => this.mouse.move(e));
+            this.mainCanvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false);
+            this.secondaryCanvas.addEventListener('mousedown', (e) => this.mouse.pressed = true);
+            this.secondaryCanvas.addEventListener('mouseup', (e) => this.mouse.pressed = false);
+            this.secondaryCanvas.addEventListener('mousemove', (e) => this.mouse.move(e));
+            this.secondaryCanvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false);
         };
         this.addButtonListeners = () => {
             let buttons = document.querySelectorAll('.button');
@@ -115,9 +122,10 @@ class Game {
                 // SAVE
             });
         };
-        this.ctx = canvas.getContext("2d");
+        this.ctxMain = mainCanvas.getContext("2d");
+        this.ctxSecondary = secondaryCanvas.getContext("2d");
         this.pet = new Pet();
-        this.currentState = new LoadingState(this);
+        this.currentState = new LoadingState(this, this.ctxMain);
         Promise.all(this.loadAssets()).then(() => {
             this.initializeStates();
             this.currentState = this.stateMap.get(HomeState);

@@ -1,12 +1,13 @@
 class LoadingState {
-    constructor(game) {
+    constructor(game, ctx) {
+        this.game = game;
+        this.ctx = ctx;
         this.update = (interval) => {
             this.ctx.fillStyle = 'blue';
-            this.ctx.fillRect(0, 0, this.game.canvas.width, this.game.canvas.height);
+            this.ctx.fillRect(0, 0, this.game.mainCanvas.width, this.game.mainCanvas.height);
         };
         this.game = game;
         this.pet = game.pet;
-        this.ctx = game.ctx;
     }
     init() { }
     pause() { }

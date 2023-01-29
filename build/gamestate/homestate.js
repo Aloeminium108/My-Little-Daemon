@@ -17,7 +17,9 @@ import { PetAI } from "../ecs/system/fsm/petai.js";
 import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 const RELATIVE_CUSHION_POSITION = 0.85;
 class HomeState {
-    constructor(game) {
+    constructor(game, ctx) {
+        this.game = game;
+        this.ctx = ctx;
         this.ecs = new ECS();
         this.floorHeight = 100;
         this.foodButton = () => {
@@ -79,8 +81,7 @@ class HomeState {
         this.game = game;
         this.pet = game.pet;
         this.mouse = game.mouse;
-        this.ctx = game.ctx;
-        this.canvas = game.canvas;
+        this.canvas = game.mainCanvas;
         this.init();
     }
 }

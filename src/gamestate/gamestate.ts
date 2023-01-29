@@ -4,6 +4,7 @@ import { Pet } from "../Pet/pet.js"
 
 interface GameState {
     game: Game
+    ctx?: CanvasRenderingContext2D
     pet: Pet
     ecs?: ECS
     

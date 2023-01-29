@@ -8,7 +8,10 @@ import { Sprite } from "./ecs/component/sprite.js"
 import { LoadingState } from "./gamestate/loadingstate.js"
 
 class Game {
-    ctx: CanvasRenderingContext2D
+    private ctxMain: CanvasRenderingContext2D
+    private ctxSecondary: CanvasRenderingContext2D
+
+
 
     pet: Pet
 
@@ -19,12 +22,17 @@ class Game {
     private stateMap = new Map<GameStateTransition<GameState>, GameState>
     private currentState: GameState
 
-    constructor(public canvas: HTMLCanvasElement) {
-        this.ctx = canvas.getContext("2d")!!
+    constructor(
+        public mainCanvas: HTMLCanvasElement, 
+        public secondaryCanvas: HTMLCanvasElement,
+        public canvasContainer: HTMLDivElement
+        ) {
+        this.ctxMain = mainCanvas.getContext("2d")!!
+        this.ctxSecondary = secondaryCanvas.getContext("2d")!!
 
         this.pet = new Pet()
 
-        this.currentState = new LoadingState(this)
+        this.currentState = new LoadingState(this, this.ctxMain)
 
         Promise.all(this.loadAssets()).then(() => {
             this.initializeStates()
@@ -44,7 +52,8 @@ class Game {
         let interval = currentFrameTimeStamp - lastFrameTimeStamp
         this.lastFrameTimeStamp = currentFrameTimeStamp
         
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        this.ctxMain.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height)
+        this.ctxSecondary.clearRect(0, 0, this.secondaryCanvas.width, this.secondaryCanvas.height)
 
         this.pet.update(interval)
         this.currentState.update?.(interval)
@@ -92,9 +101,9 @@ class Game {
     }
 
     initializeStates = () => {
-        this.addState(new HomeState(this))
+        this.addState(new HomeState(this, this.ctxMain))
         this.addState(new StatMenuState(this))
-        this.addState(new Match3State(this))
+        this.addState(new Match3State(this, this.ctxSecondary, this.canvasContainer))
     }
 
     addState = <T extends GameState>(state: GameState) => {
@@ -111,10 +120,15 @@ class Game {
     }
 
     addCanvasListeners = () => {
-        this.canvas.addEventListener('mousedown', (e) => this.mouse.pressed = true)
-        this.canvas.addEventListener('mouseup', (e) => this.mouse.pressed = false)
-        this.canvas.addEventListener('mousemove', (e) => this.mouse.move(e))
-        this.canvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false)
+        this.mainCanvas.addEventListener('mousedown', (e) => this.mouse.pressed = true)
+        this.mainCanvas.addEventListener('mouseup', (e) => this.mouse.pressed = false)
+        this.mainCanvas.addEventListener('mousemove', (e) => this.mouse.move(e))
+        this.mainCanvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false)
+
+        this.secondaryCanvas.addEventListener('mousedown', (e) => this.mouse.pressed = true)
+        this.secondaryCanvas.addEventListener('mouseup', (e) => this.mouse.pressed = false)
+        this.secondaryCanvas.addEventListener('mousemove', (e) => this.mouse.move(e))
+        this.secondaryCanvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false)
     }
 
     addButtonListeners = () => {

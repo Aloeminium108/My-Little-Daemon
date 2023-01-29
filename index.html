@@ -36,7 +36,7 @@
         </div>
             
         <div class="game-screen">
-            <div id="menu">
+            <div id="menu" class="canvas-overlay">
 
                 <div class="panel">
                     <div class="stat-panel">
@@ -93,7 +93,13 @@
 
             </div>
 
-            <div id="canvas-container"><canvas></canvas></div>
+            <div class="canvas-overlay" id="secondary-canvas-container">
+                <canvas id="secondary-canvas"></canvas>
+            </div>
+
+            <div id="main-canvas-container">
+                <canvas id="main-canvas"></canvas>
+            </div>
             
         </div>
 

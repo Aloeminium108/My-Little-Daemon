@@ -24,22 +24,22 @@ import { JewelGrid } from "../ecs/entity/puzzle/jewelgrid.js";
 import { Jewel } from "../ecs/entity/puzzle/jewel.js";
 
 class Match3State implements GameState {
-    game: Game;
     pet: Pet;
 
     ecs = new ECS()
 
     mouse: Mouse
-    ctx: CanvasRenderingContext2D
     canvas: HTMLCanvasElement
     timeElapsed: number = 0
 
-    constructor(game: Game) {
+    constructor(
+        public game: Game, 
+        public ctx: CanvasRenderingContext2D, 
+        public canvasContainer: HTMLDivElement) {
         this.game = game
         this.pet = game.pet
         this.mouse = game.mouse
-        this.ctx = game.ctx
-        this.canvas = game.canvas
+        this.canvas = game.secondaryCanvas
 
         this.init()
     }
@@ -51,7 +51,8 @@ class Match3State implements GameState {
 
     initEntities = () => {
 
-        this.createCenteredGemGrid(8, 8)
+        let jewelGrid = new JewelGrid(0, 0, 8, 8)
+        this.ecs.addEntity(jewelGrid)
 
     }
 
@@ -63,7 +64,7 @@ class Match3State implements GameState {
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new FrictionSystem())
         this.ecs.addSystem(new BoundarySystem())
-        let spatialHashing = new SpatialHashing(100, new Set([Hitbox, JewelType, Automaton]))
+        let spatialHashing = new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton]))
         this.ecs.addSystem(spatialHashing)
         let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
@@ -76,27 +77,34 @@ class Match3State implements GameState {
         this.ecs.addSystem(new DrawingSystem(this.ctx))
     }
 
-    pause = () => {}
-    resume = () =>  {}
+    pause = () => {
+        this.canvasContainer.style.visibility = 'hidden'
+    }
+
+    resume = () =>  {
+        this.canvas.height = 640
+        this.canvas.width = 640
+        this.canvasContainer.style.visibility = 'visible'
+    }
 
     update = (interval: number) =>  {
         this.timeElapsed += interval
         this.ecs.update(interval)
     }
 
-    createCenteredGemGrid = (numColumns: number, numRows: number) => {
-        let centerX = this.canvas.width/2
-        let centerY = this.canvas.height/2
+    // createCenteredGemGrid = (numColumns: number, numRows: number) => {
+    //     let centerX = this.canvas.width/2
+    //     let centerY = this.canvas.height/2
 
-        let halfWidth = ((numColumns + 6) / 2) * Jewel.width
-        let halfHeight = ((numRows + 2) / 2) * Jewel.width
+    //     let halfWidth = ((numColumns + 6) / 2) * Jewel.width
+    //     let halfHeight = ((numRows + 2) / 2) * Jewel.width
 
-        let x = Math.floor(centerX - halfWidth)
-        let y = Math.floor(centerY - halfHeight)
+    //     let x = Math.floor(centerX - halfWidth)
+    //     let y = Math.floor(centerY - halfHeight)
 
-        let jewelGrid = new JewelGrid(x, y, numColumns, numRows)
-        this.ecs.addEntity(jewelGrid)
-    }
+    //     let jewelGrid = new JewelGrid(x, y, numColumns, numRows)
+    //     this.ecs.addEntity(jewelGrid)
+    // }
     
 }
 

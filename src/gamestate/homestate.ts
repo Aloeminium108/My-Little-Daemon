@@ -30,18 +30,15 @@ class HomeState implements GameState {
     ecs = new ECS()
 
     floorHeight: number = 100
-    game: Game
     pet: Pet
     mouse: Mouse
-    ctx: CanvasRenderingContext2D
     canvas: HTMLCanvasElement
 
-    constructor(game: Game) {
+    constructor(public game: Game, public ctx: CanvasRenderingContext2D) {
         this.game = game
         this.pet = game.pet
         this.mouse = game.mouse
-        this.ctx = game.ctx
-        this.canvas = game.canvas
+        this.canvas = game.mainCanvas
 
         this.init()
     }

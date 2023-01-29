@@ -16,9 +16,11 @@ import { Match3ScoringSystem } from "../ecs/system/match3scoring.js";
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 import { JewelGrid } from "../ecs/entity/puzzle/jewelgrid.js";
-import { Jewel } from "../ecs/entity/puzzle/jewel.js";
 class Match3State {
-    constructor(game) {
+    constructor(game, ctx, canvasContainer) {
+        this.game = game;
+        this.ctx = ctx;
+        this.canvasContainer = canvasContainer;
         this.ecs = new ECS();
         this.timeElapsed = 0;
         this.init = () => {
@@ -26,7 +28,8 @@ class Match3State {
             this.initSystems();
         };
         this.initEntities = () => {
-            this.createCenteredGemGrid(8, 8);
+            let jewelGrid = new JewelGrid(0, 0, 8, 8);
+            this.ecs.addEntity(jewelGrid);
         };
         this.initSystems = () => {
             let mouseSystem = new MouseSystem(this.mouse, this.canvas);
@@ -36,7 +39,7 @@ class Match3State {
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new FrictionSystem());
             this.ecs.addSystem(new BoundarySystem());
-            let spatialHashing = new SpatialHashing(100, new Set([Hitbox, JewelType, Automaton]));
+            let spatialHashing = new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton]));
             this.ecs.addSystem(spatialHashing);
             let collisionDetection = new CollisionDetection(spatialHashing);
             this.ecs.addSystem(collisionDetection);
@@ -48,27 +51,22 @@ class Match3State {
             this.ecs.addSystem(new SpriteSystem(this.ctx));
             this.ecs.addSystem(new DrawingSystem(this.ctx));
         };
-        this.pause = () => { };
-        this.resume = () => { };
+        this.pause = () => {
+            this.canvasContainer.style.visibility = 'hidden';
+        };
+        this.resume = () => {
+            this.canvas.height = 640;
+            this.canvas.width = 640;
+            this.canvasContainer.style.visibility = 'visible';
+        };
         this.update = (interval) => {
             this.timeElapsed += interval;
             this.ecs.update(interval);
         };
-        this.createCenteredGemGrid = (numColumns, numRows) => {
-            let centerX = this.canvas.width / 2;
-            let centerY = this.canvas.height / 2;
-            let halfWidth = ((numColumns + 6) / 2) * Jewel.width;
-            let halfHeight = ((numRows + 2) / 2) * Jewel.width;
-            let x = Math.floor(centerX - halfWidth);
-            let y = Math.floor(centerY - halfHeight);
-            let jewelGrid = new JewelGrid(x, y, numColumns, numRows);
-            this.ecs.addEntity(jewelGrid);
-        };
         this.game = game;
         this.pet = game.pet;
         this.mouse = game.mouse;
-        this.ctx = game.ctx;
-        this.canvas = game.canvas;
+        this.canvas = game.secondaryCanvas;
         this.init();
     }
 }
