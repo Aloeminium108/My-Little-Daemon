@@ -24,15 +24,36 @@ class Match3State {
         this.ecs = new ECS();
         this.timeElapsed = 0;
         this.scoreboard = document.createElement('div');
+        this.scoreDisplay = null;
+        this.comboCounter = null;
+        this.movesCounter = null;
         this.init = () => {
             this.initScoreboard();
             this.initEntities();
             this.initSystems();
         };
         this.initScoreboard = () => {
-            //document.getElementById('scoreboard-padding')!!.style.visibility = 'visible'
-            //this.scoreboard.innerHTML = 
-            //''
+            this.scoreboard.innerHTML =
+                `<div class="stat-list scorepanel">
+            <div class="stat-label scorepanel">
+                <h2>SCORE:</h2>
+            </div>
+            <div class="stat-container stat-info-container scorepanel">
+                <p class="scorepanel" id="score-display">0</p>
+            </div>
+            <div class="stat-label scorepanel">
+                <h2>COMBO:</h2>
+            </div>
+            <div class="stat-container stat-info-container scorepanel">
+                <p class="scorepanel" id="combo-counter">0</p>
+            </div>
+            <div class="stat-label scorepanel">
+                <h2>MOVES:</h2>
+            </div>
+            <div class="stat-container stat-info-container scorepanel">
+                <p class="scorepanel" id="moves-counter">0</p>
+            </div>
+        </div>`;
         };
         this.initEntities = () => {
             let jewelGrid = new JewelGrid(0, 0, 8, 8);
@@ -62,8 +83,14 @@ class Match3State {
             this.canvasContainer.style.visibility = 'hidden';
         };
         this.resume = () => {
+            var _a;
             this.canvas.height = 640;
             this.canvas.width = 640;
+            (_a = document.getElementById('scoreboard')) === null || _a === void 0 ? void 0 : _a.appendChild(this.scoreboard);
+            this.scoreDisplay = document.getElementById('score-display');
+            this.comboCounter = document.getElementById('combo-counter');
+            this.movesCounter = document.getElementById('moves-counter');
+            this.scoreDisplay.textContent = '123456';
             this.canvasContainer.style.visibility = 'visible';
         };
         this.update = (interval) => {

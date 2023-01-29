@@ -20,6 +20,7 @@ import { Match3ScoringSystem } from "../ecs/system/match3scoring.js";
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 import { JewelGrid } from "../ecs/entity/puzzle/jewelgrid.js";
+import { Display } from "../ecs/entity/display.js";
 
 class Match3State implements GameState {
     pet: Pet;
@@ -31,6 +32,10 @@ class Match3State implements GameState {
     timeElapsed: number = 0
 
     scoreboard: HTMLDivElement = document.createElement('div')
+
+    scoreDisplay: HTMLParagraphElement | null = null
+    comboCounter: HTMLParagraphElement | null = null
+    movesCounter: HTMLParagraphElement | null = null
 
     constructor(
         public game: Game, 
@@ -51,9 +56,29 @@ class Match3State implements GameState {
     }
 
     initScoreboard = () => {
-        //document.getElementById('scoreboard-padding')!!.style.visibility = 'visible'
-        //this.scoreboard.innerHTML = 
-        //''
+        
+        this.scoreboard.innerHTML = 
+        `<div class="stat-list scorepanel">
+            <div class="stat-label scorepanel">
+                <h2>SCORE:</h2>
+            </div>
+            <div class="stat-container stat-info-container scorepanel">
+                <p class="scorepanel" id="score-display">0</p>
+            </div>
+            <div class="stat-label scorepanel">
+                <h2>COMBO:</h2>
+            </div>
+            <div class="stat-container stat-info-container scorepanel">
+                <p class="scorepanel" id="combo-counter">0</p>
+            </div>
+            <div class="stat-label scorepanel">
+                <h2>MOVES:</h2>
+            </div>
+            <div class="stat-container stat-info-container scorepanel">
+                <p class="scorepanel" id="moves-counter">0</p>
+            </div>
+        </div>`
+
     }
 
     initEntities = () => {
@@ -91,6 +116,13 @@ class Match3State implements GameState {
     resume = () =>  {
         this.canvas.height = 640
         this.canvas.width = 640
+        document.getElementById('scoreboard')?.appendChild(this.scoreboard)
+
+        this.scoreDisplay = document.getElementById('score-display') as HTMLParagraphElement
+        this.comboCounter = document.getElementById('combo-counter') as HTMLParagraphElement
+        this.movesCounter = document.getElementById('moves-counter') as HTMLParagraphElement
+        this.scoreDisplay!!.textContent = '123456'
+
         this.canvasContainer.style.visibility = 'visible'
     }
 
