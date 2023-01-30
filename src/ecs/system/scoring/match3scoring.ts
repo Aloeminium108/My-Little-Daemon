@@ -1,24 +1,37 @@
-import { SpecialProperty } from "../component/jeweltype.js";
-import { Score, ScoreType } from "../component/score.js";
-import { JewelBehavior } from "./fsm/jewelbehavior.js";
-import { UnorderedSystem } from "./system.js";
+import { SpecialProperty } from "../../component/jeweltype.js";
+import { Scoreboard, ScoreType } from "../../component/scoreboard.js";
+import { JewelBehavior } from "../fsm/jewelbehavior.js";
+import { UnorderedSystem } from "../system.js";
 
 const COMBO_VALUE = 10
+const COMBO_TIME = 1000
 
 class Match3ScoringSystem extends UnorderedSystem {
-    public componentsRequired = new Set([Score])
+
+    public comboCount = 0
+
+    private comboTimer = 0
+
+    public componentsRequired = new Set([Scoreboard])
 
     constructor(private jewelBehavior: JewelBehavior) {
         super()
     }
 
     public update(interval: number): void {
-        let combo = this.jewelBehavior.comboCount
-        let moves = this.jewelBehavior.moveCount
+
+        this.comboTimer -= interval
+        if (this.comboTimer <= 0) {
+            this.comboTimer = 0
+            this.comboCount = 0
+        }
+
+        let combo = this.comboCount
         let score = 0
         let destroyedGems = this.jewelBehavior.destroyedGems
         while (destroyedGems.length > 0) {
             let gem = destroyedGems.pop()
+
             score += combo * COMBO_VALUE
             switch (gem?.special as SpecialProperty | null) {
                 case null:
@@ -38,21 +51,22 @@ class Match3ScoringSystem extends UnorderedSystem {
                     score += 3000
                     break
             }
+
+            this.comboTimer = COMBO_TIME
+            this.comboCount++
+
         }
 
         this.entities.forEach(entity => {
-            let display = entity.getComponent(Score)
+            let display = entity.getComponent(Scoreboard)
 
             switch (display.scoreType as ScoreType) {
                 case ScoreType.SCORE:
-                    display.score += score
+                    display.value += score
                     break
                 case ScoreType.COMBO:
-                    display.score = combo
+                    display.value = combo
                     break
-                case ScoreType.MOVES:
-                    display.score = moves
-                    break 
             }
         })
     }

@@ -1,7 +1,7 @@
 import { Component } from "./component.js";
 
-class Score extends Component {
-    public score = 0
+class Scoreboard extends Component {
+    public value = 0
 
     constructor(public scoreType: ScoreType) {
         super()
@@ -11,7 +11,8 @@ class Score extends Component {
 enum ScoreType {
     SCORE,
     COMBO,
-    MOVES
+    MOVES,
+    PROGESS
 }
 
-export {Score, ScoreType}
+export {Scoreboard, ScoreType}
