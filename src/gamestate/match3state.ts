@@ -16,11 +16,14 @@ import { JewelType } from "../ecs/component/jeweltype.js";
 import { Hitbox } from "../ecs/component/hitbox.js";
 import { Automaton } from "../ecs/component/automaton.js";
 import { GeneratorSystem } from "../ecs/system/generatorsystem.js";
-import { Match3ScoringSystem } from "../ecs/system/match3scoring.js";
+import { Match3ScoringSystem } from "../ecs/system/scoring/match3scoring.js";
 import { DrawingSystem } from "../ecs/system/drawingsystem.js";
 import { CollisionResponse } from "../ecs/system/collisionresponse.js";
 import { JewelGrid } from "../ecs/entity/puzzle/jewelgrid.js";
 import { Display } from "../ecs/entity/display.js";
+import { ScoreKeeper } from "../ecs/entity/scoreboard.js";
+import { ScoreType } from "../ecs/component/scoreboard.js";
+import { ScoreboardSystem } from "../ecs/system/scoring/scoreboardsystem.js";
 
 class Match3State implements GameState {
     pet: Pet;
@@ -86,6 +89,16 @@ class Match3State implements GameState {
         let jewelGrid = new JewelGrid(0, 0, 8, 8)
         this.ecs.addEntity(jewelGrid)
 
+        let scoreKeeper = new ScoreKeeper(ScoreType.SCORE)
+        let comboKeeper = new ScoreKeeper(ScoreType.COMBO)
+        let movesKeeper = new ScoreKeeper(ScoreType.MOVES)
+        let progressKeeper = new ScoreKeeper(ScoreType.PROGESS)
+
+        this.ecs.addEntity(scoreKeeper)
+        this.ecs.addEntity(comboKeeper)
+        this.ecs.addEntity(movesKeeper)
+        this.ecs.addEntity(progressKeeper)
+
     }
 
     initSystems = () => {
@@ -107,6 +120,23 @@ class Match3State implements GameState {
         this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior))
         this.ecs.addSystem(new SpriteSystem(this.ctx))
         this.ecs.addSystem(new DrawingSystem(this.ctx))
+        this.ecs.addSystem(new ScoreboardSystem(new Map([
+
+            [ScoreType.COMBO, (value: number) => {
+                if (this.comboCounter !== null) this.comboCounter.textContent = value.toString()
+            }],
+
+            [ScoreType.SCORE, (value: number) => {
+                if (this.scoreDisplay !== null) this.scoreDisplay.textContent = value.toString()
+            }],
+
+            [ScoreType.MOVES, (value: number) => {
+                if (this.movesCounter !== null) this.movesCounter.textContent = value.toString()
+            }],
+
+            [ScoreType.PROGESS, (value: number) => {}],
+            
+        ])))
     }
 
     pause = () => {
@@ -121,7 +151,6 @@ class Match3State implements GameState {
         this.scoreDisplay = document.getElementById('score-display') as HTMLParagraphElement
         this.comboCounter = document.getElementById('combo-counter') as HTMLParagraphElement
         this.movesCounter = document.getElementById('moves-counter') as HTMLParagraphElement
-        this.scoreDisplay!!.textContent = '123456'
 
         this.canvasContainer.style.visibility = 'visible'
     }

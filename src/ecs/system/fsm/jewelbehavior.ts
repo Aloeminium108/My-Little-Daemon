@@ -12,7 +12,6 @@ import { Jewel } from "../../entity/puzzle/jewel.js";
 import { CollisionBody } from "../../component/collisionbody.js";
 
 const EPSILON = 0.001
-const COMBO_TIME = 1000
 
 class JewelBehavior extends FiniteStateMachine {
 
@@ -23,11 +22,6 @@ class JewelBehavior extends FiniteStateMachine {
     public connectedGemsY = new Map<Entity, Entity>()
 
     public destroyedGems = new Array<JewelType>()
-
-    public moveCount = 0
-    public comboCount = 0
-
-    private comboTimer = 0
 
     behaviorMap = new Map([
         [EntityState.FALLING, (entity: Entity) => {
@@ -50,8 +44,10 @@ class JewelBehavior extends FiniteStateMachine {
             let jewelType = entity.getComponent(JewelType)
             if (age >= 120) {
                 this.destroyedGems.push(jewelType)
-                this.comboTimer = COMBO_TIME
-                this.comboCount++
+
+                if (jewelType.special !== null) {
+                    this.gemsplosion(entity, jewelType.special)
+                }
 
                 if (jewelType.conversion !== null) {
 
@@ -168,12 +164,6 @@ class JewelBehavior extends FiniteStateMachine {
             entity.getComponent(JewelType).active = true
         })
 
-        this.comboTimer -= interval
-        if (this.comboTimer <= 0) {
-            this.comboTimer = 0
-            this.comboCount = 0
-        }
-
     }
 
     private consolidateMatches = (matches: Set<Set<Entity>>) => {
@@ -268,6 +258,46 @@ class JewelBehavior extends FiniteStateMachine {
         if (counter >= 4 || match.size - counter >= 4) return SpecialProperty.COLORBOMB
         
         return SpecialProperty.BOMB
+
+    }
+
+    private gemsplosion = (entity: Entity, special: SpecialProperty) => {
+
+        let center = entity.getComponent(Hitbox).center
+        let position: Position
+        let width, height: number
+        let bounds: Bounds
+
+        switch (special as SpecialProperty) {
+            case SpecialProperty.BOMB:
+                position = new Position(center.x - Jewel.width, center.y - Jewel.width)
+                width = Jewel.width * 2
+                height = Jewel.width * 2
+                break
+            case SpecialProperty.H_LINECLEAR:
+                bounds = entity.getComponent(Bounds)
+                position = new Position(bounds.xLowerBound, center.y)
+                width = bounds.xUpperBound - bounds.xLowerBound
+                height = 0
+                break
+            case SpecialProperty.V_LINECLEAR:
+                bounds = entity.getComponent(Bounds)
+                position = new Position(center.x, bounds.yLowerBound)
+                width = 0
+                height = bounds.yUpperBound - bounds.yLowerBound
+                break
+            default:
+                position = entity.getComponent(Position)
+                width = 0
+                height = 0
+        }
+
+        let hitbox = new Hitbox(position, width, height)
+        let blastedGems = this.collisionDetection.senseWithHitbox(hitbox)
+
+        blastedGems.forEach(blastedGem => {
+            blastedGem.getComponent(Automaton).changeState(EntityState.MATCHED)
+        })
 
     }
 

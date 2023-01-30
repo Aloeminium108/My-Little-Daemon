@@ -28,7 +28,7 @@ class CollisionDetection extends UnorderedSystem {
                     if (entity1 === entity2) return
                     if (collidedEntities.has(entity2) ?? false) return
                     
-                    if (this.checkCollision(entity1, entity2)) {
+                    if (checkCollision(entity1.getComponent(Hitbox), entity2.getComponent(Hitbox))) {
                         collidedEntities.add(entity2)
 
                         if (this.collisions.has(entity2)) {
@@ -48,17 +48,6 @@ class CollisionDetection extends UnorderedSystem {
 
     }
 
-    checkCollision = (entity1: Entity, entity2: Entity) => {
-        let rect1 = entity1.getComponent(Hitbox) 
-        let rect2 = entity2.getComponent(Hitbox)
-        return (
-            rect1.x + EPSILON < rect2.x + rect2.width &&
-            rect1.x + rect1.width > rect2.x + EPSILON &&
-            rect1.y + EPSILON < rect2.y + rect2.height &&
-            rect1.height + rect1.y > rect2.y + EPSILON
-        )
-    }
-
     checkAllCollisions = (entity: Entity) => {
         let hitbox = entity.getComponent(Hitbox)
         let cells = this.spatialHashing.hashHitbox(hitbox)
@@ -69,7 +58,7 @@ class CollisionDetection extends UnorderedSystem {
             let nearbyEntities = this.spatialHashing.proximityMap.get(cell)
             nearbyEntities?.forEach(nearbyEntity => {
                 if (nearbyEntity === entity) return
-                if (this.checkCollision(entity, nearbyEntity)) collidedEntities.push(nearbyEntity)
+                if (checkCollision(hitbox, nearbyEntity.getComponent(Hitbox))) collidedEntities.push(nearbyEntity)
 
             })
 
@@ -85,7 +74,7 @@ class CollisionDetection extends UnorderedSystem {
             if (!this.spatialHashing.proximityMap.has(cell)) continue
             for (let nearbyEntity of this.spatialHashing.proximityMap.get(cell)!!) {
                 if (nearbyEntity === entity) return
-                if (this.checkCollision(entity, nearbyEntity)) return nearbyEntity
+                if (checkCollision(hitbox, nearbyEntity.getComponent(Hitbox))) return nearbyEntity
             }
         }
     }
@@ -102,7 +91,32 @@ class CollisionDetection extends UnorderedSystem {
         return sensedEntities
         
     }
+
+    senseWithHitbox = (hitbox: Hitbox) => {
+        let hash = this.spatialHashing.hashHitbox(hitbox)
+        let sensedEntities = new Array<Entity>()
+
+        hash.forEach(hashString => {
+            this.spatialHashing.proximityMap.get(hashString)?.forEach(nearbyEntity => {
+                if (checkCollision(hitbox, nearbyEntity.getComponent(Hitbox))) {
+                    sensedEntities.push(nearbyEntity)
+                }
+            })
+        })
+
+        return(sensedEntities)
+        
+    }
     
+}
+
+function checkCollision(hitbox1: Hitbox, hitbox2: Hitbox): boolean {
+    return (
+        hitbox1.x + EPSILON < hitbox2.x + hitbox2.width &&
+        hitbox1.x + hitbox1.width > hitbox2.x + EPSILON &&
+        hitbox1.y + EPSILON < hitbox2.y + hitbox2.height &&
+        hitbox1.height + hitbox1.y > hitbox2.y + EPSILON
+    )
 }
 
 
