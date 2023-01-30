@@ -102,16 +102,16 @@ class Match3State implements GameState {
     }
 
     initSystems = () => {
+        let spatialHashing = new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton]))
+        let collisionDetection = new CollisionDetection(spatialHashing)
         let mouseSystem = new MouseSystem (this.mouse, this.canvas)
         this.ecs.addSystem(mouseSystem)
-        let gemGrabSystem = new GemGrabSystem(mouseSystem)
+        let gemGrabSystem = new GemGrabSystem(mouseSystem, collisionDetection)
         this.ecs.addSystem(gemGrabSystem)
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new FrictionSystem())
         this.ecs.addSystem(new BoundarySystem())
-        let spatialHashing = new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton]))
         this.ecs.addSystem(spatialHashing)
-        let collisionDetection = new CollisionDetection(spatialHashing)
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new CollisionResponse(collisionDetection))
         this.ecs.addSystem(new GeneratorSystem(collisionDetection))
