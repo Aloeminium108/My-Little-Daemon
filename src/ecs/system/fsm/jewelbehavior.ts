@@ -113,13 +113,53 @@ class JewelBehavior extends FiniteStateMachine {
         
     ])
 
-    constructor(private collisionDetection: CollisionDetection, gemGrabSystem: GemGrabSystem) {
+    constructor(private collisionDetection: CollisionDetection, private gemGrabSystem: GemGrabSystem) {
         super()
     }
 
     protected override preAutomation = (interval: number) => {
         this.connectedGemsX.clear()
         this.connectedGemsY.clear()
+
+        let colorBombs = this.gemGrabSystem.swapped.filter(entity => {
+            return entity.getComponent(JewelType).special === SpecialProperty.COLORBOMB
+        })
+        let nonColorBombs = this.gemGrabSystem.swapped.filter(entity => {
+            return entity.getComponent(JewelType).special !== SpecialProperty.COLORBOMB
+        })
+
+        if (colorBombs.length === 2) {
+
+            this.entities.forEach(entity => {
+                let jeweltype = entity.getComponent(JewelType)
+
+                if (jeweltype.active) {
+                    let fsm = entity.getComponent(Automaton)
+                    fsm.changeState(EntityState.MATCHED)
+                }
+            })
+
+            this.destroyedGems.push(new JewelType(null, SpecialProperty.ULTRABOMB))
+
+        } else if (colorBombs.length === 1 && nonColorBombs.length === 1) {
+
+            let color = nonColorBombs[0].getComponent(JewelType).color
+
+            this.entities.forEach(entity => {
+                let jeweltype = entity.getComponent(JewelType)
+
+                if (jeweltype.active && jeweltype.color === color) {
+                    let fsm = entity.getComponent(Automaton)
+                    fsm.changeState(EntityState.MATCHED)
+                }
+            })
+
+        }
+
+        while (colorBombs.length > 0) {
+            let colorbomb = colorBombs.pop()
+            colorbomb?.getComponent(Automaton).changeState(EntityState.MATCHED)
+        }
     }
 
     protected override postAutomation = (interval: number) => {

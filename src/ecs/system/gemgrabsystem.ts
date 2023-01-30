@@ -13,7 +13,7 @@ import { UnorderedSystem } from "./system.js";
 class GemGrabSystem extends UnorderedSystem {
     public componentsRequired = new Set([Automaton, JewelType, Hitbox])
 
-    public swapped = new Set<Jewel>()
+    public swapped = new Array<Jewel>()
 
     public updateNeeded: boolean = false
 
@@ -22,7 +22,7 @@ class GemGrabSystem extends UnorderedSystem {
     }
 
     public update(interval: number): void {
-        this.swapped.clear()
+        this.swapped.splice(0)
         let heldEntity = this.mouseSystem.heldEntity
 
         // Check to make sure that there is a held entity and that it is an unmatched gem
@@ -31,26 +31,7 @@ class GemGrabSystem extends UnorderedSystem {
         if (heldEntity.getComponent(Automaton).currentState !== EntityState.UNMATCHED) return
 
         let mouse = this.mouseSystem.mouse
-
-        // for (let entity of this.entities) {
-        //     // Do nothing if the entity being examined is the held entity itself
-        //     if (entity === heldEntity) continue
-        //     // Do nothing if the entity is falling
-        //     if (entity.getComponent(Automaton).currentState !== EntityState.UNMATCHED) continue
-
-        //     // If gem is dragged over another gem, swap their positions
-        //     if (entity.getComponent(Hitbox).inside(mouse.x, mouse.y)) {
-        //         Position.swap(entity.getComponent(Position), heldEntity.getComponent(Position))
-        //         this.swapped.add(entity)
-        //         this.swapped.add(heldEntity)
-        //         this.mouseSystem.heldEntity = null
-        //         this.mouseSystem.wrenched = true
-        //         this.updateNeeded = true
-        //         break
-        //     }
-        // }
         let hitbox = heldEntity.getComponent(Hitbox)
-
         let sensedEntities: Array<Entity> = []
 
         if (mouse.x > hitbox.x + hitbox.width) {
@@ -65,8 +46,8 @@ class GemGrabSystem extends UnorderedSystem {
 
         if (sensedEntities[0] !== undefined) {
             Position.swap(sensedEntities[0].getComponent(Position), heldEntity.getComponent(Position))
-            this.swapped.add(sensedEntities[0])
-            this.swapped.add(heldEntity)
+            this.swapped.push(sensedEntities[0])
+            this.swapped.push(heldEntity)
             this.mouseSystem.heldEntity = null
             this.mouseSystem.wrenched = true
         }
