@@ -19,9 +19,6 @@ import { ConsumableSystem } from "../ecs/system/consumablesystem.js"
 import { SpatialHashing } from "../ecs/system/spatialhashing.js"
 import { PetAI } from "../ecs/system/fsm/petai.js"
 import { CollisionResponse } from "../ecs/system/collisionresponse.js"
-import { Hitbox } from "../ecs/component/hitbox.js"
-import { Position } from "../ecs/component/position.js"
-import { Sprite } from "../ecs/component/sprite.js"
 
 const RELATIVE_CUSHION_POSITION = 0.85
 
@@ -94,10 +91,10 @@ class HomeState implements GameState {
     }
 
     pause = () => {
-        this.canvas.style.backgroundImage = "url(../assets/room/living-room-blurred.png)"
+        this.canvas.style.backgroundImage = "url(./assets/room/living-room-blurred.png)"
     }
     resume = () => {
-        this.canvas.style.backgroundImage = "url(../assets/room/living-room-scaled.png)"
+        this.canvas.style.backgroundImage = "url(./assets/room/living-room-scaled.png)"
     }
     
     findCushionPosition = (width: number, height: number) => {

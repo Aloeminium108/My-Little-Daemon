@@ -66,10 +66,10 @@ class HomeState {
             this.ecs.update(interval);
         };
         this.pause = () => {
-            this.canvas.style.backgroundImage = "url(../assets/room/living-room-blurred.png)";
+            this.canvas.style.backgroundImage = "url(./assets/room/living-room-blurred.png)";
         };
         this.resume = () => {
-            this.canvas.style.backgroundImage = "url(../assets/room/living-room-scaled.png)";
+            this.canvas.style.backgroundImage = "url(./assets/room/living-room-scaled.png)";
         };
         this.findCushionPosition = (width, height) => {
             let centerX = this.canvas.width / 2;
