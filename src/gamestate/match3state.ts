@@ -130,20 +130,6 @@ class Match3State implements GameState {
         this.timeElapsed += interval
         this.ecs.update(interval)
     }
-
-    // createCenteredGemGrid = (numColumns: number, numRows: number) => {
-    //     let centerX = this.canvas.width/2
-    //     let centerY = this.canvas.height/2
-
-    //     let halfWidth = ((numColumns + 6) / 2) * Jewel.width
-    //     let halfHeight = ((numRows + 2) / 2) * Jewel.width
-
-    //     let x = Math.floor(centerX - halfWidth)
-    //     let y = Math.floor(centerY - halfHeight)
-
-    //     let jewelGrid = new JewelGrid(x, y, numColumns, numRows)
-    //     this.ecs.addEntity(jewelGrid)
-    // }
     
 }
 
