@@ -1,4 +1,4 @@
-import { Consumable } from "../ecs/component/consumable.js"
+import { Consumable } from "../ecs/component/gameplay/consumable.js"
 import { Time } from "../time.js"
 
 class PetStats {

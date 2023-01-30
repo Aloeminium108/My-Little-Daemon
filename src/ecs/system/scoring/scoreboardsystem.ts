@@ -1,4 +1,4 @@
-import { Scoreboard, ScoreType } from "../../component/scoreboard.js";
+import { Scoreboard, ScoreType } from "../../component/graphics/scoreboard.js";
 import { UnorderedSystem } from "../system.js";
 
 class ScoreboardSystem extends UnorderedSystem {

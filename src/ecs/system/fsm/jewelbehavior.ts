@@ -1,15 +1,15 @@
-import { Bounds } from "../../component/bounds.js";
-import { Hitbox } from "../../component/hitbox.js";
-import { JewelType, SpecialProperty } from "../../component/jeweltype.js";
-import { Automaton, EntityState } from "../../component/automaton.js";
-import { Velocity } from "../../component/velocity.js";
+import { Bounds } from "../../component/physics/bounds.js";
+import { Hitbox } from "../../component/physics/hitbox.js";
+import { JewelType, SpecialProperty } from "../../component/gameplay/jeweltype.js";
+import { Automaton, EntityState } from "../../component/fsm/automaton.js";
+import { Velocity } from "../../component/physics/velocity.js";
 import { Entity } from "../../entity/entity.js";
-import { CollisionDetection } from "../collisiondetection.js";
+import { CollisionDetection } from "../physics/collisiondetection.js";
 import { FiniteStateMachine } from "./finitestatemachine.js";
-import { GemGrabSystem } from "../gemgrabsystem.js";
-import { Position } from "../../component/position.js";
-import { Jewel } from "../../entity/puzzle/jewel.js";
-import { CollisionBody } from "../../component/collisionbody.js";
+import { GemGrabSystem } from "../controls/gemgrabsystem.js";
+import { Position } from "../../component/physics/position.js";
+import { Jewel } from "../../entity/minigame/puzzle/jewel.js";
+import { CollisionBody } from "../../component/physics/collisionbody.js";
 
 const EPSILON = 0.001
 

@@ -1,5 +1,5 @@
-import { PetLink } from "../../component/petlink.js";
-import { Automaton, EntityState } from "../../component/automaton.js";
+import { PetLink } from "../../component/gameplay/petlink.js";
+import { Automaton, EntityState } from "../../component/fsm/automaton.js";
 import { FiniteStateMachine } from "./finitestatemachine.js";
 class PetAI extends FiniteStateMachine {
     constructor(mouseSystem) {

@@ -1,5 +1,5 @@
-import { SpecialProperty } from "../../component/jeweltype.js";
-import { Scoreboard, ScoreType } from "../../component/scoreboard.js";
+import { SpecialProperty } from "../../component/gameplay/jeweltype.js";
+import { Scoreboard, ScoreType } from "../../component/graphics/scoreboard.js";
 import { UnorderedSystem } from "../system.js";
 const COMBO_VALUE = 10;
 const COMBO_TIME = 1000;

@@ -1,5 +1,5 @@
-import { SpecialProperty } from "../../component/jeweltype.js";
-import { Scoreboard, ScoreType } from "../../component/scoreboard.js";
+import { SpecialProperty } from "../../component/gameplay/jeweltype.js";
+import { Scoreboard, ScoreType } from "../../component/graphics/scoreboard.js";
 import { JewelBehavior } from "../fsm/jewelbehavior.js";
 import { UnorderedSystem } from "../system.js";
 

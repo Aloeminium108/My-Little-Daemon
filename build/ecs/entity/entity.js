@@ -1,12 +1,12 @@
-import { CollisionBody } from "../component/collisionbody.js";
-import { Friction } from "../component/friction.js";
-import { Gravity } from "../component/gravity.js";
-import { Hitbox } from "../component/hitbox.js";
-import { MouseGrabbable } from "../component/mousegrabbable.js";
-import { MouseInteractable } from "../component/mouseinteractable.js";
-import { Position } from "../component/position.js";
-import { Sprite } from "../component/sprite.js";
-import { Velocity } from "../component/velocity.js";
+import { CollisionBody } from "../component/physics/collisionbody.js";
+import { Friction } from "../component/physics/friction.js";
+import { Gravity } from "../component/physics/gravity.js";
+import { Hitbox } from "../component/physics/hitbox.js";
+import { MouseGrabbable } from "../component/controls/mousegrabbable.js";
+import { MouseInteractable } from "../component/controls/mouseinteractable.js";
+import { Position } from "../component/physics/position.js";
+import { Sprite } from "../component/graphics/sprite.js";
+import { Velocity } from "../component/physics/velocity.js";
 class Entity {
     constructor(ecs = null) {
         this.ecs = ecs;

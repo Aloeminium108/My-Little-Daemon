@@ -1,4 +1,4 @@
-import { Automaton, EntityState } from "../../component/automaton.js";
+import { Automaton, EntityState } from "../../component/fsm/automaton.js";
 import { Entity } from "../../entity/entity.js";
 import { UnorderedSystem } from "../system.js";
 
