@@ -31,7 +31,6 @@ class Match3State implements GameState {
 
     mouse: Mouse
     canvas: HTMLCanvasElement
-    timeElapsed: number = 0
 
     scoreboard: HTMLDivElement = document.createElement('div')
 
@@ -148,6 +147,7 @@ class Match3State implements GameState {
 
     pause = () => {
         this.canvasContainer.style.visibility = 'hidden'
+        document.getElementById('scoreboard')?.removeChild(this.scoreboard)
     }
 
     resume = () =>  {
@@ -166,7 +166,6 @@ class Match3State implements GameState {
     }
 
     update = (interval: number) =>  {
-        this.timeElapsed += interval
         this.ecs.update(interval)
     }
     

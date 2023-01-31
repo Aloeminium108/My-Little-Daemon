@@ -25,7 +25,6 @@ class Match3State {
         this.ctx = ctx;
         this.canvasContainer = canvasContainer;
         this.ecs = new ECS();
-        this.timeElapsed = 0;
         this.scoreboard = document.createElement('div');
         this.scoreDisplay = null;
         this.comboCounter = null;
@@ -112,7 +111,9 @@ class Match3State {
             ])));
         };
         this.pause = () => {
+            var _a;
             this.canvasContainer.style.visibility = 'hidden';
+            (_a = document.getElementById('scoreboard')) === null || _a === void 0 ? void 0 : _a.removeChild(this.scoreboard);
         };
         this.resume = () => {
             var _a;
@@ -127,7 +128,6 @@ class Match3State {
             this.canvasContainer.style.visibility = 'visible';
         };
         this.update = (interval) => {
-            this.timeElapsed += interval;
             this.ecs.update(interval);
         };
         this.game = game;
