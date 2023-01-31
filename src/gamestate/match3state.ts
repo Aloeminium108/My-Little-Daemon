@@ -39,6 +39,8 @@ class Match3State implements GameState {
     comboCounter: HTMLParagraphElement | null = null
     movesCounter: HTMLParagraphElement | null = null
 
+    petReaction: HTMLImageElement | null = null
+
     constructor(
         public game: Game, 
         public ctx: CanvasRenderingContext2D, 
@@ -58,7 +60,9 @@ class Match3State implements GameState {
     }
 
     initScoreboard = () => {
-        
+
+        this.scoreboard.className = "scoreboard"
+
         this.scoreboard.innerHTML = 
         `<div class="stat-list scorepanel">
             <div class="stat-label scorepanel">
@@ -79,6 +83,10 @@ class Match3State implements GameState {
             <div class="stat-container stat-info-container scorepanel">
                 <p class="scorepanel" id="moves-counter">0</p>
             </div>
+            <div class="stat-container reaction-container">
+                <img id="pet-reaction" src="" alt="">
+            </div>
+            
         </div>`
 
     }
@@ -150,6 +158,9 @@ class Match3State implements GameState {
         this.scoreDisplay = document.getElementById('score-display') as HTMLParagraphElement
         this.comboCounter = document.getElementById('combo-counter') as HTMLParagraphElement
         this.movesCounter = document.getElementById('moves-counter') as HTMLParagraphElement
+        this.petReaction = document.getElementById('pet-reaction') as HTMLImageElement
+
+        this.petReaction.src = this.pet.imageSrc
 
         this.canvasContainer.style.visibility = 'visible'
     }

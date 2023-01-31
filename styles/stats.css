@@ -79,6 +79,11 @@
     width: 100%;
 }
 
+.scoreboard {
+    height: 100%;
+    max-width: min-content;
+}
+
 .stat-list {
     margin-top: 5%;
     display: flex;
@@ -90,6 +95,7 @@
 .stat-list.scorepanel {
     margin-top: 0%;
     align-items: center;
+    height: 100%;
 }
 
 .stat-label {
@@ -111,9 +117,32 @@
 }
 
 .pet-image-container {
-    min-width: 400px;
-    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    height: 300px;
     margin: 5% 5% 0% 5%;
+}
+
+.pet-image-container img {
+    width: 300px;
+    height: auto;
+}
+
+.reaction-container {
+    margin-top: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    width: auto;
+    flex-grow: 1;
+}
+
+.reaction-container img {
+    width: 100%;
+    height: auto;
 }
 
 #pet-gender {
@@ -141,13 +170,22 @@
 }
 
 .stat-info-container {
-    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    max-width: 70%;
+    min-width: 70%;
+    height: 70%;
     border-radius: 10px;
     font-family: 'Share Tech Mono', monospace;
     font-size: 1.7em;
 }
 
 .stat-info-container.scorepanel {
+    height: auto;
+    max-width: 100%;
+    min-width: 80%;
     padding: 5px 10px 5px 10px;
 }
 

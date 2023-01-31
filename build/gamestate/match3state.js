@@ -30,12 +30,14 @@ class Match3State {
         this.scoreDisplay = null;
         this.comboCounter = null;
         this.movesCounter = null;
+        this.petReaction = null;
         this.init = () => {
             this.initScoreboard();
             this.initEntities();
             this.initSystems();
         };
         this.initScoreboard = () => {
+            this.scoreboard.className = "scoreboard";
             this.scoreboard.innerHTML =
                 `<div class="stat-list scorepanel">
             <div class="stat-label scorepanel">
@@ -56,6 +58,10 @@ class Match3State {
             <div class="stat-container stat-info-container scorepanel">
                 <p class="scorepanel" id="moves-counter">0</p>
             </div>
+            <div class="stat-container reaction-container">
+                <img id="pet-reaction" src="" alt="">
+            </div>
+            
         </div>`;
         };
         this.initEntities = () => {
@@ -116,6 +122,8 @@ class Match3State {
             this.scoreDisplay = document.getElementById('score-display');
             this.comboCounter = document.getElementById('combo-counter');
             this.movesCounter = document.getElementById('moves-counter');
+            this.petReaction = document.getElementById('pet-reaction');
+            this.petReaction.src = this.pet.imageSrc;
             this.canvasContainer.style.visibility = 'visible';
         };
         this.update = (interval) => {
