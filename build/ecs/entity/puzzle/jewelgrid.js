@@ -1,6 +1,6 @@
-import { Bounds } from "../../../component/physics/bounds.js";
-import { JewelType } from "../../../component/gameplay/jeweltype.js";
-import { Entity } from "../../entity.js";
+import { JewelType } from "../../component/gameplay/jeweltype.js";
+import { Bounds } from "../../component/physics/bounds.js";
+import { Entity } from "../entity.js";
 import { Jewel } from "./jewel.js";
 import { JewelGenerator } from "./jewelgenerator.js";
 class JewelGrid extends Entity {

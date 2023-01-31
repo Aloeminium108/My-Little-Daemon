@@ -1,4 +1,3 @@
-import { PetStats } from "../../../Pet/petstats.js";
 import { Consumer } from "../../component/gameplay/consumable.js";
 import { MouseInteractable } from "../../component/controls/mouseinteractable.js";
 import { PetLink } from "../../component/gameplay/petlink.js";
@@ -9,6 +8,7 @@ import { CollisionBody } from "../../component/physics/collisionbody.js";
 import { Hitbox } from "../../component/physics/hitbox.js";
 import { Velocity } from "../../component/physics/velocity.js";
 import { Position } from "../../component/physics/position.js";
+import { Pet } from "../../../Pet/pet.js";
 
 class PetEntity extends Entity {
 
@@ -17,10 +17,11 @@ class PetEntity extends Entity {
     public static width = 400
     public static height = 300
 
-    constructor(x: number, y: number, petStats: PetStats) {
+    constructor(x: number, y: number, pet: Pet) {
         super()
 
-        this.addComponent(new PetLink())
+        let petLink = new PetLink(pet)
+        this.addComponent(petLink)
         let position = new Position(x, y)
         this.addComponent(position)
 
@@ -30,7 +31,7 @@ class PetEntity extends Entity {
         .then(() => {
             this.addComponent(new Hitbox(position, sprite.sprite!!.width, sprite.sprite!!.height))
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)))
-            this.addComponent(new Consumer(petStats))
+            this.addComponent(new Consumer(petLink))
             return Sprite.loadSprite('./assets/pet-happy.png')
         })
         .then(happySprite => {

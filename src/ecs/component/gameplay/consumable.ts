@@ -1,5 +1,5 @@
-import { PetStats } from "../../../Pet/petstats.js";
 import { Component } from "../component.js";
+import { PetLink } from "./petlink.js";
 
 class Consumable extends Component {
     constructor(public hunger: number) {
@@ -8,12 +8,12 @@ class Consumable extends Component {
 }
 
 class Consumer extends Component {
-    constructor(private stats: PetStats) {
+    constructor(private petLink: PetLink) {
         super()
     }
 
     consume = (consumable: Consumable) => {
-        this.stats.consume(consumable)
+        this.petLink.pet.consume(consumable)
     }
 }
 

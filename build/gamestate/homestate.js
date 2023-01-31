@@ -42,7 +42,7 @@ class HomeState {
             this.ecs.addEntity(ball1);
             this.ecs.addEntity(ball2);
             let position = this.findCushionPosition(PetEntity.width, PetEntity.height);
-            let petEntity = new PetEntity(position.x, position.y, this.pet.stats);
+            let petEntity = new PetEntity(position.x, position.y, this.pet);
             this.ecs.addEntity(petEntity);
         };
         this.initSystems = () => {

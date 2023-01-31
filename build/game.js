@@ -1,6 +1,6 @@
 import { HomeState } from "./gamestate/homestate.js";
 import { StatMenuState } from "./gamestate/statmenustate.js";
-import { Pet } from "./Pet/pet.js";
+import { Gender, Pet } from "./Pet/pet.js";
 import { Mouse } from "./gamestate/mouse.js";
 import { Match3State } from "./gamestate/match3state.js";
 import { Sprite } from "./ecs/component/graphics/sprite.js";
@@ -124,7 +124,7 @@ class Game {
         };
         this.ctxMain = mainCanvas.getContext("2d");
         this.ctxSecondary = secondaryCanvas.getContext("2d");
-        this.pet = new Pet();
+        this.pet = new Pet(1000, 'Zeruel', 0, Gender.PLUTO, './assets/pet-neutral.png');
         this.currentState = new LoadingState(this, this.ctxMain);
         Promise.all(this.loadAssets()).then(() => {
             this.initializeStates();

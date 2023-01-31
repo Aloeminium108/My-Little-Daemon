@@ -7,9 +7,10 @@ import { Entity } from "../entity.js";
 import { Hitbox } from "../../component/physics/hitbox.js";
 import { Position } from "../../component/physics/position.js";
 class PetEntity extends Entity {
-    constructor(x, y, petStats) {
+    constructor(x, y, pet) {
         super();
-        this.addComponent(new PetLink());
+        let petLink = new PetLink(pet);
+        this.addComponent(petLink);
         let position = new Position(x, y);
         this.addComponent(position);
         let sprite = new Sprite(0, PetEntity.spriteSource);
@@ -18,7 +19,7 @@ class PetEntity extends Entity {
             .then(() => {
             this.addComponent(new Hitbox(position, sprite.sprite.width, sprite.sprite.height));
             this.addComponent(new MouseInteractable(this.getComponent(Sprite)));
-            this.addComponent(new Consumer(petStats));
+            this.addComponent(new Consumer(petLink));
             return Sprite.loadSprite('./assets/pet-happy.png');
         })
             .then(happySprite => {

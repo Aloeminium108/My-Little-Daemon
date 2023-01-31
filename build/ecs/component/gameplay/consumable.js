@@ -6,11 +6,11 @@ class Consumable extends Component {
     }
 }
 class Consumer extends Component {
-    constructor(stats) {
+    constructor(petLink) {
         super();
-        this.stats = stats;
+        this.petLink = petLink;
         this.consume = (consumable) => {
-            this.stats.consume(consumable);
+            this.petLink.pet.consume(consumable);
         };
     }
 }

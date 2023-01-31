@@ -1,8 +1,8 @@
-import { Color, SpecialProperty } from "../../../component/gameplay/jeweltype.js";
-import { MouseInteractable } from "../../../component/controls/mouseinteractable.js";
-import { Sprite } from "../../../component/graphics/sprite.js";
-import { Automaton, EntityState } from "../../../component/fsm/automaton.js";
-import { Entity } from "../../entity.js";
+import { MouseInteractable } from "../../component/controls/mouseinteractable";
+import { Automaton, EntityState } from "../../component/fsm/automaton";
+import { Color, SpecialProperty } from "../../component/gameplay/jeweltype";
+import { Sprite } from "../../component/graphics/sprite";
+import { Entity } from "../entity";
 class Jewel extends Entity {
     constructor(x, y, jewelType) {
         super();
