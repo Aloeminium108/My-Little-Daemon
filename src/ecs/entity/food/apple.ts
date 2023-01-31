@@ -10,7 +10,7 @@ class Apple extends Entity {
         this.addPhysicsBody(x, y, 1, Apple.spriteSource)
         .then(() => {
             this.addMouseGrab()
-            this.addComponent(new Consumable(20))
+            this.addComponent(new Consumable(200))
         })
         
     }

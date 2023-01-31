@@ -4,11 +4,13 @@ import { Time } from "../time.js"
 class Pet {
 
     private maxHunger: number = 1000
+    private maxHappiness: number = 1000
     private timeElapsed: number = 0
     private updateInterval: number = Time.MINUTE
 
     constructor(
         private _hunger: number,
+        private _happiness: number,
         private _name: string,
         private _age: number,
         private _gender: Gender,
@@ -37,7 +39,11 @@ class Pet {
     }
 
     public get hunger() {
-        return this._hunger
+        return (this._hunger / this.maxHunger) * 100
+    }
+
+    public get happiness() {
+        return (this._happiness / this.maxHappiness) * 100
     }
 
     public get name() {

@@ -32,7 +32,7 @@ class StatMenuState implements GameState {
     }
 
     update = () => {
-
+        this.updateMenu
     }
 
     init = () => {
@@ -49,7 +49,6 @@ class StatMenuState implements GameState {
 
     resume = () => {
         this.menuHTML.style.visibility = 'visible'
-        this.updateMenu()
     }
 
     updateMenu = () => {
@@ -58,8 +57,8 @@ class StatMenuState implements GameState {
         this.petAge.textContent = this.pet.age.toString()
         this.petGender.src = this.pet.gender
 
-        let hungerPercentage = this.pet.hunger/10
-        this.petHunger.style.width = `${hungerPercentage}%`
+        this.petHunger.style.width = `${this.pet.hunger}%`
+        this.petHappiness.style.width = `${this.pet.happiness}%`
     }
     
 }

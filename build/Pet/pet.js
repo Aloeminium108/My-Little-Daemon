@@ -1,12 +1,14 @@
 import { Time } from "../time.js";
 class Pet {
-    constructor(_hunger, _name, _age, _gender, imageSrc) {
+    constructor(_hunger, _happiness, _name, _age, _gender, imageSrc) {
         this._hunger = _hunger;
+        this._happiness = _happiness;
         this._name = _name;
         this._age = _age;
         this._gender = _gender;
         this.imageSrc = imageSrc;
         this.maxHunger = 1000;
+        this.maxHappiness = 1000;
         this.timeElapsed = 0;
         this.updateInterval = Time.MINUTE;
         this.consume = (consumable) => {
@@ -26,7 +28,10 @@ class Pet {
         };
     }
     get hunger() {
-        return this._hunger;
+        return (this._hunger / this.maxHunger) * 100;
+    }
+    get happiness() {
+        return (this._happiness / this.maxHappiness) * 100;
     }
     get name() {
         return this._name;

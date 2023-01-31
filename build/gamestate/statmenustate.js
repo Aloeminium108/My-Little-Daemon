@@ -2,6 +2,7 @@ import { HomeState } from "./homestate.js";
 class StatMenuState {
     constructor(game) {
         this.update = () => {
+            this.updateMenu;
         };
         this.init = () => {
             let exitButton = document.getElementById('menu-exit');
@@ -15,15 +16,14 @@ class StatMenuState {
         };
         this.resume = () => {
             this.menuHTML.style.visibility = 'visible';
-            this.updateMenu();
         };
         this.updateMenu = () => {
             this.petImage.src = this.pet.imageSrc;
             this.petName.textContent = this.pet.name;
             this.petAge.textContent = this.pet.age.toString();
             this.petGender.src = this.pet.gender;
-            let hungerPercentage = this.pet.hunger / 10;
-            this.petHunger.style.width = `${hungerPercentage}%`;
+            this.petHunger.style.width = `${this.pet.hunger}%`;
+            this.petHappiness.style.width = `${this.pet.happiness}%`;
         };
         this.game = game;
         this.pet = game.pet;

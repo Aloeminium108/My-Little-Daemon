@@ -10,7 +10,7 @@ import { MouseGrabSystem } from "../ecs/system/controls/mousegrabsystem.js";
 import { MouseSystem } from "../ecs/system/controls/mousesystem.js";
 import { PetEntity } from "../ecs/entity/pet/petentity.js";
 import { CollisionDetection } from "../ecs/system/physics/collisiondetection.js";
-import { Apple } from "../ecs/entity/food/food.js";
+import { Apple } from "../ecs/entity/food/apple.js";
 import { ConsumableSystem } from "../ecs/system/gameplay/consumablesystem.js";
 import { SpatialHashing } from "../ecs/system/physics/spatialhashing.js";
 import { PetAI } from "../ecs/system/fsm/petai.js";

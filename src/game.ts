@@ -31,7 +31,8 @@ class Game {
         this.ctxSecondary = secondaryCanvas.getContext("2d")!!
 
         this.pet = new Pet(
-            1000,
+            500,
+            500,
             'Zeruel',
             0,
             Gender.PLUTO,
