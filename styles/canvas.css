@@ -1,0 +1,49 @@
+#main-canvas {
+    background-image: url("../assets/room/living-room-scaled.png");
+    background-size: cover;
+    z-index: 0;
+}
+
+#main-canvas-container {
+    background-image: url("../assets/room/living-room-blurred.png");
+    background-size: cover;
+    z-index: 0;
+}
+
+#secondary-canvas-container {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.canvas-overlay {
+
+    position: absolute;
+    z-index: 1;
+
+    visibility: hidden;
+
+    height: 80%;
+    width: 80%;
+
+    background-color: var(--frame-color);
+    border: 5px solid;
+    border-top-color: var(--frame-highlight);
+    border-right-color: var(--frame-highlight);
+    border-bottom-color: var(--frame-shadow);
+    border-left-color: var(--frame-shadow);
+    border-radius: 50px;
+
+}
+
+.canvas-overlay canvas {
+    background-color: #333;
+    border-radius: 15px;
+    border: 5px solid;
+    border-top-color: var(--frame-shadow);
+    border-right-color: var(--frame-shadow);
+    border-bottom-color: var(--frame-highlight);
+    border-left-color: var(--frame-highlight);
+}
