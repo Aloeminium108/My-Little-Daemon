@@ -124,7 +124,7 @@ class Game {
         };
         this.ctxMain = mainCanvas.getContext("2d");
         this.ctxSecondary = secondaryCanvas.getContext("2d");
-        this.pet = new Pet(500, 500, 'Zeruel', 0, Gender.PLUTO, './assets/pet-neutral.png');
+        this.pet = new Pet(500, 0, 'Zeruel', 0, Gender.PLUTO, './assets/pet-neutral.png');
         this.currentState = new LoadingState(this, this.ctxMain);
         Promise.all(this.loadAssets()).then(() => {
             this.initializeStates();

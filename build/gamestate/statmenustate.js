@@ -2,7 +2,7 @@ import { HomeState } from "./homestate.js";
 class StatMenuState {
     constructor(game) {
         this.update = () => {
-            this.updateMenu;
+            this.updateMenu();
         };
         this.init = () => {
             let exitButton = document.getElementById('menu-exit');

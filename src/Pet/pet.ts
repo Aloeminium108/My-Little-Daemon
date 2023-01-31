@@ -24,6 +24,11 @@ class Pet {
         if (this._hunger > this.maxHunger) this._hunger = this.maxHunger
     }
 
+    increaseHappiness = (happiness: number) => {
+        this._happiness += happiness
+        if (this._happiness > this.maxHappiness) this._happiness = this.maxHappiness
+    }
+
     update = (interval: number) => {
         this.timeElapsed += interval
 

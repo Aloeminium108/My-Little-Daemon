@@ -32,7 +32,7 @@ class Game {
 
         this.pet = new Pet(
             500,
-            500,
+            0,
             'Zeruel',
             0,
             Gender.PLUTO,

@@ -32,7 +32,7 @@ class StatMenuState implements GameState {
     }
 
     update = () => {
-        this.updateMenu
+        this.updateMenu()
     }
 
     init = () => {

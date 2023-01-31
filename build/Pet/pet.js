@@ -16,6 +16,11 @@ class Pet {
             if (this._hunger > this.maxHunger)
                 this._hunger = this.maxHunger;
         };
+        this.increaseHappiness = (happiness) => {
+            this._happiness += happiness;
+            if (this._happiness > this.maxHappiness)
+                this._happiness = this.maxHappiness;
+        };
         this.update = (interval) => {
             this.timeElapsed += interval;
             if (this.timeElapsed < this.updateInterval) {
@@ -23,6 +28,9 @@ class Pet {
             }
             if (this._hunger > 0) {
                 this._hunger--;
+            }
+            if (this._happiness > 0) {
+                this._happiness--;
             }
             this.timeElapsed -= this.updateInterval;
         };

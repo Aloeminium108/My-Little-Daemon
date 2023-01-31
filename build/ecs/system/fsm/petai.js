@@ -14,6 +14,7 @@ class PetAI extends FiniteStateMachine {
             [EntityState.HAPPY, (entity) => {
                     if (entity !== this.mouseSystem.heldEntity)
                         entity.getComponent(Automaton).changeState(EntityState.NEUTRAL);
+                    entity.getComponent(PetLink).pet.increaseHappiness(1);
                 }]
         ]);
     }
