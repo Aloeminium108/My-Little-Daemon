@@ -22,6 +22,8 @@ class StatMenuState {
             this.petName.textContent = this.pet.name;
             this.petAge.textContent = this.pet.age.toString();
             this.petGender.src = this.pet.gender;
+            let hungerPercentage = this.pet.hunger / 10;
+            this.petHunger.style.width = `${hungerPercentage}%`;
         };
         this.game = game;
         this.pet = game.pet;
@@ -30,6 +32,8 @@ class StatMenuState {
         this.petName = document.getElementById('pet-name');
         this.petAge = document.getElementById('pet-age');
         this.petGender = document.getElementById('pet-gender');
+        this.petHunger = document.getElementById('hunger-bar');
+        this.petHappiness = document.getElementById('happiness-bar');
         this.init();
     }
 }

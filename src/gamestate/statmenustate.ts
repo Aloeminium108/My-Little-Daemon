@@ -10,6 +10,8 @@ class StatMenuState implements GameState {
     petName: HTMLParagraphElement
     petAge: HTMLParagraphElement
     petGender: HTMLImageElement
+    petHunger: HTMLDivElement
+    petHappiness: HTMLDivElement
 
     game: Game
     pet: Pet
@@ -23,6 +25,8 @@ class StatMenuState implements GameState {
         this.petName = document.getElementById('pet-name') as HTMLParagraphElement
         this.petAge = document.getElementById('pet-age') as HTMLParagraphElement
         this.petGender = document.getElementById('pet-gender') as HTMLImageElement
+        this.petHunger = document.getElementById('hunger-bar') as HTMLDivElement
+        this.petHappiness = document.getElementById('happiness-bar') as HTMLDivElement
 
         this.init()
     }
@@ -53,6 +57,9 @@ class StatMenuState implements GameState {
         this.petName.textContent = this.pet.name
         this.petAge.textContent = this.pet.age.toString()
         this.petGender.src = this.pet.gender
+
+        let hungerPercentage = this.pet.hunger/10
+        this.petHunger.style.width = `${hungerPercentage}%`
     }
     
 }
