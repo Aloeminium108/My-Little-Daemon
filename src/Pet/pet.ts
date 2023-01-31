@@ -34,6 +34,10 @@ class Pet {
         if (this._hunger > 0) {
             this._hunger--
         }
+
+        if (this._happiness > 0) {
+            this._happiness--
+        }
         
         this.timeElapsed -= this.updateInterval
     }
