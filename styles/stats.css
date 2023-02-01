@@ -119,7 +119,7 @@
 .pet-image-container {
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     height: 300px;
     margin: 5% 5% 0% 5%;
