@@ -28,6 +28,9 @@
     height: 40vw;
     width: 60vw;
 
+    max-width: 70vw;
+    max-height: 87.5vh;
+
     background-color: var(--frame-color);
     border: 5px solid;
     border-top-color: var(--frame-highlight);
