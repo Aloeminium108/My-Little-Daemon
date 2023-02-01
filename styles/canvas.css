@@ -25,8 +25,8 @@
 
     visibility: hidden;
 
-    height: 80%;
-    width: 80%;
+    height: 40vw;
+    width: 60vw;
 
     background-color: var(--frame-color);
     border: 5px solid;

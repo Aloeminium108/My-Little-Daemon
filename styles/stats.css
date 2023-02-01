@@ -121,12 +121,13 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    height: 300px;
+    height: 18vw;
+    width: 18vw;
     margin: 5% 5% 0% 5%;
 }
 
 .pet-image-container img {
-    width: 300px;
+    width: 100%;
     height: auto;
 }
 
