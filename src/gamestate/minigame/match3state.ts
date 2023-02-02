@@ -180,7 +180,7 @@ class Match3State extends Minigame {
 }
 
 function calculateGoal(level: number) {
-    return 5000 * Math.log(level + 1)
+    return 5000 * level * Math.log(level)
 }
 
 

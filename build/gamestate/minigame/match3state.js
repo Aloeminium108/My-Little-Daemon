@@ -152,6 +152,6 @@ class Match3State extends Minigame {
     }
 }
 function calculateGoal(level) {
-    return 5000 * Math.log(level + 1);
+    return 5000 * level * Math.log(level);
 }
 export { Match3State };
