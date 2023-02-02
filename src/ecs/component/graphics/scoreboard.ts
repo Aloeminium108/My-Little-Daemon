@@ -1,9 +1,7 @@
 import { Component } from "../component.js";
 
 class Scoreboard extends Component {
-    public value = 0
-
-    constructor(public scoreType: ScoreType) {
+    constructor(public scoreType: ScoreType, public value = 0) {
         super()
     }
 }

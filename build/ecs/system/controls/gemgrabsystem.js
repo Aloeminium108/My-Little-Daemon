@@ -11,6 +11,7 @@ class GemGrabSystem extends UnorderedSystem {
         this.componentsRequired = new Set([Automaton, JewelType, Hitbox]);
         this.swapped = new Array();
         this.updateNeeded = false;
+        this.moveMade = false;
         this.senseUp = (hitbox) => {
             let center = hitbox.center;
             let rayDown = {
@@ -47,6 +48,7 @@ class GemGrabSystem extends UnorderedSystem {
     update(interval) {
         this.swapped.splice(0);
         let heldEntity = this.mouseSystem.heldEntity;
+        this.moveMade = false;
         // Check to make sure that there is a held entity and that it is an unmatched gem
         if (heldEntity === null)
             return;
@@ -75,6 +77,7 @@ class GemGrabSystem extends UnorderedSystem {
             this.swapped.push(heldEntity);
             this.mouseSystem.heldEntity = null;
             this.mouseSystem.wrenched = true;
+            this.moveMade = true;
         }
     }
 }

@@ -40,6 +40,9 @@ abstract class Minigame implements GameState {
 
     abstract reconnectScoreboard(): void
 
+    abstract loseCondition(): boolean
+    abstract winCondition(): boolean
+
     init = () => {
         this.initScoreboard()
         this.initEntities()
@@ -74,6 +77,11 @@ abstract class Minigame implements GameState {
 
     update = (interval: number) => {
         this.ecs.update(interval)
+        if (this.loseCondition()) {
+            console.log("You lose :(")
+        } else if (this.winCondition()) {
+            console.log("You win!")
+        }
     }
     
 }

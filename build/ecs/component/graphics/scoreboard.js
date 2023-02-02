@@ -1,9 +1,9 @@
 import { Component } from "../component.js";
 class Scoreboard extends Component {
-    constructor(scoreType) {
+    constructor(scoreType, value = 0) {
         super();
         this.scoreType = scoreType;
-        this.value = 0;
+        this.value = value;
     }
 }
 var ScoreType;

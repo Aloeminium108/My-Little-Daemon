@@ -61,12 +61,18 @@ class Match3State extends Minigame {
 
     petReaction: HTMLImageElement | null = null
 
+    moves = 10
+    level = 1
+    score = 0
+    scoreGoal: number
+
     constructor(
         public game: Game, 
         public ctx: CanvasRenderingContext2D, 
         public canvasContainer: HTMLDivElement
     ) {
         super(game, ctx, canvasContainer)
+        this.scoreGoal = calculateGoal(this.level)
         this.init()
     }
 
@@ -77,7 +83,7 @@ class Match3State extends Minigame {
 
         let scoreKeeper = new ScoreKeeper(ScoreType.SCORE)
         let comboKeeper = new ScoreKeeper(ScoreType.COMBO)
-        let movesKeeper = new ScoreKeeper(ScoreType.MOVES)
+        let movesKeeper = new ScoreKeeper(ScoreType.MOVES, this.moves)
         let progressKeeper = new ScoreKeeper(ScoreType.PROGESS)
 
         this.ecs.addEntity(scoreKeeper)
@@ -103,7 +109,7 @@ class Match3State extends Minigame {
         this.ecs.addSystem(new GeneratorSystem(collisionDetection))
         let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem)
         this.ecs.addSystem(jewelBehavior)
-        this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior))
+        this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior, gemGrabSystem))
         this.ecs.addSystem(new SpriteSystem(this.ctx))
         this.ecs.addSystem(new DrawingSystem(this.ctx))
         this.ecs.addSystem(new ScoreboardSystem(new Map([
@@ -113,10 +119,12 @@ class Match3State extends Minigame {
             }],
 
             [ScoreType.SCORE, (value: number) => {
+                this.score = value
                 if (this.scoreDisplay !== null) this.scoreDisplay.textContent = value.toString()
             }],
 
             [ScoreType.MOVES, (value: number) => {
+                this.moves = value
                 if (this.movesCounter !== null) this.movesCounter.textContent = value.toString()
             }],
 
@@ -134,6 +142,19 @@ class Match3State extends Minigame {
         this.petReaction.src = this.pet.imageSrc
     }
 
+    loseCondition = () => {
+        return this.moves <= 0
+    }
+
+    winCondition = () => {
+        return false
+    }
+
 }
+
+function calculateGoal(level: number) {
+    return 100
+}
+
 
 export { Match3State }

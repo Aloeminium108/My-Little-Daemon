@@ -35,6 +35,12 @@ class Minigame {
         };
         this.update = (interval) => {
             this.ecs.update(interval);
+            if (this.loseCondition()) {
+                console.log("You win!");
+            }
+            else if (this.winCondition()) {
+                console.log("You lose :(");
+            }
         };
         this.game = game;
         this.pet = game.pet;

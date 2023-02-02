@@ -57,12 +57,15 @@ class Match3State extends Minigame {
         this.comboCounter = null;
         this.movesCounter = null;
         this.petReaction = null;
+        this.moves = 10;
+        this.level = 1;
+        this.score = 0;
         this.initEntities = () => {
             let jewelGrid = new JewelGrid(0, 0, 8, 8);
             this.ecs.addEntity(jewelGrid);
             let scoreKeeper = new ScoreKeeper(ScoreType.SCORE);
             let comboKeeper = new ScoreKeeper(ScoreType.COMBO);
-            let movesKeeper = new ScoreKeeper(ScoreType.MOVES);
+            let movesKeeper = new ScoreKeeper(ScoreType.MOVES, this.moves);
             let progressKeeper = new ScoreKeeper(ScoreType.PROGESS);
             this.ecs.addEntity(scoreKeeper);
             this.ecs.addEntity(comboKeeper);
@@ -85,7 +88,7 @@ class Match3State extends Minigame {
             this.ecs.addSystem(new GeneratorSystem(collisionDetection));
             let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem);
             this.ecs.addSystem(jewelBehavior);
-            this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior));
+            this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior, gemGrabSystem));
             this.ecs.addSystem(new SpriteSystem(this.ctx));
             this.ecs.addSystem(new DrawingSystem(this.ctx));
             this.ecs.addSystem(new ScoreboardSystem(new Map([
@@ -94,10 +97,12 @@ class Match3State extends Minigame {
                             this.comboCounter.textContent = value.toString();
                     }],
                 [ScoreType.SCORE, (value) => {
+                        this.score = value;
                         if (this.scoreDisplay !== null)
                             this.scoreDisplay.textContent = value.toString();
                     }],
                 [ScoreType.MOVES, (value) => {
+                        this.moves = value;
                         if (this.movesCounter !== null)
                             this.movesCounter.textContent = value.toString();
                     }],
@@ -111,7 +116,17 @@ class Match3State extends Minigame {
             this.petReaction = document.getElementById('pet-reaction');
             this.petReaction.src = this.pet.imageSrc;
         };
+        this.loseCondition = () => {
+            return this.moves <= 0;
+        };
+        this.winCondition = () => {
+            return false;
+        };
+        this.scoreGoal = calculateGoal(this.level);
         this.init();
     }
+}
+function calculateGoal(level) {
+    return 100;
 }
 export { Match3State };

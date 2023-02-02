@@ -3,9 +3,9 @@ import { Entity } from "../entity.js";
 
 class ScoreKeeper extends Entity {
 
-    constructor(scoreType: ScoreType) {
+    constructor(scoreType: ScoreType, value = 0) {
         super()
-        this.addComponent(new Scoreboard(scoreType))
+        this.addComponent(new Scoreboard(scoreType, value))
     }
 
 }

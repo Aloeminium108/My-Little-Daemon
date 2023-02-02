@@ -17,6 +17,8 @@ class GemGrabSystem extends UnorderedSystem {
 
     public updateNeeded: boolean = false
 
+    public moveMade: boolean = false
+
     constructor(private mouseSystem: MouseSystem, private collisionDetection: CollisionDetection) {
         super()
     }
@@ -24,6 +26,8 @@ class GemGrabSystem extends UnorderedSystem {
     public update(interval: number): void {
         this.swapped.splice(0)
         let heldEntity = this.mouseSystem.heldEntity
+
+        this.moveMade = false
 
         // Check to make sure that there is a held entity and that it is an unmatched gem
         if (heldEntity === null) return
@@ -50,6 +54,7 @@ class GemGrabSystem extends UnorderedSystem {
             this.swapped.push(heldEntity)
             this.mouseSystem.heldEntity = null
             this.mouseSystem.wrenched = true
+            this.moveMade = true
         }
 
     }

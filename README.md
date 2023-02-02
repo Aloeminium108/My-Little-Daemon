@@ -29,30 +29,32 @@ Shows a status menu including information such as the Daemon's name, age, and ge
 #### FOOD
 Opens an inventory menu where the player may pick food items to feed their Daemon.
 
-#### TOYS
+#### TOYS (Planned)
 Opens an inventory menu where the player may pick toys to play with their Daemon.
 
-#### HEAL
+#### HEAL (Planned)
 If the Daemon is sick or injured, this button alleviates their ailments.
 
 #### GAMES
 Opens a mini-game selection menu. These mini-games are the primary method for earning currency.
 
-#### STORE
+#### STORE (Planned)
 Takes the player to a storefront where they may purchase food and toys for their Daemon with the currency earned from mini-games
 
-#### BATH
+#### BATH (Planned)
 Spawns implements necessary for bathing the Daemon.
 
-#### SLEEP
+#### SLEEP (Planned)
 Puts the Daemon to bed if they are sleepy, or wakes them up if they are sleeping.
 
-#### SAVE
-Allows the player to save their game, or load an existing save file.
+#### SAVE (Planned)
+Allows the player to save their game.
 
-## The Engine
+## Things I've Learned
 
-### ECS
+This game was created for a milestone project. I have been interested in game design and development for a very long time, and I always wanted to write my own game engine. In order to create even a weak, tiny game engine, I had to quickly learn about a wide range of topics. I'm very glad I pursued this. It was intensive, and it consumed my thoughts for weeks, but I greatly appreciate everything I learned in the process.
+
+### Entity Component Systems
 
 My Little Daemon's engine uses an Entity Component System. This means that rather than defining game objects with a complicated inheritance tree, every game object is derived from the same base class: Entity. The Entity class does not contain any state on its own. Instead, it contains a set of components which hold all the pertinent information about an entity. For example, an entity that is meant to be drawn to the screen may have a Sprite component that holds the image bitmap intended to represent that entity.
 
@@ -67,3 +69,15 @@ My Little Daemon uses spatial hashing to optimize collision detection. Essential
 ### Finite State Machines
 
 Some objects have relatively complex behavior that is difficult to comprehensively model using components and systems. This is usually because their intended behavior is highly contextual. To help define this behavior there is a subclass of systems: FiniteStateMachine. Accompanying this system is the Automaton component. The Automaton component simply holds an entity's current state and the amount of time it has been in that state. Systems deriving from FiniteStateMachine simply define how entities should behave in each state, along with any logic that needs to be executed before/after automation.
+
+### Event-Driven Architecture
+
+I plan on implementing an event messaging system for the game. For this game, the issue that I kept running into was that systems and would often need to access the state of other systems just to look at a few variables. This caused systems to become coupled, which is particularly annoying because one of the main goals of implementing the ECS was to decouple game systems. 
+
+The planned implementation is relatively simple; there is an event messaging system that event listeners can subscribe to. This event messaging system is given to the ECS so any system can access it and push events to it. Event listeners take two forms; event handlers and event filters. Event handlers respond to a single kind of event whenever it happens. Event filters listen to a number of different kinds of events and filter out/transform them into a different kind of event. The point here is to avoid coupling as much as possible while also giving event listeners the power to respond to a diverse set of events if necessary. 
+
+### Sequential Impulse Solver
+
+I also plan on implementing a sequential impulse solver to handle collision resolution. The naive solution to collision resolution is to move any overlapping entities so they are no longer overlapping. This is problematic when entities are moved out of one collision and into another. To avoid multi-entity collisions resulting in a jittery mess, I had to rely on less-than-ideal workarounds. 
+
+A sequential impulse solver fixes this by pushing entities outiside of each others' hitboxes with impulse vectors instead of just changing their positions. The part of this that makes it "sequential" is the way multi-entity collisions are handled. At each collision, the sequential impulse solver calculates a lambda value which represents how much the entities' hitboxes are will be overlapping after the impulse is applied. Whenever there are multiple entities involved in a collision, every individual point of contact is iterated over until the lambda values are all positive, indicating no more overlap.
