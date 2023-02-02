@@ -173,6 +173,32 @@
     border-left-color: var(--frame-highlight);
 }
 
+.fill-overlay {
+    min-width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.selection-box {
+    color: white;
+    background-color: #333;
+    padding: 0px 10px 0px 10px;
+    border-radius: 15px;
+
+    border: 5px solid;
+    border-top-color: var(--frame-shadow);
+    border-right-color: var(--frame-shadow);
+    border-bottom-color: var(--frame-highlight);
+    border-left-color: var(--frame-highlight);
+
+    margin: 5%;
+    width: 50vw;
+    height: 70vh;
+}
+
 .stat-info-container {
     display: flex;
     flex-direction: row;
