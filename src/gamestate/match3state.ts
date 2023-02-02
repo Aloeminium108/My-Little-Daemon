@@ -1,13 +1,9 @@
-import { ECS } from "../ecs/ecs.js";
 import { CollisionDetection } from "../ecs/system/physics/collisiondetection.js";
 import { SpriteSystem } from "../ecs/system/graphics/spritesystem.js";
 import { FrictionSystem } from "../ecs/system/physics/frictionsystem.js";
 import { MouseSystem } from "../ecs/system/controls/mousesystem.js";
 import { VelocitySystem } from "../ecs/system/physics/velocitysystem.js";
 import { Game } from "../game.js";
-import { Pet } from "../Pet/pet.js";
-import { Mouse } from "./mouse.js";
-import { GameState } from "./gamestate.js"
 import { GemGrabSystem } from "../ecs/system/controls/gemgrabsystem.js";
 import { SpatialHashing } from "../ecs/system/physics/spatialhashing.js";
 import { BoundarySystem } from "../ecs/system/physics/boundarysystem.js";
@@ -23,16 +19,41 @@ import { JewelGrid } from "../ecs/entity/minigame/puzzle/jewelgrid.js";
 import { ScoreKeeper } from "../ecs/entity/minigame/scorekeeper.js";
 import { ScoreType } from "../ecs/component/graphics/scoreboard.js";
 import { ScoreboardSystem } from "../ecs/system/scoring/scoreboardsystem.js";
+import { Minigame } from "./minigame.js";
 
-class Match3State implements GameState {
-    pet: Pet;
+class Match3State extends Minigame {
 
-    ecs = new ECS()
+    name = 'Match-3'
+    iconsrc = ''
 
-    mouse: Mouse
-    canvas: HTMLCanvasElement
+    leftScoreboardInner = ''
+    rightScoreboardInner = 
+    `<div class="stat-list scorepanel">
+        <div class="stat-label scorepanel">
+            <h2>SCORE:</h2>
+        </div>
+        <div class="stat-container stat-info-container scorepanel">
+            <p class="scorepanel" id="score-display">0</p>
+        </div>
+        <div class="stat-label scorepanel">
+            <h2>COMBO:</h2>
+        </div>
+        <div class="stat-container stat-info-container scorepanel">
+            <p class="scorepanel" id="combo-counter">0</p>
+        </div>
+        <div class="stat-label scorepanel">
+            <h2>MOVES:</h2>
+        </div>
+        <div class="stat-container stat-info-container scorepanel">
+            <p class="scorepanel" id="moves-counter">0</p>
+        </div>
+        <div class="stat-container reaction-container">
+            <img id="pet-reaction" src="" alt="">
+        </div>
+    </div>`
 
-    scoreboard: HTMLDivElement = document.createElement('div')
+    canvasWidth = 640
+    canvasHeight = 640
 
     scoreDisplay: HTMLParagraphElement | null = null
     comboCounter: HTMLParagraphElement | null = null
@@ -43,51 +64,10 @@ class Match3State implements GameState {
     constructor(
         public game: Game, 
         public ctx: CanvasRenderingContext2D, 
-        public canvasContainer: HTMLDivElement) {
-        this.game = game
-        this.pet = game.pet
-        this.mouse = game.mouse
-        this.canvas = game.secondaryCanvas
-
+        public canvasContainer: HTMLDivElement
+    ) {
+        super(game, ctx, canvasContainer)
         this.init()
-    }
-
-    init = () => {
-        this.initScoreboard()
-        this.initEntities()
-        this.initSystems()
-    }
-
-    initScoreboard = () => {
-
-        this.scoreboard.className = "scoreboard"
-
-        this.scoreboard.innerHTML = 
-        `<div class="stat-list scorepanel">
-            <div class="stat-label scorepanel">
-                <h2>SCORE:</h2>
-            </div>
-            <div class="stat-container stat-info-container scorepanel">
-                <p class="scorepanel" id="score-display">0</p>
-            </div>
-            <div class="stat-label scorepanel">
-                <h2>COMBO:</h2>
-            </div>
-            <div class="stat-container stat-info-container scorepanel">
-                <p class="scorepanel" id="combo-counter">0</p>
-            </div>
-            <div class="stat-label scorepanel">
-                <h2>MOVES:</h2>
-            </div>
-            <div class="stat-container stat-info-container scorepanel">
-                <p class="scorepanel" id="moves-counter">0</p>
-            </div>
-            <div class="stat-container reaction-container">
-                <img id="pet-reaction" src="" alt="">
-            </div>
-            
-        </div>`
-
     }
 
     initEntities = () => {
@@ -145,30 +125,15 @@ class Match3State implements GameState {
         ])))
     }
 
-    pause = () => {
-        this.canvasContainer.style.visibility = 'hidden'
-        document.getElementById('scoreboard')?.removeChild(this.scoreboard)
-    }
-
-    resume = () =>  {
-        this.canvas.height = 640
-        this.canvas.width = 640
-        document.getElementById('scoreboard')?.appendChild(this.scoreboard)
-
+    reconnectScoreboard = () => {
         this.scoreDisplay = document.getElementById('score-display') as HTMLParagraphElement
         this.comboCounter = document.getElementById('combo-counter') as HTMLParagraphElement
         this.movesCounter = document.getElementById('moves-counter') as HTMLParagraphElement
         this.petReaction = document.getElementById('pet-reaction') as HTMLImageElement
 
         this.petReaction.src = this.pet.imageSrc
-
-        this.canvasContainer.style.visibility = 'visible'
     }
 
-    update = (interval: number) =>  {
-        this.ecs.update(interval)
-    }
-    
 }
 
 export { Match3State }
