@@ -16,7 +16,7 @@ import { DrawingSystem } from "../../ecs/system/graphics/drawingsystem.js";
 import { CollisionResponse } from "../../ecs/system/physics/collisionresponse.js";
 import { JewelGrid } from "../../ecs/entity/minigame/puzzle/jewelgrid.js";
 import { ScoreKeeper } from "../../ecs/entity/minigame/scorekeeper.js";
-import { ScoreType } from "../../ecs/component/graphics/scoreboard.js";
+import { Scoreboard, ScoreType } from "../../ecs/component/graphics/scoreboard.js";
 import { ScoreboardSystem } from "../../ecs/system/scoring/scoreboardsystem.js";
 import { Minigame } from "./minigame.js";
 class Match3State extends Minigame {
@@ -58,21 +58,23 @@ class Match3State extends Minigame {
         this.scoreDisplay = null;
         this.comboCounter = null;
         this.movesCounter = null;
+        this.progressBar = null;
         this.petReaction = null;
         this.moves = 10;
         this.level = 1;
         this.score = 0;
+        this.progress = 0;
+        this.scoreKeeper = new ScoreKeeper(ScoreType.SCORE);
+        this.comboKeeper = new ScoreKeeper(ScoreType.COMBO);
+        this.movesKeeper = new ScoreKeeper(ScoreType.MOVES, this.moves);
+        this.progressKeeper = new ScoreKeeper(ScoreType.PROGESS);
         this.initEntities = () => {
             let jewelGrid = new JewelGrid(0, 0, 8, 8);
             this.ecs.addEntity(jewelGrid);
-            let scoreKeeper = new ScoreKeeper(ScoreType.SCORE);
-            let comboKeeper = new ScoreKeeper(ScoreType.COMBO);
-            let movesKeeper = new ScoreKeeper(ScoreType.MOVES, this.moves);
-            let progressKeeper = new ScoreKeeper(ScoreType.PROGESS);
-            this.ecs.addEntity(scoreKeeper);
-            this.ecs.addEntity(comboKeeper);
-            this.ecs.addEntity(movesKeeper);
-            this.ecs.addEntity(progressKeeper);
+            this.ecs.addEntity(this.scoreKeeper);
+            this.ecs.addEntity(this.comboKeeper);
+            this.ecs.addEntity(this.movesKeeper);
+            this.ecs.addEntity(this.progressKeeper);
         };
         this.initSystems = () => {
             let spatialHashing = new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton]));
@@ -108,18 +110,39 @@ class Match3State extends Minigame {
                         if (this.movesCounter !== null)
                             this.movesCounter.textContent = value.toString();
                     }],
-                [ScoreType.PROGESS, (value) => { }],
+                [ScoreType.PROGESS, (value) => {
+                        this.progress += value;
+                        if (this.progressBar !== null)
+                            this.progressBar.style.height = `${this.getProgress()}%`;
+                    }],
             ])));
+        };
+        this.getProgress = () => {
+            if (this.progress >= calculateGoal(this.level))
+                return 100;
+            let percentage = 100 * this.progress / calculateGoal(this.level);
+            return percentage;
         };
         this.reconnectScoreboard = () => {
             this.scoreDisplay = document.getElementById('score-display');
             this.comboCounter = document.getElementById('combo-counter');
             this.movesCounter = document.getElementById('moves-counter');
             this.petReaction = document.getElementById('pet-reaction');
+            this.progressBar = document.getElementById('progress-bar');
             this.petReaction.src = this.pet.imageSrc;
         };
         this.loseCondition = () => {
-            return this.moves <= 0;
+            if (this.moves > 0)
+                return false;
+            if (this.getProgress() >= 100) {
+                this.progress = 0;
+                this.moves = 10;
+                this.movesKeeper.getComponent(Scoreboard).value = 10;
+                return false;
+            }
+            else {
+                return true;
+            }
         };
         this.winCondition = () => {
             return false;
@@ -129,6 +152,6 @@ class Match3State extends Minigame {
     }
 }
 function calculateGoal(level) {
-    return 100;
+    return 10000 * Math.log(level + 1);
 }
 export { Match3State };

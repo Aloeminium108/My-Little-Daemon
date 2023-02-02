@@ -73,6 +73,13 @@ class Match3ScoringSystem extends UnorderedSystem {
                         display.value--
                     }
                     break
+                case ScoreType.PROGESS:
+                    if (score > 0) {
+                        display.value = score
+                    } else {
+                        display.value = 0
+                    }
+                    break
             }
         })
     }
