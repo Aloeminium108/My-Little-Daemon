@@ -1,22 +1,34 @@
-import { Match3State } from "./match3state.js";
 class MinigameSelectState {
-    constructor(game) {
+    constructor(game, minigames) {
         this.game = game;
+        this.minigames = minigames;
+        this.init = () => {
+            this.minigames.forEach(minigame => {
+                let selectionIcon = createMinigameIcon(minigame);
+                this.selectionBox.appendChild(selectionIcon);
+                selectionIcon.addEventListener('dblclick', (e) => {
+                    this.game.changeState(minigame.constructor);
+                });
+            });
+        };
+        this.pause = () => {
+            this.menuHTML.style.visibility = 'hidden';
+        };
+        this.resume = () => {
+            this.menuHTML.style.visibility = 'visible';
+        };
         this.pet = game.pet;
         this.menuHTML = document.getElementById('minigame-select');
+        this.selectionBox = document.querySelector('#minigame-select .selection-box');
         this.init();
     }
-    init() {
-        let buttons = document.querySelectorAll('#minigame-select .selection-icon');
-        buttons[0].addEventListener('dblclick', (e) => {
-            this.game.changeState(Match3State);
-        });
-    }
-    pause() {
-        this.menuHTML.style.visibility = 'hidden';
-    }
-    resume() {
-        this.menuHTML.style.visibility = 'visible';
-    }
+}
+function createMinigameIcon(minigame) {
+    let selectionIcon = document.createElement('div');
+    selectionIcon.className = 'selection-icon';
+    selectionIcon.innerHTML =
+        `<img src="${minigame.iconsrc}" alt="${minigame.name}">
+    <h3>${minigame.name}</h3>`;
+    return selectionIcon;
 }
 export { MinigameSelectState };

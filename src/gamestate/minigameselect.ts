@@ -1,41 +1,50 @@
-import { ECS } from "../ecs/ecs.js";
 import { Game } from "../game.js";
 import { Pet } from "../Pet/pet.js";
-import { GameState } from "./gamestate.js"
-import { Match3State } from "./match3state.js";
+import { GameState, GameStateTransition } from "./gamestate.js"
+import { Minigame } from "./minigame.js";
 
 class MinigameSelectState implements GameState {
-    game: Game;
-    ctx?: CanvasRenderingContext2D | undefined;
+
     pet: Pet;
-    ecs?: ECS | undefined;
-
     menuHTML: HTMLDivElement
+    selectionBox: HTMLDivElement
 
-    constructor(game: Game) {
-        this.game = game
+    constructor(public game: Game, private minigames: Array<Minigame>) {
         this.pet = game.pet
-
         this.menuHTML = document.getElementById('minigame-select') as HTMLDivElement
+        this.selectionBox = document.querySelector('#minigame-select .selection-box') as HTMLDivElement
         this.init()
     }
 
-    init(): void {
-        let buttons = document.querySelectorAll('#minigame-select .selection-icon')
-        buttons[0].addEventListener('dblclick', (e) => {
-            this.game.changeState(Match3State)
+    init = () => {
+        this.minigames.forEach(minigame => {
+            let selectionIcon = createMinigameIcon(minigame)
+            this.selectionBox.appendChild(selectionIcon)
+            selectionIcon.addEventListener('dblclick', (e) => {
+                this.game.changeState(minigame.constructor as GameStateTransition<GameState>)
+            })
         })
     }
 
-    pause(): void {
+    pause = () => {
         this.menuHTML.style.visibility = 'hidden'
     }
 
-    resume(): void {
+    resume = () => {
         this.menuHTML.style.visibility = 'visible'
     }
 
+}
 
+function createMinigameIcon(minigame: Minigame) {
+    let selectionIcon = document.createElement('div')
+    selectionIcon.className = 'selection-icon'
+
+    selectionIcon.innerHTML = 
+    `<img src="${minigame.iconsrc}" alt="${minigame.name}">
+    <h3>${minigame.name}</h3>`
+
+    return selectionIcon
 }
 
 export {MinigameSelectState}

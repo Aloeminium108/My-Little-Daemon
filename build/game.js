@@ -11,6 +11,7 @@ class Game {
         this.mainCanvas = mainCanvas;
         this.secondaryCanvas = secondaryCanvas;
         this.canvasContainer = canvasContainer;
+        this.minigames = [];
         this.mouse = new Mouse();
         this.lastFrameTimeStamp = null;
         this.stateMap = new Map;
@@ -66,8 +67,17 @@ class Game {
         this.initializeStates = () => {
             this.addState(new HomeState(this, this.ctxMain));
             this.addState(new StatMenuState(this));
-            this.addState(new Match3State(this, this.ctxSecondary, this.canvasContainer));
-            this.addState(new MinigameSelectState(this));
+            this.initializeMinigames();
+            this.addState(new MinigameSelectState(this, this.minigames));
+        };
+        this.initializeMinigames = () => {
+            this.minigames = [
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer)
+            ];
+            this.minigames.forEach(minigame => {
+                this.addState(minigame);
+            });
         };
         this.addState = (state) => {
             this.stateMap.set(state.constructor, state);

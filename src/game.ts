@@ -7,12 +7,13 @@ import { Match3State } from "./gamestate/match3state.js"
 import { Sprite } from "./ecs/component/graphics/sprite.js"
 import { LoadingState } from "./gamestate/loadingstate.js"
 import { MinigameSelectState } from "./gamestate/minigameselect.js"
+import { Minigame } from "./gamestate/minigame.js"
 
 class Game {
     private ctxMain: CanvasRenderingContext2D
     private ctxSecondary: CanvasRenderingContext2D
 
-
+    private minigames: Array<Minigame> = []
 
     pet: Pet
 
@@ -111,8 +112,20 @@ class Game {
     initializeStates = () => {
         this.addState(new HomeState(this, this.ctxMain))
         this.addState(new StatMenuState(this))
-        this.addState(new Match3State(this, this.ctxSecondary, this.canvasContainer))
-        this.addState(new MinigameSelectState(this))
+
+        this.initializeMinigames()
+
+        this.addState(new MinigameSelectState(this, this.minigames))
+    }
+
+    initializeMinigames = () => {
+        this.minigames = [
+            new Match3State(this, this.ctxSecondary, this.canvasContainer),
+            new Match3State(this, this.ctxSecondary, this.canvasContainer)
+        ]
+        this.minigames.forEach(minigame => {
+            this.addState(minigame)
+        })
     }
 
     addState = <T extends GameState>(state: GameState) => {
