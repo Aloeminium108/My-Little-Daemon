@@ -36,10 +36,10 @@ class Minigame {
         this.update = (interval) => {
             this.ecs.update(interval);
             if (this.loseCondition()) {
-                console.log("You win!");
+                console.log("You lose :(");
             }
             else if (this.winCondition()) {
-                console.log("You lose :(");
+                console.log("You win!");
             }
         };
         this.game = game;
