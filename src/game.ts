@@ -3,11 +3,11 @@ import { HomeState } from "./gamestate/homestate.js"
 import { StatMenuState } from "./gamestate/statmenustate.js"
 import { Gender, Pet } from "./Pet/pet.js"
 import { Mouse } from "./gamestate/mouse.js"
-import { Match3State } from "./gamestate/match3state.js"
+import { Match3State } from "./gamestate/minigame/match3state.js"
 import { Sprite } from "./ecs/component/graphics/sprite.js"
 import { LoadingState } from "./gamestate/loadingstate.js"
-import { MinigameSelectState } from "./gamestate/minigameselect.js"
-import { Minigame } from "./gamestate/minigame.js"
+import { MinigameSelectState } from "./gamestate/minigame/minigameselect.js"
+import { Minigame } from "./gamestate/minigame/minigame.js"
 
 class Game {
     private ctxMain: CanvasRenderingContext2D

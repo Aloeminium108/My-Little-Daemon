@@ -1,6 +1,6 @@
-import { Game } from "../game.js";
-import { Pet } from "../Pet/pet.js";
-import { GameState, GameStateTransition } from "./gamestate.js"
+import { Game } from "../../game.js";
+import { Pet } from "../../Pet/pet.js";
+import { GameState, GameStateTransition } from "../gamestate.js"
 import { Minigame } from "./minigame.js";
 
 class MinigameSelectState implements GameState {

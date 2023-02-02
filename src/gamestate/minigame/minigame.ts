@@ -1,8 +1,8 @@
-import { ECS } from "../ecs/ecs.js";
-import { Game } from "../game.js";
-import { Pet } from "../Pet/pet.js";
-import { GameState } from "./gamestate.js";
-import { Mouse } from "./mouse.js";
+import { ECS } from "../../ecs/ecs.js";
+import { Game } from "../../game.js";
+import { Pet } from "../../Pet/pet.js";
+import { GameState } from "../gamestate.js";
+import { Mouse } from "../mouse.js";
 
 abstract class Minigame implements GameState {
     
