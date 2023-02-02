@@ -5,6 +5,7 @@ import { Mouse } from "./gamestate/mouse.js";
 import { Match3State } from "./gamestate/match3state.js";
 import { Sprite } from "./ecs/component/graphics/sprite.js";
 import { LoadingState } from "./gamestate/loadingstate.js";
+import { MinigameSelectState } from "./gamestate/minigameselect.js";
 class Game {
     constructor(mainCanvas, secondaryCanvas, canvasContainer) {
         this.mainCanvas = mainCanvas;
@@ -66,6 +67,7 @@ class Game {
             this.addState(new HomeState(this, this.ctxMain));
             this.addState(new StatMenuState(this));
             this.addState(new Match3State(this, this.ctxSecondary, this.canvasContainer));
+            this.addState(new MinigameSelectState(this));
         };
         this.addState = (state) => {
             this.stateMap.set(state.constructor, state);
@@ -107,7 +109,7 @@ class Game {
                 // HEAL
             });
             buttons[5].addEventListener('click', (e) => {
-                this.changeState(Match3State);
+                this.changeState(MinigameSelectState);
             });
             buttons[6].addEventListener('click', (e) => {
                 // STORE
