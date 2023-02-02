@@ -136,6 +136,7 @@ class Match3State extends Minigame {
                 return false;
             if (this.getProgress() >= 100) {
                 this.progress = 0;
+                this.level++;
                 this.moves = 10;
                 this.movesKeeper.getComponent(Scoreboard).value = 10;
                 return false;
@@ -152,6 +153,6 @@ class Match3State extends Minigame {
     }
 }
 function calculateGoal(level) {
-    return 5000 * level * Math.log(level);
+    return 5000 * level * Math.log(level + 1);
 }
 export { Match3State };
