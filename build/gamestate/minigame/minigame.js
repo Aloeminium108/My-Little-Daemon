@@ -5,33 +5,47 @@ class Minigame {
         this.ctx = ctx;
         this.canvasContainer = canvasContainer;
         this.ecs = new ECS();
-        this.leftScoreboard = document.createElement('div');
-        this.rightScoreboard = document.createElement('div');
         this.init = () => {
             this.initScoreboard();
             this.initEntities();
             this.initSystems();
         };
         this.initScoreboard = () => {
-            this.leftScoreboard.className = 'scoreboard';
-            this.rightScoreboard.className = 'scoreboard';
-            this.leftScoreboard.innerHTML = this.leftScoreboardInner;
-            this.rightScoreboard.innerHTML = this.rightScoreboardInner;
+            if (this.leftScoreboardInner !== null) {
+                this.leftScoreboard = document.createElement('div');
+                this.leftScoreboard.className = 'scoreboard';
+                this.leftScoreboard.innerHTML = this.leftScoreboardInner;
+            }
+            if (this.rightScoreboardInner !== null) {
+                this.rightScoreboard = document.createElement('div');
+                this.rightScoreboard.className = 'scoreboard';
+                this.rightScoreboard.innerHTML = this.rightScoreboardInner;
+            }
         };
         this.pause = () => {
-            var _a, _b;
             this.canvasContainer.style.visibility = 'hidden';
-            (_a = document.getElementById('left-scoreboard')) === null || _a === void 0 ? void 0 : _a.removeChild(this.leftScoreboard);
-            (_b = document.getElementById('right-scoreboard')) === null || _b === void 0 ? void 0 : _b.removeChild(this.rightScoreboard);
+            this.removeFrameElements();
         };
         this.resume = () => {
-            var _a, _b;
             this.canvas.width = this.canvasWidth;
             this.canvas.height = this.canvasHeight;
-            (_a = document.getElementById('left-scoreboard')) === null || _a === void 0 ? void 0 : _a.appendChild(this.leftScoreboard);
-            (_b = document.getElementById('right-scoreboard')) === null || _b === void 0 ? void 0 : _b.appendChild(this.rightScoreboard);
+            this.appendFrameElements();
             this.reconnectScoreboard();
             this.canvasContainer.style.visibility = 'visible';
+        };
+        this.appendFrameElements = () => {
+            var _a, _b;
+            if (this.leftScoreboard !== undefined)
+                (_a = document.getElementById('left-scoreboard')) === null || _a === void 0 ? void 0 : _a.appendChild(this.leftScoreboard);
+            if (this.rightScoreboard !== undefined)
+                (_b = document.getElementById('right-scoreboard')) === null || _b === void 0 ? void 0 : _b.appendChild(this.rightScoreboard);
+        };
+        this.removeFrameElements = () => {
+            var _a, _b;
+            if (this.leftScoreboard !== undefined)
+                (_a = document.getElementById('left-scoreboard')) === null || _a === void 0 ? void 0 : _a.removeChild(this.leftScoreboard);
+            if (this.rightScoreboard !== undefined)
+                (_b = document.getElementById('right-scoreboard')) === null || _b === void 0 ? void 0 : _b.removeChild(this.rightScoreboard);
         };
         this.update = (interval) => {
             this.ecs.update(interval);

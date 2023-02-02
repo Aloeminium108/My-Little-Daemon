@@ -12,14 +12,14 @@ abstract class Minigame implements GameState {
 
     ecs = new ECS()
 
-    leftScoreboard: HTMLDivElement = document.createElement('div')
-    rightScoreboard: HTMLDivElement = document.createElement('div')
+    leftScoreboard?: HTMLDivElement
+    rightScoreboard?: HTMLDivElement
 
     abstract name: string
     abstract iconsrc: string
 
-    abstract leftScoreboardInner: string
-    abstract rightScoreboardInner: string
+    abstract leftScoreboardInner: string | null
+    abstract rightScoreboardInner: string | null
 
     abstract canvasWidth: number
     abstract canvasHeight: number
@@ -33,6 +33,7 @@ abstract class Minigame implements GameState {
         this.pet = game.pet
         this.mouse = game.mouse
         this.canvas = game.secondaryCanvas
+
     }
 
     abstract initEntities(): void
@@ -50,29 +51,50 @@ abstract class Minigame implements GameState {
     }
 
     initScoreboard = () => {
-        this.leftScoreboard.className = 'scoreboard'
-        this.rightScoreboard.className = 'scoreboard'
+        if (this.leftScoreboardInner !== null) {
+            this.leftScoreboard = document.createElement('div')
+            this.leftScoreboard.className = 'scoreboard'
+            this.leftScoreboard.innerHTML = this.leftScoreboardInner
+        }
 
-        this.leftScoreboard.innerHTML = this.leftScoreboardInner
-        this.rightScoreboard.innerHTML = this.rightScoreboardInner
+        if (this.rightScoreboardInner !== null) {
+            this.rightScoreboard = document.createElement('div')
+            this.rightScoreboard.className = 'scoreboard'
+            this.rightScoreboard.innerHTML = this.rightScoreboardInner
+        }
     }
 
     pause = () => {
         this.canvasContainer.style.visibility = 'hidden'
-        document.getElementById('left-scoreboard')?.removeChild(this.leftScoreboard)
-        document.getElementById('right-scoreboard')?.removeChild(this.rightScoreboard)
+
+        this.removeFrameElements()
     }
 
     resume = () => {
         this.canvas.width = this.canvasWidth
         this.canvas.height = this.canvasHeight
 
-        document.getElementById('left-scoreboard')?.appendChild(this.leftScoreboard)
-        document.getElementById('right-scoreboard')?.appendChild(this.rightScoreboard)
+        this.appendFrameElements()
 
         this.reconnectScoreboard()
 
         this.canvasContainer.style.visibility = 'visible'
+    }
+
+    appendFrameElements = () => {
+        if (this.leftScoreboard !== undefined)
+        document.getElementById('left-scoreboard')?.appendChild(this.leftScoreboard)
+
+        if (this.rightScoreboard !== undefined)
+        document.getElementById('right-scoreboard')?.appendChild(this.rightScoreboard)
+    }
+
+    removeFrameElements = () => {
+        if (this.leftScoreboard !== undefined)
+        document.getElementById('left-scoreboard')?.removeChild(this.leftScoreboard)
+
+        if (this.rightScoreboard !== undefined)
+        document.getElementById('right-scoreboard')?.removeChild(this.rightScoreboard)
     }
 
     update = (interval: number) => {

@@ -26,7 +26,10 @@ class Match3State extends Minigame {
     name = 'Match-3'
     iconsrc = ''
 
-    leftScoreboardInner = ''
+    leftScoreboardInner = 
+    `<div class="stat-container vertical-stat-bar">
+        <div id="progress-bar" class="vertical-bar-fill"></div>
+    </div>`
     rightScoreboardInner = 
     `<div class="stat-list scorepanel">
         <div class="stat-label scorepanel">

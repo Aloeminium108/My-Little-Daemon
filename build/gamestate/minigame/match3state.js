@@ -27,7 +27,9 @@ class Match3State extends Minigame {
         this.canvasContainer = canvasContainer;
         this.name = 'Match-3';
         this.iconsrc = '';
-        this.leftScoreboardInner = '';
+        this.leftScoreboardInner = `<div class="stat-container vertical-stat-bar">
+        <div id="progress-bar" class="vertical-bar-fill"></div>
+    </div>`;
         this.rightScoreboardInner = `<div class="stat-list scorepanel">
         <div class="stat-label scorepanel">
             <h2>SCORE:</h2>
