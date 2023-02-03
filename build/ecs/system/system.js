@@ -1,12 +1,12 @@
-class System {
-    constructor(ecs = null) {
-        this.ecs = ecs;
+class ComponentSystem {
+    constructor() {
+        this.ecs = null;
         this.addToECS = (ecs) => {
             this.ecs = ecs;
         };
     }
 }
-class UnorderedSystem extends System {
+class UnorderedSystem extends ComponentSystem {
     constructor() {
         super(...arguments);
         this.entities = new Set();
@@ -18,7 +18,7 @@ class UnorderedSystem extends System {
         };
     }
 }
-class OrderedSystem extends System {
+class OrderedSystem extends ComponentSystem {
     constructor() {
         super(...arguments);
         this.entities = new Array();
@@ -43,4 +43,4 @@ class OrderedSystem extends System {
         };
     }
 }
-export { System, OrderedSystem, UnorderedSystem };
+export { ComponentSystem, OrderedSystem, UnorderedSystem };

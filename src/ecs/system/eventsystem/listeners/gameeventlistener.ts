@@ -1,7 +1,7 @@
-import { ECS } from "../../ecs.js";
-import { System } from "../system.js";
-import { EventBroker } from "./eventbroker.js";
-import { EventClass, GameEvent } from "./gameevent.js";
+import { ECS } from "../../../ecs.js";
+import { System } from "../../system.js";
+import { EventBroker } from "../eventbroker.js";
+import { EventClass, GameEvent } from "../events/gameevent.js";
 
 interface GameEventListener {
 
@@ -31,9 +31,9 @@ abstract class EventHandler<T extends GameEvent> implements GameEventListener, S
     }
 
     handleEvents = () => {
-        this.eventStack.forEach(gameEvent => {
-            this.handleEvent(gameEvent)
-        })
+        while (this.eventStack.length > 0) {
+            this.handleEvent(this.eventStack.pop()!!)
+        }
     }
 
     addToECS(ecs: ECS): void {

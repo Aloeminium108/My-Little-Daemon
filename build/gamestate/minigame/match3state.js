@@ -19,6 +19,7 @@ import { ScoreKeeper } from "../../ecs/entity/minigame/scorekeeper.js";
 import { Scoreboard, ScoreType } from "../../ecs/component/graphics/scoreboard.js";
 import { ScoreboardSystem } from "../../ecs/system/scoring/scoreboardsystem.js";
 import { Minigame } from "./minigame.js";
+import { TestListener } from "../../ecs/system/eventsystem/listeners/testlistener.js";
 class Match3State extends Minigame {
     constructor(game, ctx, canvasContainer) {
         super(game, ctx, canvasContainer);
@@ -116,6 +117,7 @@ class Match3State extends Minigame {
                             this.progressBar.style.height = `${this.getProgress()}%`;
                     }],
             ])));
+            this.ecs.addSystem(new TestListener());
         };
         this.getProgress = () => {
             if (this.progress >= calculateGoal(this.level))

@@ -1,6 +1,7 @@
 import { Entity } from "./entity/entity.js"
 import { EventBroker } from "./system/eventsystem/eventbroker.js"
-import { EventHandler, EventSynthesizer } from "./system/eventsystem/gameeventlistener.js"
+import { GameEvent } from "./system/eventsystem/events/gameevent.js"
+import { EventHandler, EventSynthesizer } from "./system/eventsystem/listeners/gameeventlistener.js"
 import { ComponentSystem, System } from "./system/system.js"
 
 class ECS {
@@ -60,6 +61,10 @@ class ECS {
 
     checkSystemForEntities = (system: ComponentSystem) => {
         this.entities.forEach((entity) => this.checkEntityAndSystem(entity, system))
+    }
+
+    pushEvent = (gameEvent: GameEvent) => {
+        this.eventBroker.pushEvent(gameEvent)
     }
 
     private checkEntityAndSystem = (entity:Entity, system: ComponentSystem) => {

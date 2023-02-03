@@ -1,5 +1,5 @@
-import { EventClass, GameEvent } from "./gameevent.js"
-import { EventHandler, EventSynthesizer, GameEventListener } from "./gameeventlistener.js"
+import { EventClass, GameEvent } from "./events/gameevent.js"
+import { EventHandler, EventSynthesizer, GameEventListener } from "./listeners/gameeventlistener.js"
 
 class EventBroker {
 

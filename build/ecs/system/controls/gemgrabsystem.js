@@ -3,6 +3,7 @@ import { Hitbox } from "../../component/physics/hitbox.js";
 import { JewelType } from "../../component/gameplay/jeweltype.js";
 import { Position } from "../../component/physics/position.js";
 import { UnorderedSystem } from "../system.js";
+import { TestEvent } from "../eventsystem/events/testevent.js";
 class GemGrabSystem extends UnorderedSystem {
     constructor(mouseSystem, collisionDetection) {
         super();
@@ -46,6 +47,7 @@ class GemGrabSystem extends UnorderedSystem {
         };
     }
     update(interval) {
+        var _a;
         this.swapped.splice(0);
         let heldEntity = this.mouseSystem.heldEntity;
         this.moveMade = false;
@@ -78,6 +80,7 @@ class GemGrabSystem extends UnorderedSystem {
             this.mouseSystem.heldEntity = null;
             this.mouseSystem.wrenched = true;
             this.moveMade = true;
+            (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new TestEvent("Wowee!"));
         }
     }
 }
