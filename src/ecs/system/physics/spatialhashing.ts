@@ -1,12 +1,12 @@
 import { ComponentType, Component } from "../../component/component.js";
 import { Hitbox } from "../../component/physics/hitbox.js";
 import { Entity } from "../../entity/entity.js";
+import { HashEvent } from "../eventsystem/events/hashevent.js";
 import { UnorderedSystem } from "../system.js";
 
 class SpatialHashing extends UnorderedSystem {
+    
     public componentsRequired = new Set<ComponentType<Component>>([Hitbox])
-
-    public proximityMap = new Map<string, Set<Entity>>()
 
     constructor(private cellSize: number,
         filter: Set<ComponentType<Component>> | null = null) {
@@ -17,7 +17,7 @@ class SpatialHashing extends UnorderedSystem {
     }
 
     public update(interval: number): void {
-        this.proximityMap.clear()
+        let proximityMap = new Map<string, Array<Entity>>()
 
         this.entities.forEach(entity => {
             let hitbox = entity.getComponent(Hitbox)
@@ -31,15 +31,18 @@ class SpatialHashing extends UnorderedSystem {
                 for (let j = minY; j <= maxY; j++) {
                     let hash = i.toString() + ',' + j.toString()
 
-                    if (this.proximityMap.has(hash)) {
-                        this.proximityMap.get(hash)?.add(entity)
+                    if (proximityMap.has(hash)) {
+                        proximityMap.get(hash)?.push(entity)
                     } else {
-                        this.proximityMap.set(hash, new Set([entity]))
+                        proximityMap.set(hash, [entity])
                     }
 
                 }
             }
         })
+
+        this.ecs?.pushEvent(new HashEvent(proximityMap))
+
     }
 
     hashPoint = (x: number, y: number) => {

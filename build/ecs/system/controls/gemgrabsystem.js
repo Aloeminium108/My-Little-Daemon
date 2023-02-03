@@ -3,7 +3,6 @@ import { Hitbox } from "../../component/physics/hitbox.js";
 import { JewelType } from "../../component/gameplay/jeweltype.js";
 import { Position } from "../../component/physics/position.js";
 import { UnorderedSystem } from "../system.js";
-import { TestEvent } from "../eventsystem/events/testevent.js";
 class GemGrabSystem extends UnorderedSystem {
     constructor(mouseSystem, collisionDetection) {
         super();
@@ -13,41 +12,8 @@ class GemGrabSystem extends UnorderedSystem {
         this.swapped = new Array();
         this.updateNeeded = false;
         this.moveMade = false;
-        this.senseUp = (hitbox) => {
-            let center = hitbox.center;
-            let rayDown = {
-                x: center.x,
-                y: center.y - hitbox.height
-            };
-            return this.collisionDetection.senseAtPoint(rayDown.x, rayDown.y);
-        };
-        this.senseDown = (hitbox) => {
-            let center = hitbox.center;
-            let rayDown = {
-                x: center.x,
-                y: center.y + (hitbox.height)
-            };
-            return this.collisionDetection.senseAtPoint(rayDown.x, rayDown.y);
-        };
-        this.senseRight = (hitbox) => {
-            let center = hitbox.center;
-            let rayRight = {
-                x: center.x + (hitbox.width),
-                y: center.y
-            };
-            return this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
-        };
-        this.senseLeft = (hitbox) => {
-            let center = hitbox.center;
-            let rayRight = {
-                x: center.x - (hitbox.width),
-                y: center.y
-            };
-            return this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
-        };
     }
     update(interval) {
-        var _a;
         this.swapped.splice(0);
         let heldEntity = this.mouseSystem.heldEntity;
         this.moveMade = false;
@@ -61,18 +27,15 @@ class GemGrabSystem extends UnorderedSystem {
         let mouse = this.mouseSystem.mouse;
         let hitbox = heldEntity.getComponent(Hitbox);
         let sensedEntities = [];
-        if (mouse.x > hitbox.x + hitbox.width) {
-            sensedEntities = this.senseRight(hitbox);
-        }
-        else if (mouse.x < hitbox.x) {
-            sensedEntities = this.senseLeft(hitbox);
-        }
-        else if (mouse.y > hitbox.y + hitbox.height) {
-            sensedEntities = this.senseDown(hitbox);
-        }
-        else if (mouse.y < hitbox.y) {
-            sensedEntities = this.senseUp(hitbox);
-        }
+        // if (mouse.x > hitbox.x + hitbox.width) {
+        //     sensedEntities = this.senseRight(hitbox)
+        // } else if (mouse.x < hitbox.x) {
+        //     sensedEntities = this.senseLeft(hitbox)
+        // } else if (mouse.y > hitbox.y + hitbox.height) {
+        //     sensedEntities = this.senseDown(hitbox)
+        // } else if (mouse.y < hitbox.y) {
+        //     sensedEntities = this.senseUp(hitbox)
+        // }
         if (sensedEntities[0] !== undefined) {
             Position.swap(sensedEntities[0].getComponent(Position), heldEntity.getComponent(Position));
             this.swapped.push(sensedEntities[0]);
@@ -80,7 +43,6 @@ class GemGrabSystem extends UnorderedSystem {
             this.mouseSystem.heldEntity = null;
             this.mouseSystem.wrenched = true;
             this.moveMade = true;
-            (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new TestEvent("Wowee!"));
         }
     }
 }

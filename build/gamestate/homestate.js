@@ -53,12 +53,10 @@ class HomeState {
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new FrictionSystem());
             this.ecs.addSystem(new BoundarySystem());
-            let spatialHashing = new SpatialHashing(300);
-            this.ecs.addSystem(spatialHashing);
-            let collisionDetection = new CollisionDetection(spatialHashing);
-            this.ecs.addSystem(collisionDetection);
-            this.ecs.addSystem(new CollisionResponse(collisionDetection));
-            this.ecs.addSystem(new ConsumableSystem(collisionDetection));
+            this.ecs.addSystem(new SpatialHashing(300));
+            this.ecs.addSystem(new CollisionDetection());
+            this.ecs.addSystem(new CollisionResponse());
+            this.ecs.addSystem(new ConsumableSystem());
             this.ecs.addSystem(new PetAI(mouseSystem));
             this.ecs.addSystem(new SpriteSystem(this.ctx));
         };

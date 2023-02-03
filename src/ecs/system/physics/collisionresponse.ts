@@ -4,36 +4,33 @@ import { Hitbox } from "../../component/physics/hitbox.js";
 import { Velocity } from "../../component/physics/velocity.js";
 import { CollisionDetection } from "./collisiondetection.js";
 import { UnorderedSystem } from "../system.js";
+import { EventComponentSystem } from "../eventsystem/listeners/gameeventlistener.js";
+import { CollisionEvent } from "../eventsystem/events/collisionevent.js";
+import { EventClass } from "../eventsystem/events/gameevent.js";
 
 const EPSILON = 0.001
 
-class CollisionResponse extends UnorderedSystem {
+class CollisionResponse extends EventComponentSystem<CollisionEvent> {
 
-    public componentsRequired = new Set([CollisionBody, Hitbox, Velocity])
+    eventClasses = new Set([CollisionEvent])
 
-    constructor(private collisionDetection: CollisionDetection) {
-        super()
-    }
+    componentsRequired = new Set([CollisionBody, Hitbox, Velocity])
 
-    public update(interval: number): void {
-        this.entities.forEach(entity => {
+    handleEvent(gameEvent: CollisionEvent): void {
+        if (
+            !this.entities.has(gameEvent.entity1)
+            || !this.entities.has(gameEvent.entity2)
+        ) return
 
-            let body = entity.getComponent(CollisionBody)
-            if (!body.corporeal) return
+        let body1 = gameEvent.entity1.getComponent(CollisionBody)
+        let body2 = gameEvent.entity2.getComponent(CollisionBody)
 
-            this.collisionDetection.collisions.get(entity)?.forEach(collidedEntity => {
-                if (!this.entities.has(collidedEntity)) return
+        if (
+            !body1.corporeal
+            || !body1.corporeal
+        ) return
 
-                let collidedBody = collidedEntity.getComponent(CollisionBody)
-
-                if (!collidedBody.corporeal) return
-
-                collisionImpulse(body, collidedBody)
-
-                this.collisionDetection.collisions.get(collidedEntity)?.delete(entity)
-
-            })
-        })
+        collisionImpulse(body1, body2)
     }
 
 }

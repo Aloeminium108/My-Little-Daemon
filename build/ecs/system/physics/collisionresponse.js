@@ -1,31 +1,25 @@
 import { CollisionBody } from "../../component/physics/collisionbody.js";
 import { Hitbox } from "../../component/physics/hitbox.js";
 import { Velocity } from "../../component/physics/velocity.js";
-import { UnorderedSystem } from "../system.js";
+import { EventComponentSystem } from "../eventsystem/listeners/gameeventlistener.js";
+import { CollisionEvent } from "../eventsystem/events/collisionevent.js";
 const EPSILON = 0.001;
-class CollisionResponse extends UnorderedSystem {
-    constructor(collisionDetection) {
-        super();
-        this.collisionDetection = collisionDetection;
+class CollisionResponse extends EventComponentSystem {
+    constructor() {
+        super(...arguments);
+        this.eventClasses = new Set([CollisionEvent]);
         this.componentsRequired = new Set([CollisionBody, Hitbox, Velocity]);
     }
-    update(interval) {
-        this.entities.forEach(entity => {
-            var _a;
-            let body = entity.getComponent(CollisionBody);
-            if (!body.corporeal)
-                return;
-            (_a = this.collisionDetection.collisions.get(entity)) === null || _a === void 0 ? void 0 : _a.forEach(collidedEntity => {
-                var _a;
-                if (!this.entities.has(collidedEntity))
-                    return;
-                let collidedBody = collidedEntity.getComponent(CollisionBody);
-                if (!collidedBody.corporeal)
-                    return;
-                collisionImpulse(body, collidedBody);
-                (_a = this.collisionDetection.collisions.get(collidedEntity)) === null || _a === void 0 ? void 0 : _a.delete(entity);
-            });
-        });
+    handleEvent(gameEvent) {
+        if (!this.entities.has(gameEvent.entity1)
+            || !this.entities.has(gameEvent.entity2))
+            return;
+        let body1 = gameEvent.entity1.getComponent(CollisionBody);
+        let body2 = gameEvent.entity2.getComponent(CollisionBody);
+        if (!body1.corporeal
+            || !body1.corporeal)
+            return;
+        collisionImpulse(body1, body2);
     }
 }
 function collisionImpulse(body1, body2) {

@@ -1,11 +1,11 @@
 import { Hitbox } from "../../component/physics/hitbox.js";
+import { HashEvent } from "../eventsystem/events/hashevent.js";
 import { UnorderedSystem } from "../system.js";
 class SpatialHashing extends UnorderedSystem {
     constructor(cellSize, filter = null) {
         super();
         this.cellSize = cellSize;
         this.componentsRequired = new Set([Hitbox]);
-        this.proximityMap = new Map();
         this.hashPoint = (x, y) => {
             let cellX = Math.floor(x / this.cellSize);
             let cellY = Math.floor(y / this.cellSize);
@@ -30,7 +30,8 @@ class SpatialHashing extends UnorderedSystem {
         });
     }
     update(interval) {
-        this.proximityMap.clear();
+        var _a;
+        let proximityMap = new Map();
         this.entities.forEach(entity => {
             var _a;
             let hitbox = entity.getComponent(Hitbox);
@@ -42,15 +43,16 @@ class SpatialHashing extends UnorderedSystem {
             for (let i = minX; i <= maxX; i++) {
                 for (let j = minY; j <= maxY; j++) {
                     let hash = i.toString() + ',' + j.toString();
-                    if (this.proximityMap.has(hash)) {
-                        (_a = this.proximityMap.get(hash)) === null || _a === void 0 ? void 0 : _a.add(entity);
+                    if (proximityMap.has(hash)) {
+                        (_a = proximityMap.get(hash)) === null || _a === void 0 ? void 0 : _a.push(entity);
                     }
                     else {
-                        this.proximityMap.set(hash, new Set([entity]));
+                        proximityMap.set(hash, [entity]);
                     }
                 }
             }
         });
+        (_a = this.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new HashEvent(proximityMap));
     }
 }
 export { SpatialHashing };

@@ -38,15 +38,15 @@ class GemGrabSystem extends UnorderedSystem {
         let hitbox = heldEntity.getComponent(Hitbox)
         let sensedEntities: Array<Entity> = []
 
-        if (mouse.x > hitbox.x + hitbox.width) {
-            sensedEntities = this.senseRight(hitbox)
-        } else if (mouse.x < hitbox.x) {
-            sensedEntities = this.senseLeft(hitbox)
-        } else if (mouse.y > hitbox.y + hitbox.height) {
-            sensedEntities = this.senseDown(hitbox)
-        } else if (mouse.y < hitbox.y) {
-            sensedEntities = this.senseUp(hitbox)
-        }
+        // if (mouse.x > hitbox.x + hitbox.width) {
+        //     sensedEntities = this.senseRight(hitbox)
+        // } else if (mouse.x < hitbox.x) {
+        //     sensedEntities = this.senseLeft(hitbox)
+        // } else if (mouse.y > hitbox.y + hitbox.height) {
+        //     sensedEntities = this.senseDown(hitbox)
+        // } else if (mouse.y < hitbox.y) {
+        //     sensedEntities = this.senseUp(hitbox)
+        // }
 
         if (sensedEntities[0] !== undefined) {
             Position.swap(sensedEntities[0].getComponent(Position), heldEntity.getComponent(Position))
@@ -59,57 +59,57 @@ class GemGrabSystem extends UnorderedSystem {
 
     }
 
-    private senseUp = (hitbox: Hitbox) => {
-        let center = hitbox.center
+    // private senseUp = (hitbox: Hitbox) => {
+    //     let center = hitbox.center
 
-        let rayDown = {
-            x: center.x, 
-            y: center.y - hitbox.height
-        }
+    //     let rayDown = {
+    //         x: center.x, 
+    //         y: center.y - hitbox.height
+    //     }
 
-        return this.collisionDetection.senseAtPoint(
-            rayDown.x, rayDown.y
-        )
-    }
+    //     return this.collisionDetection.senseAtPoint(
+    //         rayDown.x, rayDown.y
+    //     )
+    // }
 
-    private senseDown = (hitbox: Hitbox) => {
-        let center = hitbox.center
+    // private senseDown = (hitbox: Hitbox) => {
+    //     let center = hitbox.center
 
-        let rayDown = {
-            x: center.x, 
-            y: center.y + (hitbox.height)
-        }
+    //     let rayDown = {
+    //         x: center.x, 
+    //         y: center.y + (hitbox.height)
+    //     }
 
-        return this.collisionDetection.senseAtPoint(
-            rayDown.x, rayDown.y
-        )
-    }
+    //     return this.collisionDetection.senseAtPoint(
+    //         rayDown.x, rayDown.y
+    //     )
+    // }
 
-    private senseRight = (hitbox: Hitbox) => {
-        let center = hitbox.center
+    // private senseRight = (hitbox: Hitbox) => {
+    //     let center = hitbox.center
 
-        let rayRight = {
-            x: center.x + (hitbox.width), 
-            y: center.y
-        }
+    //     let rayRight = {
+    //         x: center.x + (hitbox.width), 
+    //         y: center.y
+    //     }
 
-        return this.collisionDetection.senseAtPoint(
-            rayRight.x, rayRight.y
-        )
-    }
+    //     return this.collisionDetection.senseAtPoint(
+    //         rayRight.x, rayRight.y
+    //     )
+    // }
 
-    private senseLeft = (hitbox: Hitbox) => {
-        let center = hitbox.center
+    // private senseLeft = (hitbox: Hitbox) => {
+    //     let center = hitbox.center
 
-        let rayRight = {
-            x: center.x - (hitbox.width), 
-            y: center.y
-        }
+    //     let rayRight = {
+    //         x: center.x - (hitbox.width), 
+    //         y: center.y
+    //     }
 
-        return this.collisionDetection.senseAtPoint(
-            rayRight.x, rayRight.y
-        )
-    }
+    //     return this.collisionDetection.senseAtPoint(
+    //         rayRight.x, rayRight.y
+    //     )
+    // }
     
 }
 

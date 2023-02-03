@@ -1,14 +1,6 @@
-class ComponentSystem {
+class UnorderedSystem {
     constructor() {
         this.ecs = null;
-        this.addToECS = (ecs) => {
-            this.ecs = ecs;
-        };
-    }
-}
-class UnorderedSystem extends ComponentSystem {
-    constructor() {
-        super(...arguments);
         this.entities = new Set();
         this.addEntity = (entity) => {
             this.entities.add(entity);
@@ -18,9 +10,9 @@ class UnorderedSystem extends ComponentSystem {
         };
     }
 }
-class OrderedSystem extends ComponentSystem {
+class OrderedSystem {
     constructor() {
-        super(...arguments);
+        this.ecs = null;
         this.entities = new Array();
         this.addEntity = (entity) => {
             if (!this.entities.includes(entity)) {
@@ -43,4 +35,4 @@ class OrderedSystem extends ComponentSystem {
         };
     }
 }
-export { ComponentSystem, OrderedSystem, UnorderedSystem };
+export { OrderedSystem, UnorderedSystem };

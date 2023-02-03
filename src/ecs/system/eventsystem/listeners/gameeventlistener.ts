@@ -51,8 +51,6 @@ abstract class EventComponentSystem<T extends GameEvent> extends EventHandler<T>
 
     abstract componentsRequired: Set<ComponentType<Component>>
 
-    abstract update(interval: number): void
-
     ecs: ECS | null = null
 
     eventBroker: EventBroker | null = null

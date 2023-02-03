@@ -1,8 +1,8 @@
 class EventHandler {
     constructor() {
+        this.eventStack = [];
         this.ecs = null;
         this.eventBroker = null;
-        this.eventStack = [];
         this.pushEvent = (gameEvent) => {
             this.eventStack.push(gameEvent);
         };
@@ -12,11 +12,22 @@ class EventHandler {
             }
         };
     }
-    addToECS(ecs) {
-        this.ecs = ecs;
-    }
     update(interval) {
         this.handleEvents();
+    }
+}
+class EventComponentSystem extends EventHandler {
+    constructor() {
+        super(...arguments);
+        this.ecs = null;
+        this.eventBroker = null;
+        this.entities = new Set();
+        this.addEntity = (entity) => {
+            this.entities.add(entity);
+        };
+        this.removeEntity = (entity) => {
+            this.entities.delete(entity);
+        };
     }
 }
 class EventConverter {
@@ -63,8 +74,5 @@ class EventSynthesizer {
             this.synthesizeEvents();
         };
     }
-    addToECS(ecs) {
-        this.ecs = ecs;
-    }
 }
-export { EventSynthesizer, EventHandler, EventConverter };
+export { EventSynthesizer, EventHandler, EventConverter, EventComponentSystem };

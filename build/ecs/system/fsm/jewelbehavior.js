@@ -56,8 +56,8 @@ class JewelBehavior extends FiniteStateMachine {
                     let hitbox = entity.getComponent(Hitbox);
                     let sensedDown = this.senseDown(hitbox);
                     let sensedRight = this.senseRight(hitbox);
-                    this.connectDown(entity, jewelType, sensedDown);
-                    this.connectRight(entity, jewelType, sensedRight);
+                    // this.connectDown(entity, jewelType, sensedDown)
+                    // this.connectRight(entity, jewelType, sensedRight)
                 }],
             [EntityState.UNMATCHED, (entity) => {
                     let fsm = entity.getComponent(Automaton);
@@ -68,19 +68,19 @@ class JewelBehavior extends FiniteStateMachine {
                     if (!body.onGround) {
                         // If there are no gems underneath, or if the first gem
                         // detected is in a FALLING state, change state to FALLING
-                        if (sensedDown.length === 0 ||
-                            sensedDown[0].getComponent(Automaton).currentState === EntityState.FALLING) {
-                            fsm.changeState(EntityState.FALLING);
-                            body.immovable = false;
-                            return;
-                        }
+                        // if (sensedDown.length === 0 ||
+                        //     sensedDown[0].getComponent(Automaton).currentState === EntityState.FALLING) {
+                        //     fsm.changeState(EntityState.FALLING)
+                        //     body.immovable = false
+                        //     return
+                        // }
                     }
                     let jewelType = entity.getComponent(JewelType);
                     if (!jewelType.active || jewelType.color === null)
                         return;
                     let sensedRight = this.senseRight(hitbox);
-                    this.connectDown(entity, jewelType, sensedDown);
-                    this.connectRight(entity, jewelType, sensedRight);
+                    // this.connectDown(entity, jewelType, sensedDown)
+                    // this.connectRight(entity, jewelType, sensedRight)
                 }],
             [EntityState.SWAPPING, (entity) => {
                 }],
@@ -184,7 +184,10 @@ class JewelBehavior extends FiniteStateMachine {
                 x: center.x,
                 y: center.y + (hitbox.height)
             };
-            return this.collisionDetection.senseAtPoint(rayDown.x, rayDown.y);
+            // return this.collisionDetection.senseAtPoint(
+            //     rayDown.x, rayDown.y
+            // )
+            return false;
         };
         this.senseRight = (hitbox) => {
             let center = hitbox.center;
@@ -192,7 +195,10 @@ class JewelBehavior extends FiniteStateMachine {
                 x: center.x + (hitbox.width),
                 y: center.y
             };
-            return this.collisionDetection.senseAtPoint(rayRight.x, rayRight.y);
+            // return this.collisionDetection.senseAtPoint(
+            //     rayRight.x, rayRight.y
+            // )
+            return false;
         };
         this.checkMatchType = (match) => {
             if (match.size === 3)
@@ -244,11 +250,11 @@ class JewelBehavior extends FiniteStateMachine {
                     width = 0;
                     height = 0;
             }
-            let hitbox = new Hitbox(position, width, height);
-            let blastedGems = this.collisionDetection.senseWithHitbox(hitbox);
-            blastedGems.forEach(blastedGem => {
-                blastedGem.getComponent(Automaton).changeState(EntityState.MATCHED);
-            });
+            // let hitbox = new Hitbox(position, width, height)
+            // let blastedGems = this.collisionDetection.senseWithHitbox(hitbox)
+            // blastedGems.forEach(blastedGem => {
+            //     blastedGem.getComponent(Automaton).changeState(EntityState.MATCHED)
+            // })
         };
     }
     connectDown(entity, jewelType, sensedDown) {

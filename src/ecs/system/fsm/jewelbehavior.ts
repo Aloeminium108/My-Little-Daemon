@@ -74,8 +74,8 @@ class JewelBehavior extends FiniteStateMachine {
             let sensedDown = this.senseDown(hitbox)
             let sensedRight = this.senseRight(hitbox)
 
-            this.connectDown(entity, jewelType, sensedDown)
-            this.connectRight(entity, jewelType, sensedRight)
+            // this.connectDown(entity, jewelType, sensedDown)
+            // this.connectRight(entity, jewelType, sensedRight)
         }],
 
         [EntityState.UNMATCHED, (entity: Entity) => {
@@ -89,12 +89,13 @@ class JewelBehavior extends FiniteStateMachine {
             if (!body.onGround) {
                 // If there are no gems underneath, or if the first gem
                 // detected is in a FALLING state, change state to FALLING
-                if (sensedDown.length === 0 ||
-                    sensedDown[0].getComponent(Automaton).currentState === EntityState.FALLING) {
-                    fsm.changeState(EntityState.FALLING)
-                    body.immovable = false
-                    return
-                }
+
+                // if (sensedDown.length === 0 ||
+                //     sensedDown[0].getComponent(Automaton).currentState === EntityState.FALLING) {
+                //     fsm.changeState(EntityState.FALLING)
+                //     body.immovable = false
+                //     return
+                // }
             }
 
             let jewelType = entity.getComponent(JewelType)
@@ -102,8 +103,8 @@ class JewelBehavior extends FiniteStateMachine {
             
             let sensedRight = this.senseRight(hitbox)
 
-            this.connectDown(entity, jewelType, sensedDown)
-            this.connectRight(entity, jewelType, sensedRight)
+            // this.connectDown(entity, jewelType, sensedDown)
+            // this.connectRight(entity, jewelType, sensedRight)
 
         }],
 
@@ -243,9 +244,10 @@ class JewelBehavior extends FiniteStateMachine {
             y: center.y + (hitbox.height)
         }
 
-        return this.collisionDetection.senseAtPoint(
-            rayDown.x, rayDown.y
-        )
+        // return this.collisionDetection.senseAtPoint(
+        //     rayDown.x, rayDown.y
+        // )
+        return false
     }
 
     private senseRight = (hitbox: Hitbox) => {
@@ -256,9 +258,10 @@ class JewelBehavior extends FiniteStateMachine {
             y: center.y
         }
 
-        return this.collisionDetection.senseAtPoint(
-            rayRight.x, rayRight.y
-        )
+        // return this.collisionDetection.senseAtPoint(
+        //     rayRight.x, rayRight.y
+        // )
+        return false
     }
     
     private connectDown(entity: Entity, jewelType: JewelType, sensedDown: Array<Entity>) {
@@ -332,12 +335,12 @@ class JewelBehavior extends FiniteStateMachine {
                 height = 0
         }
 
-        let hitbox = new Hitbox(position, width, height)
-        let blastedGems = this.collisionDetection.senseWithHitbox(hitbox)
+        // let hitbox = new Hitbox(position, width, height)
+        // let blastedGems = this.collisionDetection.senseWithHitbox(hitbox)
 
-        blastedGems.forEach(blastedGem => {
-            blastedGem.getComponent(Automaton).changeState(EntityState.MATCHED)
-        })
+        // blastedGems.forEach(blastedGem => {
+        //     blastedGem.getComponent(Automaton).changeState(EntityState.MATCHED)
+        // })
 
     }
 

@@ -3,15 +3,11 @@ import { SpriteSystem } from "../../ecs/system/graphics/spritesystem.js";
 import { FrictionSystem } from "../../ecs/system/physics/frictionsystem.js";
 import { MouseSystem } from "../../ecs/system/controls/mousesystem.js";
 import { VelocitySystem } from "../../ecs/system/physics/velocitysystem.js";
-import { GemGrabSystem } from "../../ecs/system/controls/gemgrabsystem.js";
 import { SpatialHashing } from "../../ecs/system/physics/spatialhashing.js";
 import { BoundarySystem } from "../../ecs/system/physics/boundarysystem.js";
-import { JewelBehavior } from "../../ecs/system/fsm/jewelbehavior.js";
 import { JewelType } from "../../ecs/component/gameplay/jeweltype.js";
 import { Hitbox } from "../../ecs/component/physics/hitbox.js";
 import { Automaton } from "../../ecs/component/fsm/automaton.js";
-import { GeneratorSystem } from "../../ecs/system/gameplay/generatorsystem.js";
-import { Match3ScoringSystem } from "../../ecs/system/scoring/match3scoring.js";
 import { DrawingSystem } from "../../ecs/system/graphics/drawingsystem.js";
 import { CollisionResponse } from "../../ecs/system/physics/collisionresponse.js";
 import { JewelGrid } from "../../ecs/entity/minigame/puzzle/jewelgrid.js";
@@ -19,7 +15,6 @@ import { ScoreKeeper } from "../../ecs/entity/minigame/scorekeeper.js";
 import { Scoreboard, ScoreType } from "../../ecs/component/graphics/scoreboard.js";
 import { ScoreboardSystem } from "../../ecs/system/scoring/scoreboardsystem.js";
 import { Minigame } from "./minigame.js";
-import { TestListener } from "../../ecs/system/eventsystem/listeners/testlistener.js";
 class Match3State extends Minigame {
     constructor(game, ctx, canvasContainer) {
         super(game, ctx, canvasContainer);
@@ -78,22 +73,19 @@ class Match3State extends Minigame {
             this.ecs.addEntity(this.progressKeeper);
         };
         this.initSystems = () => {
-            let spatialHashing = new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton]));
-            let collisionDetection = new CollisionDetection(spatialHashing);
-            let mouseSystem = new MouseSystem(this.mouse, this.canvas);
-            this.ecs.addSystem(mouseSystem);
-            let gemGrabSystem = new GemGrabSystem(mouseSystem, collisionDetection);
-            this.ecs.addSystem(gemGrabSystem);
+            this.ecs.addSystem(new MouseSystem(this.mouse, this.canvas));
+            //let gemGrabSystem = new GemGrabSystem(mouseSystem, collisionDetection)
+            //this.ecs.addSystem(gemGrabSystem)
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new FrictionSystem());
             this.ecs.addSystem(new BoundarySystem());
-            this.ecs.addSystem(spatialHashing);
-            this.ecs.addSystem(collisionDetection);
-            this.ecs.addSystem(new CollisionResponse(collisionDetection));
-            this.ecs.addSystem(new GeneratorSystem(collisionDetection));
-            let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem);
-            this.ecs.addSystem(jewelBehavior);
-            this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior, gemGrabSystem));
+            this.ecs.addSystem(new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton])));
+            this.ecs.addSystem(new CollisionDetection());
+            this.ecs.addSystem(new CollisionResponse());
+            //this.ecs.addSystem(new GeneratorSystem(collisionDetection))
+            //let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem)
+            //this.ecs.addSystem(jewelBehavior)
+            //this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior, gemGrabSystem))
             this.ecs.addSystem(new SpriteSystem(this.ctx));
             this.ecs.addSystem(new DrawingSystem(this.ctx));
             this.ecs.addSystem(new ScoreboardSystem(new Map([
@@ -117,7 +109,6 @@ class Match3State extends Minigame {
                             this.progressBar.style.height = `${this.getProgress()}%`;
                     }],
             ])));
-            this.ecs.addSystem(new TestListener());
         };
         this.getProgress = () => {
             if (this.progress >= calculateGoal(this.level))
