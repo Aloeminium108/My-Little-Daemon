@@ -2,11 +2,22 @@ import { Entity } from "../entity/entity.js"
 import { Component, OrderingComponent, ComponentType } from "../component/component.js"
 import { ECS } from "../ecs.js"
 
-abstract class System {
+interface System {
+
+    ecs: ECS | null
+
+    addToECS(ecs: ECS): void
+
+    update(interval: number): void
+}
+
+abstract class ComponentSystem implements System{
 
     protected abstract entities: Iterable<Entity>
 
-    constructor(protected ecs: ECS | null = null) {}
+    ecs: ECS | null = null
+
+    constructor() {}
 
     public abstract componentsRequired: Set<ComponentType<Component>>
 
@@ -21,7 +32,7 @@ abstract class System {
 
 }
 
-abstract class UnorderedSystem extends System {
+abstract class UnorderedSystem extends ComponentSystem {
     protected entities = new Set<Entity>()
 
     addEntity = (entity: Entity) => {
@@ -33,7 +44,7 @@ abstract class UnorderedSystem extends System {
     }
 }
 
-abstract class OrderedSystem<T extends OrderingComponent> extends System {
+abstract class OrderedSystem<T extends OrderingComponent> extends ComponentSystem {
 
     protected entities = new Array<Entity>()
 
@@ -61,4 +72,4 @@ abstract class OrderedSystem<T extends OrderingComponent> extends System {
     }
 }
 
-export {System, OrderedSystem, UnorderedSystem}
+export {System, ComponentSystem, OrderedSystem, UnorderedSystem}

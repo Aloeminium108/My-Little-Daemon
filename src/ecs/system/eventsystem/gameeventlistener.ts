@@ -1,9 +1,11 @@
+import { ECS } from "../../ecs.js";
+import { System } from "../system.js";
 import { EventBroker } from "./eventbroker.js";
 import { EventClass, GameEvent } from "./gameevent.js";
 
 interface GameEventListener {
 
-    eventClass: Set<EventClass<GameEvent>> | EventClass<GameEvent>
+    eventClasses: Set<EventClass<GameEvent>>
 
     pushEvent(gameEvent: GameEvent): void
 
@@ -12,13 +14,15 @@ interface GameEventListener {
 }
 
 
-abstract class EventHandler<T extends GameEvent> implements GameEventListener {
+abstract class EventHandler<T extends GameEvent> implements GameEventListener, System {
+
+    ecs: ECS | null = null
 
     eventBroker: EventBroker | null = null
 
     private eventStack: Array<T> = []
 
-    abstract eventClass: EventClass<T>
+    abstract eventClasses: Set<EventClass<T>>
 
     abstract handleEvent(gameEvent: T): void
 
@@ -30,6 +34,14 @@ abstract class EventHandler<T extends GameEvent> implements GameEventListener {
         this.eventStack.forEach(gameEvent => {
             this.handleEvent(gameEvent)
         })
+    }
+
+    addToECS(ecs: ECS): void {
+        this.ecs = ecs
+    }
+
+    update(interval: number): void {
+        this.handleEvents()
     }
     
 }
@@ -45,7 +57,9 @@ class EventConverter<T extends GameEvent, R extends GameEvent>{
 }
 
 
-abstract class EventSynthesizer<T extends GameEvent> implements GameEventListener {
+abstract class EventSynthesizer<T extends GameEvent> implements GameEventListener, System {
+
+    ecs: ECS | null = null
 
     eventBroker: EventBroker | null = null
 
@@ -53,7 +67,7 @@ abstract class EventSynthesizer<T extends GameEvent> implements GameEventListene
 
     synthesisMethods: Map<EventClass<GameEvent>, EventConverter<GameEvent, T>> = new Map()
 
-    abstract eventClass: Set<EventClass<GameEvent>>;
+    abstract eventClasses: Set<EventClass<GameEvent>>;
     abstract converters: Set<EventConverter<GameEvent, T>>
 
     init = () => {
@@ -83,6 +97,14 @@ abstract class EventSynthesizer<T extends GameEvent> implements GameEventListene
         } else {
             this.eventStack.get(eventClass)?.push(gameEvent)
         } 
+    }
+
+    addToECS(ecs: ECS): void {
+        this.ecs = ecs
+    }
+
+    update = (interval: number) => {
+        this.synthesizeEvents()
     }
     
 }

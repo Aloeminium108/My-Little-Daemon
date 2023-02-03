@@ -1,10 +1,15 @@
 import { Entity } from "./entity/entity.js"
-import { System } from "./system/system.js"
+import { EventBroker } from "./system/eventsystem/eventbroker.js"
+import { EventHandler, EventSynthesizer } from "./system/eventsystem/gameeventlistener.js"
+import { ComponentSystem, System } from "./system/system.js"
 
 class ECS {
 
+    private eventBroker = new EventBroker()
+
     private entities = new Set<Entity>()
     private systems = new Array<System>()
+    private componentSystems = new Array<ComponentSystem>
     private markedForDeletion = new Set<Entity>()
 
     addEntity = (entity: Entity) => {
@@ -25,10 +30,16 @@ class ECS {
     addSystem = (system: System) => {
         this.systems.push(system)
         system.addToECS(this)
-        this.checkSystemForEntities(system)
+
+        if (system instanceof ComponentSystem) {
+            this.componentSystems.push(system)
+            this.checkSystemForEntities(system)
+        } else if (system instanceof EventHandler || system instanceof EventSynthesizer) {
+            this.eventBroker.addListener(system)
+        }
     }
 
-    removeSystem = (system: System) => {
+    removeSystem = (system: ComponentSystem) => {
         let index = this.systems.findIndex((x) => x === system)
         if (index < 0) return
         this.systems.splice(index, 1)
@@ -44,14 +55,14 @@ class ECS {
     }
 
     checkEntityForSystems = (entity: Entity) => {
-        this.systems.forEach((system) => this.checkEntityAndSystem(entity, system))
+        this.componentSystems.forEach((system) => this.checkEntityAndSystem(entity, system))
     }
 
-    checkSystemForEntities = (system: System) => {
+    checkSystemForEntities = (system: ComponentSystem) => {
         this.entities.forEach((entity) => this.checkEntityAndSystem(entity, system))
     }
 
-    private checkEntityAndSystem = (entity:Entity, system: System) => {
+    private checkEntityAndSystem = (entity:Entity, system: ComponentSystem) => {
         if (entity.hasAll(system.componentsRequired)) {
             system.addEntity(entity)
         } else {
@@ -60,7 +71,7 @@ class ECS {
     }
 
     private removeEntityFromSystems = (entity: Entity) => {
-        this.systems.forEach(system => {
+        this.componentSystems.forEach(system => {
             system.removeEntity(entity)
         })
     }
