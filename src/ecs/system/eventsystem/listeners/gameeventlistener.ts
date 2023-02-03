@@ -1,5 +1,7 @@
+import { Component, ComponentType } from "../../../component/component.js";
 import { ECS } from "../../../ecs.js";
-import { System } from "../../system.js";
+import { Entity } from "../../../entity/entity.js";
+import { ComponentSystem, System } from "../../system.js";
 import { EventBroker } from "../eventbroker.js";
 import { EventClass, GameEvent } from "../events/gameevent.js";
 
@@ -16,15 +18,15 @@ interface GameEventListener {
 
 abstract class EventHandler<T extends GameEvent> implements GameEventListener, System {
 
-    ecs: ECS | null = null
-
-    eventBroker: EventBroker | null = null
-
-    private eventStack: Array<T> = []
+    protected eventStack: Array<T> = []
 
     abstract eventClasses: Set<EventClass<T>>
 
     abstract handleEvent(gameEvent: T): void
+
+    ecs: ECS | null = null
+
+    eventBroker: EventBroker | null = null
 
     pushEvent = (gameEvent: T) => {
         this.eventStack.push(gameEvent)
@@ -36,14 +38,35 @@ abstract class EventHandler<T extends GameEvent> implements GameEventListener, S
         }
     }
 
-    addToECS(ecs: ECS): void {
-        this.ecs = ecs
-    }
-
     update(interval: number): void {
         this.handleEvents()
     }
     
+}
+
+
+abstract class EventComponentSystem<T extends GameEvent> extends EventHandler<T> implements GameEventListener, ComponentSystem {
+
+    abstract eventClasses: Set<EventClass<T>>
+
+    abstract componentsRequired: Set<ComponentType<Component>>
+
+    abstract update(interval: number): void
+
+    ecs: ECS | null = null
+
+    eventBroker: EventBroker | null = null
+
+    entities = new Set<Entity>()
+
+    addEntity = (entity: Entity) => {
+        this.entities.add(entity)
+    }
+
+    removeEntity = (entity: Entity) => {
+        this.entities.delete(entity)
+    }
+
 }
 
 
@@ -59,6 +82,10 @@ class EventConverter<T extends GameEvent, R extends GameEvent>{
 
 abstract class EventSynthesizer<T extends GameEvent> implements GameEventListener, System {
 
+    abstract eventClasses: Set<EventClass<GameEvent>>;
+    
+    abstract converters: Set<EventConverter<GameEvent, T>>
+
     ecs: ECS | null = null
 
     eventBroker: EventBroker | null = null
@@ -66,9 +93,6 @@ abstract class EventSynthesizer<T extends GameEvent> implements GameEventListene
     eventStack: Map<EventClass<GameEvent>, Array<GameEvent>> = new Map()
 
     synthesisMethods: Map<EventClass<GameEvent>, EventConverter<GameEvent, T>> = new Map()
-
-    abstract eventClasses: Set<EventClass<GameEvent>>;
-    abstract converters: Set<EventConverter<GameEvent, T>>
 
     init = () => {
         this.converters.forEach(handler => {
@@ -99,10 +123,6 @@ abstract class EventSynthesizer<T extends GameEvent> implements GameEventListene
         } 
     }
 
-    addToECS(ecs: ECS): void {
-        this.ecs = ecs
-    }
-
     update = (interval: number) => {
         this.synthesizeEvents()
     }
@@ -110,4 +130,4 @@ abstract class EventSynthesizer<T extends GameEvent> implements GameEventListene
 }
 
 
-export {GameEventListener, EventSynthesizer, EventHandler, EventConverter}
+export {GameEventListener, EventSynthesizer, EventHandler, EventConverter, EventComponentSystem}

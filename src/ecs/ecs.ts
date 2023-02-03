@@ -1,8 +1,8 @@
 import { Entity } from "./entity/entity.js"
 import { EventBroker } from "./system/eventsystem/eventbroker.js"
 import { GameEvent } from "./system/eventsystem/events/gameevent.js"
-import { EventHandler, EventSynthesizer } from "./system/eventsystem/listeners/gameeventlistener.js"
-import { ComponentSystem, System } from "./system/system.js"
+import { EventComponentSystem, EventHandler, EventSynthesizer } from "./system/eventsystem/listeners/gameeventlistener.js"
+import { ComponentSystem, OrderedSystem, System, UnorderedSystem } from "./system/system.js"
 
 class ECS {
 
@@ -30,12 +30,24 @@ class ECS {
 
     addSystem = (system: System) => {
         this.systems.push(system)
-        system.addToECS(this)
+        system.ecs = this
 
-        if (system instanceof ComponentSystem) {
+        if (
+            system instanceof OrderedSystem 
+            || system instanceof UnorderedSystem
+        ) {
             this.componentSystems.push(system)
             this.checkSystemForEntities(system)
-        } else if (system instanceof EventHandler || system instanceof EventSynthesizer) {
+        } else if (
+            system instanceof EventComponentSystem
+        ) {
+            this.componentSystems.push(system)
+            this.checkSystemForEntities(system)
+            this.eventBroker.addListener(system)
+        } else if (
+            system instanceof EventHandler 
+            || system instanceof EventSynthesizer
+        ) {
             this.eventBroker.addListener(system)
         }
     }

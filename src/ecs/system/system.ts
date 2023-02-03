@@ -6,34 +6,30 @@ interface System {
 
     ecs: ECS | null
 
-    addToECS(ecs: ECS): void
-
     update(interval: number): void
+
 }
 
-abstract class ComponentSystem implements System{
+interface ComponentSystem extends System{
 
-    protected abstract entities: Iterable<Entity>
+    entities: Iterable<Entity>
+
+    componentsRequired: Set<ComponentType<Component>>
+
+    addEntity(entity: Entity): void
+    removeEntity(entity: Entity): void
+
+}
+
+abstract class UnorderedSystem implements ComponentSystem {
+
+    abstract componentsRequired: Set<ComponentType<Component>>
+
+    abstract update(interval: number): void
 
     ecs: ECS | null = null
 
-    constructor() {}
-
-    public abstract componentsRequired: Set<ComponentType<Component>>
-
-    public abstract update(interval: number): void
-
-    abstract addEntity(entity: Entity): void
-    abstract removeEntity(entity: Entity): void
-
-    addToECS = (ecs: ECS) => {
-        this.ecs = ecs
-    }
-
-}
-
-abstract class UnorderedSystem extends ComponentSystem {
-    protected entities = new Set<Entity>()
+    entities = new Set<Entity>()
 
     addEntity = (entity: Entity) => {
         this.entities.add(entity)
@@ -44,9 +40,15 @@ abstract class UnorderedSystem extends ComponentSystem {
     }
 }
 
-abstract class OrderedSystem<T extends OrderingComponent> extends ComponentSystem {
+abstract class OrderedSystem<T extends OrderingComponent> implements ComponentSystem {
 
-    protected entities = new Array<Entity>()
+    abstract componentsRequired: Set<ComponentType<Component>>
+
+    abstract update(interval: number): void
+
+    ecs: ECS | null = null
+
+    entities = new Array<Entity>()
 
     public abstract orderingComponent: ComponentType<T>
 
