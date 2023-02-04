@@ -32,6 +32,9 @@ class GemGrabSystem extends UnorderedSystem {
         // Check to make sure that there is a held entity and that it is an unmatched gem
         if (heldEntity === null) return
         if (!this.entities.has(heldEntity)) return
+
+        console.log(heldEntity.getComponent(Automaton).currentState)
+
         if (heldEntity.getComponent(Automaton).currentState !== EntityState.UNMATCHED) return
 
         let mouse = this.mouseSystem.mouse
