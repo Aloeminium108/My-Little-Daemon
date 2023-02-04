@@ -48,7 +48,7 @@ class GemGrabSystem extends UnorderedSystem {
             sensedEntities = this.senseUp(hitbox)
         }
 
-        if (sensedEntities[0] !== undefined) {
+        if (sensedEntities[0] !== undefined && sensedEntities[0].getComponent(Automaton).currentState === EntityState.UNMATCHED) {
             Position.swap(sensedEntities[0].getComponent(Position), heldEntity.getComponent(Position))
             this.swapped.push(sensedEntities[0])
             this.swapped.push(heldEntity)
