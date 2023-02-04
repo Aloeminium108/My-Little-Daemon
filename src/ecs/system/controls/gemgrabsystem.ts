@@ -1,3 +1,30 @@
+import { ComponentType, Component } from "../../component/component";
+import { Automaton } from "../../component/fsm/automaton";
+import { JewelType } from "../../component/gameplay/jeweltype";
+import { Hitbox } from "../../component/physics/hitbox";
+import { EventClass } from "../eventsystem/events/gameevent";
+import { EntityReleaseEvent } from "../eventsystem/events/mouseevents/entityreleaseevent";
+import { EventComponentSystem } from "../eventsystem/listeners/gameeventlistener";
+
+class GemGrabSystem extends EventComponentSystem<EntityReleaseEvent> {
+
+    eventClasses = new Set([EntityReleaseEvent])
+
+    componentsRequired = new Set([Automaton, JewelType, Hitbox])
+
+    handleEvent(gameEvent: EntityReleaseEvent): void {
+        if (
+            this.entities.has(gameEvent.entity)
+            && !gameEvent.entity.getComponent(Hitbox).inside(gameEvent.mouse.x, gameEvent.mouse.y)) {
+
+        }
+    }
+
+}
+
+
+export {GemGrabSystem}
+
 // import { Automaton, EntityState } from "../../component/fsm/automaton.js";
 // import { CollisionBody } from "../../component/physics/collisionbody.js";
 // import { Gravity } from "../../component/physics/gravity.js";
@@ -108,5 +135,3 @@
 //     // }
     
 // }
-
-// export {GemGrabSystem}
