@@ -10,6 +10,10 @@ abstract class Minigame implements GameState {
     mouse: Mouse
     canvas: HTMLCanvasElement
 
+    messageBox: HTMLDivElement
+    winMessage: HTMLDivElement
+    loseMessage: HTMLDivElement
+
     ecs = new ECS()
 
     leftScoreboard?: HTMLDivElement
@@ -33,7 +37,9 @@ abstract class Minigame implements GameState {
         this.pet = game.pet
         this.mouse = game.mouse
         this.canvas = game.secondaryCanvas
-
+        this.messageBox = document.getElementById('message-box') as HTMLDivElement
+        this.winMessage = document.getElementById('win-message') as HTMLDivElement
+        this.loseMessage = document.getElementById('lose-message') as HTMLDivElement
     }
 
     abstract initEntities(): void
@@ -100,9 +106,10 @@ abstract class Minigame implements GameState {
     update = (interval: number) => {
         this.ecs.update(interval)
         if (this.loseCondition()) {
-            console.log("You lose :(")
+            this.loseMessage.style.visibility = 'visible'
+            
         } else if (this.winCondition()) {
-            console.log("You win!")
+            this.winMessage.style.visibility = 'visible'
         }
     }
     

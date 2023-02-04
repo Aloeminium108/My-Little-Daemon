@@ -53,3 +53,18 @@
     border-bottom-color: var(--frame-highlight);
     border-left-color: var(--frame-highlight);
 }
+
+#message-box {
+    position: absolute;
+    z-index: 2;
+
+    visibility: hidden;
+
+    background-color: var(--frame-color);
+    border: 5px solid;
+    border-top-color: var(--frame-highlight);
+    border-right-color: var(--frame-highlight);
+    border-bottom-color: var(--frame-shadow);
+    border-left-color: var(--frame-shadow);
+    border-radius: 50px;
+}
