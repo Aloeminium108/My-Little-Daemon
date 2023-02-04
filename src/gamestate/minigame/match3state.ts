@@ -24,7 +24,7 @@ import { Minigame } from "./minigame.js";
 class Match3State extends Minigame {
 
     name = 'Match-3'
-    iconsrc = ''
+    iconsrc = './assets/icons/match-3-icon.png'
 
     leftScoreboardInner = 
     `<div class="stat-container vertical-stat-bar">

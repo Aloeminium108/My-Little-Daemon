@@ -73,7 +73,19 @@ class Game {
         this.initializeMinigames = () => {
             this.minigames = [
                 new Match3State(this, this.ctxSecondary, this.canvasContainer),
-                new Match3State(this, this.ctxSecondary, this.canvasContainer)
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
+                new Match3State(this, this.ctxSecondary, this.canvasContainer),
             ];
             this.minigames.forEach(minigame => {
                 this.addState(minigame);

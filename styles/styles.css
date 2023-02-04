@@ -93,3 +93,17 @@ p {
 .button:hover * {
     opacity: 100%;
 }
+
+.selection-icon {
+    margin: 1%;
+    width: 23%;
+}
+
+.selection-icon img {
+    margin: 1%;
+    width: 98%;
+}
+
+.selection-icon h3 {
+    text-align: center;
+}

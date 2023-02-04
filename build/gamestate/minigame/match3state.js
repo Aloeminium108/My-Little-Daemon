@@ -26,7 +26,7 @@ class Match3State extends Minigame {
         this.ctx = ctx;
         this.canvasContainer = canvasContainer;
         this.name = 'Match-3';
-        this.iconsrc = '';
+        this.iconsrc = './assets/icons/match-3-icon.png';
         this.leftScoreboardInner = `<div class="stat-container vertical-stat-bar">
         <div id="progress-bar" class="vertical-bar-fill"></div>
     </div>`;
