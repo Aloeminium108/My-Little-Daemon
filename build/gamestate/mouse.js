@@ -12,7 +12,6 @@ class Mouse {
             this.dy = newY - this.y;
             this.x = newX;
             this.y = newY;
-            console.log(this.x, this.y);
         };
     }
 }

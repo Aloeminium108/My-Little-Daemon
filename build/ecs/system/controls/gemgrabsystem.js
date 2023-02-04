@@ -54,6 +54,7 @@ class GemGrabSystem extends UnorderedSystem {
             return;
         if (!this.entities.has(heldEntity))
             return;
+        console.log(heldEntity.getComponent(Automaton).currentState);
         if (heldEntity.getComponent(Automaton).currentState !== EntityState.UNMATCHED)
             return;
         let mouse = this.mouseSystem.mouse;
