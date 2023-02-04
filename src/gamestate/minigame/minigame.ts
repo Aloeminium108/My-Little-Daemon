@@ -54,7 +54,6 @@ abstract class Minigame implements GameState {
     abstract loseCondition(): boolean
     abstract winCondition(): boolean
 
-    abstract stopGame(): void
     abstract resetGame(): void
 
     init = () => {
@@ -143,7 +142,6 @@ abstract class Minigame implements GameState {
 
         if (this.winCondition() || this.loseCondition()) {
             this.messageBox.style.visibility = 'visible'
-            this.stopGame()
         }
     }
     

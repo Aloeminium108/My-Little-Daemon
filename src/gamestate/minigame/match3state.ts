@@ -163,10 +163,6 @@ class Match3State extends Minigame {
         this.ecs.addSystem(this.mouseSystem!!)
     }
 
-    stopGame = () => {
-        this.ecs.removeSystem(this.mouseSystem!!)
-    }
-
     getProgress = () => {
         if (this.progress >= calculateGoal(this.level))
             return 100
