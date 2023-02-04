@@ -57,7 +57,7 @@
 #message-box {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 
     position: absolute;
@@ -66,9 +66,9 @@
     visibility: hidden;
 
     min-width: 30vw;
-    min-height: 30vw;
+    min-height: 20vw;
     max-width: 30vw;
-    max-height: 30vw;
+    max-height: 20vw;
 
     background-color: var(--frame-color);
     border: 5px solid;
@@ -79,13 +79,66 @@
     border-radius: 50px;
 }
 
-#win-message, #lose-message {
+#game-end-message {
     visibility: hidden;
     font-size: 2.5vw;
     text-align: center;
 }
 
-#win-message h3, #lose-message h3 {
+#game-end-message h3 {
     margin: 3%;
     width: 100%;
+}
+
+#message-box p {
+    font-size: 1.5vw;
+}
+
+.message-button-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.message-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 4vw;
+    width: fit-content;
+
+    padding: 0.5vw;
+
+    background-color: var(--button-background);
+    border: 5px solid;
+    border-top-color: var(--frame-shadow);
+    border-right-color: var(--frame-shadow);
+    border-bottom-color: var(--frame-highlight);
+    border-left-color: var(--frame-highlight);
+    border-radius: 2vw;
+}
+
+.message-button h3 {
+    line-height: 100%;
+    font-size: 3vw;
+}
+
+.message-button img {
+    height: 70%;
+    margin-top: 5%;
+}
+
+.message-button * {
+    opacity: 40%;
+}
+
+.message-button:hover {
+    cursor: pointer;
+}
+
+.message-button:hover * {
+    opacity: 100%;
 }
