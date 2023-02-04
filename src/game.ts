@@ -22,7 +22,7 @@ class Game {
     lastFrameTimeStamp: DOMHighResTimeStamp | null = null
 
     private stateMap = new Map<GameStateTransition<GameState>, GameState>
-    private currentState: GameState
+    currentState: GameState
 
     constructor(
         public mainCanvas: HTMLCanvasElement, 

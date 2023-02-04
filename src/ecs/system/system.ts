@@ -4,7 +4,7 @@ import { ECS } from "../ecs.js"
 
 abstract class System {
 
-    protected abstract entities: Iterable<Entity>
+    abstract entities: Iterable<Entity>
 
     constructor(protected ecs: ECS | null = null) {}
 
@@ -22,7 +22,7 @@ abstract class System {
 }
 
 abstract class UnorderedSystem extends System {
-    protected entities = new Set<Entity>()
+    entities = new Set<Entity>()
 
     addEntity = (entity: Entity) => {
         this.entities.add(entity)
@@ -35,7 +35,7 @@ abstract class UnorderedSystem extends System {
 
 abstract class OrderedSystem<T extends OrderingComponent> extends System {
 
-    protected entities = new Array<Entity>()
+    entities = new Array<Entity>()
 
     public abstract orderingComponent: ComponentType<T>
 
