@@ -14,6 +14,8 @@ class Mouse {
 
         this.x = newX
         this.y = newY
+
+        console.log(this.x, this.y)
     }
 
 }
