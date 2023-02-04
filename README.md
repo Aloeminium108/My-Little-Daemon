@@ -50,6 +50,26 @@ Puts the Daemon to bed if they are sleepy, or wakes them up if they are sleeping
 #### SAVE (Planned)
 Allows the player to save their game.
 
+## Mini-Games
+
+### Match-3
+
+The player is presented with an 8x8 grid of gems. Gems can be swapped with other gems that are orthogonally adjacent. If 3 or more gems of the same color are in a row, they match and are eliminated from the grid and the player is awarded points. To the left of the grid is a progress bar that fills up as points are earned. Each level, the player can make 10 moves. If the progress bar is filled when the player runs out of moves, their move counter is reset to 10 and they may continue play. If the bar is not filled up, however, the player loses. Each level requires more points to proceed.
+
+There are some special gems that can be created when the player makes certain matches. 
+
+#### Line Clear Gems
+
+Horizontal and vertical line clear gems are created by matching 4 in a row. When matched, these gems eliminate all gems across a line on the board.
+
+#### Bomb Gems
+
+Bomb gems are created with two intersecting matches of 3 in a row (A match of 5, but not 5 in a row). When matched, these gems eliminate all adjacent gems around them.
+
+#### Color Bomb Gems
+
+Color Bomb gems are created by matching 5 in a row. These gems do not match normally. Instead, if they are swapped with another gem, they eliminate all gems of that color. For example, swapping a color bomb gem with a blue gem will eliminate all blue gems from the board. If two color bomb gems are swapped, then all gems on the board will be eliminated
+
 ## Things I've Learned
 
 This game was created for a milestone project. I have been interested in game design and development for a very long time, and I always wanted to write my own game engine. In order to create even a weak, tiny game engine, I had to quickly learn about a wide range of topics. I'm very glad I pursued this. It was intensive, and it consumed my thoughts for weeks, but I greatly appreciate everything I learned in the process.
@@ -72,9 +92,9 @@ Some objects have relatively complex behavior that is difficult to comprehensive
 
 ### Event-Driven Architecture
 
-I plan on implementing an event messaging system for the game. For this game, the issue that I kept running into was that systems and would often need to access the state of other systems just to look at a few variables. This caused systems to become coupled, which is particularly annoying because one of the main goals of implementing the ECS was to decouple game systems. 
+I plan on implementing an event messaging system for the game. For this game, the issue that I kept running into was that systems and would often need to access the state of other systems just to look at a few variables. This caused systems to become coupled, which is particularly annoying because one of the main goals of implementing the ECS was to decouple game systems. Also, viewing the current state of entities and systems within the ECS from outside is difficult. Sometimes changes outside of the ECS need to be made in response to what takes place within it. Without any concept of events, this is achieved by having game states keep track of individual entities and system properties. This causes further coupling and results in convoluted game state definitions.
 
-The planned implementation is relatively simple; there is an event messaging system that event listeners can subscribe to. This event messaging system is given to the ECS so any system can access it and push events to it. Event listeners take two forms; event handlers and event filters. Event handlers respond to a single kind of event whenever it happens. Event filters listen to a number of different kinds of events and filter out/transform them into a different kind of event. The point here is to avoid coupling as much as possible while also giving event listeners the power to respond to a diverse set of events if necessary. 
+The basic structure for event-driven architecure consists of events, emitters, listeners, and a broker. Events are objects containing relevant information about changes in state. Emitters produce events to communicate changes in state. Listeners receive events and respond to them. Emitters and listeners are not mutually exclusive; a good example of this would be listeners whose job is to analyze a set of events and infer more complex events from them. Finally, the event broker acts as a middleman, taking any events produced by emitters and passing them along to any listeners who are subscribed to that kind of event. 
 
 ### Sequential Impulse Solver
 
