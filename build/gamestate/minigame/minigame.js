@@ -58,7 +58,6 @@ class Minigame {
         };
         this.game = game;
         this.pet = game.pet;
-        this.mouse = game.mouse;
         this.canvas = game.secondaryCanvas;
     }
 }

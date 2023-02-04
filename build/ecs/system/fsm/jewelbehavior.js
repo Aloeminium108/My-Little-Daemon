@@ -9,10 +9,9 @@ import { Jewel } from "../../entity/minigame/puzzle/jewel.js";
 import { CollisionBody } from "../../component/physics/collisionbody.js";
 const EPSILON = 0.001;
 class JewelBehavior extends FiniteStateMachine {
-    constructor(collisionDetection, gemGrabSystem) {
+    constructor(collisionDetection) {
         super();
         this.collisionDetection = collisionDetection;
-        this.gemGrabSystem = gemGrabSystem;
         this.componentsRequired = new Set([Automaton, JewelType, CollisionBody]);
         // Sets gems that are connected along the X and Y axis
         this.connectedGemsX = new Map();
@@ -88,12 +87,14 @@ class JewelBehavior extends FiniteStateMachine {
         this.preAutomation = (interval) => {
             this.connectedGemsX.clear();
             this.connectedGemsY.clear();
-            let colorBombs = this.gemGrabSystem.swapped.filter(entity => {
-                return entity.getComponent(JewelType).special === SpecialProperty.COLORBOMB;
-            });
-            let nonColorBombs = this.gemGrabSystem.swapped.filter(entity => {
-                return entity.getComponent(JewelType).special !== SpecialProperty.COLORBOMB;
-            });
+            // let colorBombs = this.gemGrabSystem.swapped.filter(entity => {
+            //     return entity.getComponent(JewelType).special === SpecialProperty.COLORBOMB
+            // })
+            // let nonColorBombs = this.gemGrabSystem.swapped.filter(entity => {
+            //     return entity.getComponent(JewelType).special !== SpecialProperty.COLORBOMB
+            // })
+            let colorBombs = [];
+            let nonColorBombs = [];
             if (colorBombs.length === 2) {
                 this.entities.forEach(entity => {
                     let jeweltype = entity.getComponent(JewelType);

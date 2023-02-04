@@ -1,13 +1,10 @@
 import { CollisionDetection } from "../../ecs/system/physics/collisiondetection.js";
 import { SpriteSystem } from "../../ecs/system/graphics/spritesystem.js";
 import { FrictionSystem } from "../../ecs/system/physics/frictionsystem.js";
-import { MouseSystem } from "../../ecs/system/controls/mousesystem.js";
+import { MouseOverSystem } from "../../ecs/system/controls/mouseoversystem.js";
 import { VelocitySystem } from "../../ecs/system/physics/velocitysystem.js";
 import { SpatialHashing } from "../../ecs/system/physics/spatialhashing.js";
 import { BoundarySystem } from "../../ecs/system/physics/boundarysystem.js";
-import { JewelType } from "../../ecs/component/gameplay/jeweltype.js";
-import { Hitbox } from "../../ecs/component/physics/hitbox.js";
-import { Automaton } from "../../ecs/component/fsm/automaton.js";
 import { DrawingSystem } from "../../ecs/system/graphics/drawingsystem.js";
 import { CollisionResponse } from "../../ecs/system/physics/collisionresponse.js";
 import { JewelGrid } from "../../ecs/entity/minigame/puzzle/jewelgrid.js";
@@ -73,13 +70,13 @@ class Match3State extends Minigame {
             this.ecs.addEntity(this.progressKeeper);
         };
         this.initSystems = () => {
-            this.ecs.addSystem(new MouseSystem(this.mouse, this.canvas));
+            this.ecs.addSystem(new MouseOverSystem());
             //let gemGrabSystem = new GemGrabSystem(mouseSystem, collisionDetection)
             //this.ecs.addSystem(gemGrabSystem)
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new FrictionSystem());
             this.ecs.addSystem(new BoundarySystem());
-            this.ecs.addSystem(new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton])));
+            this.ecs.addSystem(new SpatialHashing(160));
             this.ecs.addSystem(new CollisionDetection());
             this.ecs.addSystem(new CollisionResponse());
             //this.ecs.addSystem(new GeneratorSystem(collisionDetection))

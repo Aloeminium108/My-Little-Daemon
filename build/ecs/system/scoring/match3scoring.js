@@ -4,10 +4,9 @@ import { UnorderedSystem } from "../system.js";
 const COMBO_VALUE = 10;
 const COMBO_TIME = 1000;
 class Match3ScoringSystem extends UnorderedSystem {
-    constructor(jewelBehavior, gemGrabSystem) {
+    constructor(jewelBehavior) {
         super();
         this.jewelBehavior = jewelBehavior;
-        this.gemGrabSystem = gemGrabSystem;
         this.comboCount = 0;
         this.comboTimer = 0;
         this.componentsRequired = new Set([Scoreboard]);
@@ -55,9 +54,9 @@ class Match3ScoringSystem extends UnorderedSystem {
                     display.value = combo;
                     break;
                 case ScoreType.MOVES:
-                    if (this.gemGrabSystem.moveMade) {
-                        display.value--;
-                    }
+                    // if (this.gemGrabSystem.moveMade){
+                    //     display.value--
+                    // }
                     break;
                 case ScoreType.PROGESS:
                     if (score > 0) {

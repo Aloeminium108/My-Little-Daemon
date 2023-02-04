@@ -2,12 +2,10 @@ import { ECS } from "../../ecs/ecs.js";
 import { Game } from "../../game.js";
 import { Pet } from "../../Pet/pet.js";
 import { GameState } from "../gamestate.js";
-import { Mouse } from "../mouse.js";
 
 abstract class Minigame implements GameState {
     
     pet: Pet;
-    mouse: Mouse
     canvas: HTMLCanvasElement
 
     ecs = new ECS()
@@ -31,7 +29,6 @@ abstract class Minigame implements GameState {
         ) {
         this.game = game
         this.pet = game.pet
-        this.mouse = game.mouse
         this.canvas = game.secondaryCanvas
 
     }

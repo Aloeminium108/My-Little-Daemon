@@ -1,7 +1,7 @@
 import { Entity } from "./entity/entity.js"
 import { EventBroker } from "./system/eventsystem/eventbroker.js"
 import { GameEvent } from "./system/eventsystem/events/gameevent.js"
-import { EventComponentSystem, EventHandler, EventSynthesizer } from "./system/eventsystem/listeners/gameeventlistener.js"
+import { EventComponentSystem, EventHandler, EventSynthesisSystem, OrderedEventComponentSystem } from "./system/eventsystem/listeners/gameeventlistener.js"
 import { ComponentSystem, OrderedSystem, System, UnorderedSystem } from "./system/system.js"
 
 class ECS {
@@ -40,13 +40,14 @@ class ECS {
             this.checkSystemForEntities(system)
         } else if (
             system instanceof EventComponentSystem
+            || system instanceof OrderedEventComponentSystem
         ) {
             this.componentSystems.push(system)
             this.checkSystemForEntities(system)
             this.eventBroker.addListener(system)
         } else if (
             system instanceof EventHandler 
-            || system instanceof EventSynthesizer
+            || system instanceof EventSynthesisSystem
         ) {
             this.eventBroker.addListener(system)
         }

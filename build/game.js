@@ -1,18 +1,18 @@
 import { HomeState } from "./gamestate/homestate.js";
 import { StatMenuState } from "./gamestate/statmenustate.js";
 import { Gender, Pet } from "./Pet/pet.js";
-import { Mouse } from "./gamestate/mouse.js";
 import { Match3State } from "./gamestate/minigame/match3state.js";
 import { Sprite } from "./ecs/component/graphics/sprite.js";
 import { LoadingState } from "./gamestate/loadingstate.js";
 import { MinigameSelectState } from "./gamestate/minigame/minigameselect.js";
+import { MouseGameEvent } from "./ecs/system/eventsystem/events/mouseevents/mousegameevent.js";
+import { MouseEventType } from "./ecs/system/eventsystem/events/mouseevents/mousegameevent.js";
 class Game {
     constructor(mainCanvas, secondaryCanvas, canvasContainer) {
         this.mainCanvas = mainCanvas;
         this.secondaryCanvas = secondaryCanvas;
         this.canvasContainer = canvasContainer;
         this.minigames = [];
-        this.mouse = new Mouse();
         this.lastFrameTimeStamp = null;
         this.stateMap = new Map;
         this.animate = (currentFrameTimeStamp) => {
@@ -90,15 +90,25 @@ class Game {
                 this.currentState.resume();
             }
         };
+        // addCanvasListeners = () => {
+        //     this.mainCanvas.addEventListener('mousedown', (e) => this.mouse.pressed = true)
+        //     this.mainCanvas.addEventListener('mouseup', (e) => this.mouse.pressed = false)
+        //     this.mainCanvas.addEventListener('mousemove', (e) => this.mouse.move(e))
+        //     this.mainCanvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false)
+        //     this.secondaryCanvas.addEventListener('mousedown', (e) => this.mouse.pressed = true)
+        //     this.secondaryCanvas.addEventListener('mouseup', (e) => this.mouse.pressed = false)
+        //     this.secondaryCanvas.addEventListener('mousemove', (e) => this.mouse.move(e))
+        //     this.secondaryCanvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false)
+        // }
         this.addCanvasListeners = () => {
-            this.mainCanvas.addEventListener('mousedown', (e) => this.mouse.pressed = true);
-            this.mainCanvas.addEventListener('mouseup', (e) => this.mouse.pressed = false);
-            this.mainCanvas.addEventListener('mousemove', (e) => this.mouse.move(e));
-            this.mainCanvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false);
-            this.secondaryCanvas.addEventListener('mousedown', (e) => this.mouse.pressed = true);
-            this.secondaryCanvas.addEventListener('mouseup', (e) => this.mouse.pressed = false);
-            this.secondaryCanvas.addEventListener('mousemove', (e) => this.mouse.move(e));
-            this.secondaryCanvas.addEventListener('mouseleave', (e) => this.mouse.pressed = false);
+            this.mainCanvas.addEventListener('mousedown', (e) => { var _a; return (_a = this.currentState.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new MouseGameEvent(e.offsetX, e.offsetY, MouseEventType.MOUSEDOWN)); });
+            this.mainCanvas.addEventListener('mouseup', (e) => { var _a; return (_a = this.currentState.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new MouseGameEvent(e.offsetX, e.offsetY, MouseEventType.MOUSEUP)); });
+            this.mainCanvas.addEventListener('mousemove', (e) => { var _a; return (_a = this.currentState.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new MouseGameEvent(e.offsetX, e.offsetY, MouseEventType.MOUSEMOVE)); });
+            this.mainCanvas.addEventListener('mouseleave', (e) => { var _a; return (_a = this.currentState.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new MouseGameEvent(e.offsetX, e.offsetY, MouseEventType.MOUSEUP)); });
+            this.secondaryCanvas.addEventListener('mousedown', (e) => { var _a; return (_a = this.currentState.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new MouseGameEvent(e.offsetX, e.offsetY, MouseEventType.MOUSEDOWN)); });
+            this.secondaryCanvas.addEventListener('mouseup', (e) => { var _a; return (_a = this.currentState.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new MouseGameEvent(e.offsetX, e.offsetY, MouseEventType.MOUSEUP)); });
+            this.secondaryCanvas.addEventListener('mousemove', (e) => { var _a; return (_a = this.currentState.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new MouseGameEvent(e.offsetX, e.offsetY, MouseEventType.MOUSEMOVE)); });
+            this.secondaryCanvas.addEventListener('mouseleave', (e) => { var _a; return (_a = this.currentState.ecs) === null || _a === void 0 ? void 0 : _a.pushEvent(new MouseGameEvent(e.offsetX, e.offsetY, MouseEventType.MOUSEUP)); });
         };
         this.addButtonListeners = () => {
             let buttons = document.querySelectorAll('.button');

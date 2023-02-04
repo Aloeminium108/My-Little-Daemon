@@ -1,4 +1,5 @@
-import { Component, ComponentType } from "../../../component/component.js";
+import { Game } from "../../../../game.js";
+import { Component, ComponentType, OrderingComponent } from "../../../component/component.js";
 import { ECS } from "../../../ecs.js";
 import { Entity } from "../../../entity/entity.js";
 import { ComponentSystem, System } from "../../system.js";
@@ -67,22 +68,48 @@ abstract class EventComponentSystem<T extends GameEvent> extends EventHandler<T>
 
 }
 
+abstract class OrderedEventComponentSystem<T extends OrderingComponent, U extends GameEvent> extends EventHandler<U> implements GameEventListener, ComponentSystem {
 
-class EventConverter<T extends GameEvent, R extends GameEvent>{
+    abstract eventClasses: Set<EventClass<U>>
 
-    constructor(
-        public eventClass: EventClass<T>,
-        public convert: (gameEvent: T) => R
-    ) {}
+    abstract componentsRequired: Set<ComponentType<Component>>
 
+    ecs: ECS | null = null
+
+    eventBroker: EventBroker | null = null
+
+    entities = new Array<Entity>()
+
+    public abstract orderingComponent: ComponentType<T>
+
+    addEntity = (entity: Entity) => {
+        if (!this.entities.includes(entity)) {
+            this.entities.push(entity)
+            this.sortByOrderingComponent()
+        }
+    }
+
+    removeEntity = (entity: Entity) => {
+        let index = this.entities.findIndex((x) => x === entity)
+        if (index < 0) return
+        this.entities.splice(index, 1)
+    }
+
+    private sortByOrderingComponent = () => {
+        this.entities.sort((a: Entity, b: Entity) => {
+            let indexA = a.getComponent(this.orderingComponent).index
+            let indexB = b.getComponent(this.orderingComponent).index
+            return indexA - indexB
+        }) 
+    }
 }
 
 
-abstract class EventSynthesizer<T extends GameEvent> implements GameEventListener, System {
+abstract class EventSynthesisSystem implements GameEventListener, System {
 
     abstract eventClasses: Set<EventClass<GameEvent>>;
-    
-    abstract converters: Set<EventConverter<GameEvent, T>>
+
+    abstract update(interval: number): void;
 
     ecs: ECS | null = null
 
@@ -90,29 +117,8 @@ abstract class EventSynthesizer<T extends GameEvent> implements GameEventListene
 
     eventStack: Map<EventClass<GameEvent>, Array<GameEvent>> = new Map()
 
-    synthesisMethods: Map<EventClass<GameEvent>, EventConverter<GameEvent, T>> = new Map()
-
-    init = () => {
-        this.converters.forEach(handler => {
-            this.synthesisMethods.set(handler.eventClass, handler)
-        })
-    }
-
-    synthesizeEvents = () => {
-        this.eventStack.forEach((stack, eventClass) => {
-            let converter = this.synthesisMethods.get(eventClass)
-            if (converter === undefined) return
-
-            while(stack.length > 0) {
-                this.eventBroker?.pushEvent(converter.convert(stack.pop()!!))
-            }
-        })
-    }
-
     pushEvent = <T extends GameEvent>(gameEvent: T) => {
         let eventClass = gameEvent.constructor as EventClass<T>
-
-        if (!this.synthesisMethods.has(eventClass)) return
 
         if (!this.eventStack.has(eventClass)) {
             this.eventStack.set(eventClass, [gameEvent])
@@ -121,11 +127,16 @@ abstract class EventSynthesizer<T extends GameEvent> implements GameEventListene
         } 
     }
 
-    update = (interval: number) => {
-        this.synthesizeEvents()
+    getEventStack = <T extends GameEvent>(eventClass: EventClass<T>) => {
+        if (!this.eventStack.has(eventClass)) return [] as T[]
+        return this.eventStack.get(eventClass) as T[]
+    }
+
+    popEventStack = <T extends GameEvent>(eventClass: EventClass<T>) => {
+        return this.eventStack.get(eventClass)?.pop() as T | undefined
     }
     
 }
 
 
-export {GameEventListener, EventSynthesizer, EventHandler, EventConverter, EventComponentSystem}
+export {GameEventListener, EventSynthesisSystem, EventHandler, EventComponentSystem, OrderedEventComponentSystem}

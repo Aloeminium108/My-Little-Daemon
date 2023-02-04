@@ -30,39 +30,41 @@ class EventComponentSystem extends EventHandler {
         };
     }
 }
-class EventConverter {
-    constructor(eventClass, convert) {
-        this.eventClass = eventClass;
-        this.convert = convert;
+class OrderedEventComponentSystem extends EventHandler {
+    constructor() {
+        super(...arguments);
+        this.ecs = null;
+        this.eventBroker = null;
+        this.entities = new Array();
+        this.addEntity = (entity) => {
+            if (!this.entities.includes(entity)) {
+                this.entities.push(entity);
+                this.sortByOrderingComponent();
+            }
+        };
+        this.removeEntity = (entity) => {
+            let index = this.entities.findIndex((x) => x === entity);
+            if (index < 0)
+                return;
+            this.entities.splice(index, 1);
+        };
+        this.sortByOrderingComponent = () => {
+            this.entities.sort((a, b) => {
+                let indexA = a.getComponent(this.orderingComponent).index;
+                let indexB = b.getComponent(this.orderingComponent).index;
+                return indexA - indexB;
+            });
+        };
     }
 }
-class EventSynthesizer {
+class EventSynthesisSystem {
     constructor() {
         this.ecs = null;
         this.eventBroker = null;
         this.eventStack = new Map();
-        this.synthesisMethods = new Map();
-        this.init = () => {
-            this.converters.forEach(handler => {
-                this.synthesisMethods.set(handler.eventClass, handler);
-            });
-        };
-        this.synthesizeEvents = () => {
-            this.eventStack.forEach((stack, eventClass) => {
-                var _a;
-                let converter = this.synthesisMethods.get(eventClass);
-                if (converter === undefined)
-                    return;
-                while (stack.length > 0) {
-                    (_a = this.eventBroker) === null || _a === void 0 ? void 0 : _a.pushEvent(converter.convert(stack.pop()));
-                }
-            });
-        };
         this.pushEvent = (gameEvent) => {
             var _a;
             let eventClass = gameEvent.constructor;
-            if (!this.synthesisMethods.has(eventClass))
-                return;
             if (!this.eventStack.has(eventClass)) {
                 this.eventStack.set(eventClass, [gameEvent]);
             }
@@ -70,9 +72,15 @@ class EventSynthesizer {
                 (_a = this.eventStack.get(eventClass)) === null || _a === void 0 ? void 0 : _a.push(gameEvent);
             }
         };
-        this.update = (interval) => {
-            this.synthesizeEvents();
+        this.getEventStack = (eventClass) => {
+            if (!this.eventStack.has(eventClass))
+                return [];
+            return this.eventStack.get(eventClass);
+        };
+        this.popEventStack = (eventClass) => {
+            var _a;
+            return (_a = this.eventStack.get(eventClass)) === null || _a === void 0 ? void 0 : _a.pop();
         };
     }
 }
-export { EventSynthesizer, EventHandler, EventConverter, EventComponentSystem };
+export { EventSynthesisSystem, EventHandler, EventComponentSystem, OrderedEventComponentSystem };

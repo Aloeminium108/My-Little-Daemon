@@ -6,14 +6,10 @@ import { UnorderedSystem } from "../system.js";
 
 class SpatialHashing extends UnorderedSystem {
     
-    public componentsRequired = new Set<ComponentType<Component>>([Hitbox])
+    public componentsRequired = new Set([Hitbox])
 
-    constructor(private cellSize: number,
-        filter: Set<ComponentType<Component>> | null = null) {
+    constructor(private cellSize: number) {
         super()
-        filter?.forEach(requiredComponent => {
-            this.componentsRequired.add(requiredComponent)
-        })
     }
 
     public update(interval: number): void {

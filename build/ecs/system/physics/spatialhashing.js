@@ -2,7 +2,7 @@ import { Hitbox } from "../../component/physics/hitbox.js";
 import { HashEvent } from "../eventsystem/events/hashevent.js";
 import { UnorderedSystem } from "../system.js";
 class SpatialHashing extends UnorderedSystem {
-    constructor(cellSize, filter = null) {
+    constructor(cellSize) {
         super();
         this.cellSize = cellSize;
         this.componentsRequired = new Set([Hitbox]);
@@ -25,9 +25,6 @@ class SpatialHashing extends UnorderedSystem {
             }
             return cells;
         };
-        filter === null || filter === void 0 ? void 0 : filter.forEach(requiredComponent => {
-            this.componentsRequired.add(requiredComponent);
-        });
     }
     update(interval) {
         var _a;

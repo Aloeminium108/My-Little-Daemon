@@ -7,7 +7,7 @@ import { BoundarySystem } from "../ecs/system/physics/boundarysystem.js";
 import { FrictionSystem } from "../ecs/system/physics/frictionsystem.js";
 import { Ball } from "../ecs/entity/toys/ball.js";
 import { MouseGrabSystem } from "../ecs/system/controls/mousegrabsystem.js";
-import { MouseSystem } from "../ecs/system/controls/mousesystem.js";
+import { MouseOverSystem } from "../ecs/system/controls/mouseoversystem.js";
 import { PetEntity } from "../ecs/entity/pet/petentity.js";
 import { CollisionDetection } from "../ecs/system/physics/collisiondetection.js";
 import { Apple } from "../ecs/entity/food/apple.js";
@@ -15,6 +15,9 @@ import { ConsumableSystem } from "../ecs/system/gameplay/consumablesystem.js";
 import { SpatialHashing } from "../ecs/system/physics/spatialhashing.js";
 import { PetAI } from "../ecs/system/fsm/petai.js";
 import { CollisionResponse } from "../ecs/system/physics/collisionresponse.js";
+import { MouseSystem } from "../ecs/system/controls/mousesystem.js";
+import { MouseSynthesisSystem } from "../ecs/system/controls/mousesynthesissystem.js";
+import { MouseEntity } from "../ecs/entity/mouseEntity.js";
 const RELATIVE_CUSHION_POSITION = 0.85;
 class HomeState {
     constructor(game, ctx) {
@@ -32,6 +35,8 @@ class HomeState {
             this.initSystems();
         };
         this.initEntities = () => {
+            let mouseEntity = new MouseEntity();
+            this.ecs.addEntity(mouseEntity);
             let ball = new Ball(200, 100);
             ball.addComponent(new Bounds(0, this.canvas.width, 0, this.canvas.height));
             let ball1 = new Ball(400, 100);
@@ -46,9 +51,7 @@ class HomeState {
             this.ecs.addEntity(petEntity);
         };
         this.initSystems = () => {
-            let mouseSystem = new MouseSystem(this.mouse, this.canvas);
-            this.ecs.addSystem(mouseSystem);
-            this.ecs.addSystem(new MouseGrabSystem(mouseSystem));
+            this.ecs.addSystem(new MouseGrabSystem());
             this.ecs.addSystem(new GravitySystem());
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new FrictionSystem());
@@ -57,8 +60,11 @@ class HomeState {
             this.ecs.addSystem(new CollisionDetection());
             this.ecs.addSystem(new CollisionResponse());
             this.ecs.addSystem(new ConsumableSystem());
-            this.ecs.addSystem(new PetAI(mouseSystem));
+            this.ecs.addSystem(new PetAI());
             this.ecs.addSystem(new SpriteSystem(this.ctx));
+            this.ecs.addSystem(new MouseSystem());
+            this.ecs.addSystem(new MouseOverSystem());
+            this.ecs.addSystem(new MouseSynthesisSystem(this.canvas));
         };
         this.update = (interval) => {
             this.ecs.update(interval);
@@ -78,7 +84,6 @@ class HomeState {
         };
         this.game = game;
         this.pet = game.pet;
-        this.mouse = game.mouse;
         this.canvas = game.mainCanvas;
         this.init();
     }

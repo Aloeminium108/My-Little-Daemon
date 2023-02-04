@@ -6,7 +6,6 @@ import { Velocity } from "../../component/physics/velocity.js";
 import { Entity } from "../../entity/entity.js";
 import { CollisionDetection } from "../physics/collisiondetection.js";
 import { FiniteStateMachine } from "./finitestatemachine.js";
-import { GemGrabSystem } from "../controls/gemgrabsystem.js";
 import { Position } from "../../component/physics/position.js";
 import { Jewel } from "../../entity/minigame/puzzle/jewel.js";
 import { CollisionBody } from "../../component/physics/collisionbody.js";
@@ -114,7 +113,7 @@ class JewelBehavior extends FiniteStateMachine {
         
     ])
 
-    constructor(private collisionDetection: CollisionDetection, private gemGrabSystem: GemGrabSystem) {
+    constructor(private collisionDetection: CollisionDetection) {
         super()
     }
 
@@ -122,12 +121,15 @@ class JewelBehavior extends FiniteStateMachine {
         this.connectedGemsX.clear()
         this.connectedGemsY.clear()
 
-        let colorBombs = this.gemGrabSystem.swapped.filter(entity => {
-            return entity.getComponent(JewelType).special === SpecialProperty.COLORBOMB
-        })
-        let nonColorBombs = this.gemGrabSystem.swapped.filter(entity => {
-            return entity.getComponent(JewelType).special !== SpecialProperty.COLORBOMB
-        })
+        // let colorBombs = this.gemGrabSystem.swapped.filter(entity => {
+        //     return entity.getComponent(JewelType).special === SpecialProperty.COLORBOMB
+        // })
+        // let nonColorBombs = this.gemGrabSystem.swapped.filter(entity => {
+        //     return entity.getComponent(JewelType).special !== SpecialProperty.COLORBOMB
+        // })
+
+        let colorBombs: Entity[] = []
+        let nonColorBombs: Entity[] = []
 
         if (colorBombs.length === 2) {
 

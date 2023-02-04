@@ -1,6 +1,5 @@
 import { SpecialProperty } from "../../component/gameplay/jeweltype.js";
 import { Scoreboard, ScoreType } from "../../component/graphics/scoreboard.js";
-import { GemGrabSystem } from "../controls/gemgrabsystem.js";
 import { JewelBehavior } from "../fsm/jewelbehavior.js";
 import { UnorderedSystem } from "../system.js";
 
@@ -15,7 +14,7 @@ class Match3ScoringSystem extends UnorderedSystem {
 
     public componentsRequired = new Set([Scoreboard])
 
-    constructor(private jewelBehavior: JewelBehavior, private gemGrabSystem: GemGrabSystem) {
+    constructor(private jewelBehavior: JewelBehavior) {
         super()
     }
 
@@ -69,9 +68,9 @@ class Match3ScoringSystem extends UnorderedSystem {
                     display.value = combo
                     break
                 case ScoreType.MOVES:
-                    if (this.gemGrabSystem.moveMade){
-                        display.value--
-                    }
+                    // if (this.gemGrabSystem.moveMade){
+                    //     display.value--
+                    // }
                     break
                 case ScoreType.PROGESS:
                     if (score > 0) {
