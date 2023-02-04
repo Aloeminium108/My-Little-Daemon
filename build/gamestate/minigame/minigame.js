@@ -50,16 +50,21 @@ class Minigame {
         this.update = (interval) => {
             this.ecs.update(interval);
             if (this.loseCondition()) {
-                console.log("You lose :(");
+                this.messageBox.style.visibility = 'visible';
+                this.loseMessage.style.visibility = 'visible';
             }
             else if (this.winCondition()) {
-                console.log("You win!");
+                this.messageBox.style.visibility = 'visible';
+                this.winMessage.style.visibility = 'visible';
             }
         };
         this.game = game;
         this.pet = game.pet;
         this.mouse = game.mouse;
         this.canvas = game.secondaryCanvas;
+        this.messageBox = document.getElementById('message-box');
+        this.winMessage = document.getElementById('win-message');
+        this.loseMessage = document.getElementById('lose-message');
     }
 }
 export { Minigame };

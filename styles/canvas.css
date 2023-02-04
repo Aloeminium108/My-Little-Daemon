@@ -55,10 +55,20 @@
 }
 
 #message-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     position: absolute;
     z-index: 2;
 
     visibility: hidden;
+
+    min-width: 30vw;
+    min-height: 30vw;
+    max-width: 30vw;
+    max-height: 30vw;
 
     background-color: var(--frame-color);
     border: 5px solid;
@@ -67,4 +77,15 @@
     border-bottom-color: var(--frame-shadow);
     border-left-color: var(--frame-shadow);
     border-radius: 50px;
+}
+
+#win-message, #lose-message {
+    visibility: hidden;
+    font-size: 2.5vw;
+    text-align: center;
+}
+
+#win-message h3, #lose-message h3 {
+    margin: 3%;
+    width: 100%;
 }

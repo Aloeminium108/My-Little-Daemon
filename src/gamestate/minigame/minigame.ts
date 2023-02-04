@@ -106,9 +106,11 @@ abstract class Minigame implements GameState {
     update = (interval: number) => {
         this.ecs.update(interval)
         if (this.loseCondition()) {
+            this.messageBox.style.visibility = 'visible'
             this.loseMessage.style.visibility = 'visible'
             
         } else if (this.winCondition()) {
+            this.messageBox.style.visibility = 'visible'
             this.winMessage.style.visibility = 'visible'
         }
     }
