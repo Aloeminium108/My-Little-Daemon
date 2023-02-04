@@ -79,10 +79,10 @@ class Match3State extends Minigame {
         this.initSystems = () => {
             let spatialHashing = new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton]));
             let collisionDetection = new CollisionDetection(spatialHashing);
-            let mouseSystem = new MouseSystem(this.mouse, this.canvas);
-            this.ecs.addSystem(mouseSystem);
-            let gemGrabSystem = new GemGrabSystem(mouseSystem, collisionDetection);
-            this.ecs.addSystem(gemGrabSystem);
+            this.mouseSystem = new MouseSystem(this.mouse, this.canvas);
+            this.ecs.addSystem(this.mouseSystem);
+            this.gemGrabSystem = new GemGrabSystem(this.mouseSystem, collisionDetection);
+            this.ecs.addSystem(this.gemGrabSystem);
             this.ecs.addSystem(new VelocitySystem());
             this.ecs.addSystem(new FrictionSystem());
             this.ecs.addSystem(new BoundarySystem());
@@ -90,9 +90,9 @@ class Match3State extends Minigame {
             this.ecs.addSystem(collisionDetection);
             this.ecs.addSystem(new CollisionResponse(collisionDetection));
             this.ecs.addSystem(new GeneratorSystem(collisionDetection));
-            let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem);
-            this.ecs.addSystem(jewelBehavior);
-            this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior, gemGrabSystem));
+            this.jewelBehavior = new JewelBehavior(collisionDetection, this.gemGrabSystem);
+            this.ecs.addSystem(this.jewelBehavior);
+            this.ecs.addSystem(new Match3ScoringSystem(this.jewelBehavior, this.gemGrabSystem));
             this.ecs.addSystem(new SpriteSystem(this.ctx));
             this.ecs.addSystem(new DrawingSystem(this.ctx));
             this.ecs.addSystem(new ScoreboardSystem(new Map([
@@ -116,6 +116,24 @@ class Match3State extends Minigame {
                             this.progressBar.style.height = `${this.getProgress()}%`;
                     }],
             ])));
+        };
+        this.resetGame = () => {
+            var _a;
+            (_a = this.jewelBehavior) === null || _a === void 0 ? void 0 : _a.entities.forEach(entity => {
+                this.ecs.removeEntity(entity);
+            });
+            this.moves = 10;
+            this.level = 1;
+            this.score = 0;
+            this.progress = 0;
+            this.scoreKeeper.getComponent(Scoreboard).value = 0;
+            this.comboKeeper.getComponent(Scoreboard).value = 0;
+            this.movesKeeper.getComponent(Scoreboard).value = 10;
+            this.progressKeeper.getComponent(Scoreboard).value = 0;
+            this.ecs.addSystem(this.mouseSystem);
+        };
+        this.stopGame = () => {
+            this.ecs.removeSystem(this.mouseSystem);
         };
         this.getProgress = () => {
             if (this.progress >= calculateGoal(this.level))
@@ -148,7 +166,6 @@ class Match3State extends Minigame {
         this.winCondition = () => {
             return false;
         };
-        this.scoreGoal = calculateGoal(this.level);
         this.init();
     }
 }

@@ -3,6 +3,7 @@ import { Game } from "../../game.js";
 import { Pet } from "../../Pet/pet.js";
 import { GameState } from "../gamestate.js";
 import { Mouse } from "../mouse.js";
+import { MinigameSelectState } from "./minigameselect.js";
 
 abstract class Minigame implements GameState {
     
@@ -12,6 +13,9 @@ abstract class Minigame implements GameState {
 
     messageBox: HTMLDivElement
     gameEndMessage: HTMLDivElement
+
+    replayButton: HTMLDivElement
+    exitButton: HTMLDivElement
 
     ecs = new ECS()
 
@@ -31,13 +35,15 @@ abstract class Minigame implements GameState {
         public game: Game, 
         public ctx: CanvasRenderingContext2D, 
         public canvasContainer: HTMLDivElement
-        ) {
+    ) {
         this.game = game
         this.pet = game.pet
         this.mouse = game.mouse
         this.canvas = game.secondaryCanvas
         this.messageBox = document.getElementById('message-box') as HTMLDivElement
         this.gameEndMessage = document.getElementById('game-end-message') as HTMLDivElement
+        this.replayButton = document.getElementById('restart-button') as HTMLDivElement
+        this.exitButton = document.getElementById('minigame-exit') as HTMLDivElement
     }
 
     abstract initEntities(): void
@@ -48,8 +54,12 @@ abstract class Minigame implements GameState {
     abstract loseCondition(): boolean
     abstract winCondition(): boolean
 
+    abstract stopGame(): void
+    abstract resetGame(): void
+
     init = () => {
         this.initScoreboard()
+        this.initButtons()
         this.initEntities()
         this.initSystems()
     }
@@ -68,9 +78,28 @@ abstract class Minigame implements GameState {
         }
     }
 
+    initButtons = () => {
+        this.exitButton.addEventListener('click', (e) => {
+            if (this.game.currentState !== this) return
+
+            this.resetGame()
+
+            this.game.changeState(MinigameSelectState)
+        })
+
+        this.replayButton.addEventListener('click', (e) => {
+            if (this.game.currentState !== this) return
+
+            this.resetGame()
+
+            this.messageBox.style.visibility = 'hidden'
+        })
+
+    }
+
     pause = () => {
         this.canvasContainer.style.visibility = 'hidden'
-
+        this.messageBox.style.visibility = 'hidden'
         this.removeFrameElements()
     }
 
@@ -114,7 +143,7 @@ abstract class Minigame implements GameState {
 
         if (this.winCondition() || this.loseCondition()) {
             this.messageBox.style.visibility = 'visible'
-            this.gameEndMessage.style.visibility = 'visible'
+            this.stopGame()
         }
     }
     

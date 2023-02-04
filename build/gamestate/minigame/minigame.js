@@ -1,4 +1,5 @@
 import { ECS } from "../../ecs/ecs.js";
+import { MinigameSelectState } from "./minigameselect.js";
 class Minigame {
     constructor(game, ctx, canvasContainer) {
         this.game = game;
@@ -7,6 +8,7 @@ class Minigame {
         this.ecs = new ECS();
         this.init = () => {
             this.initScoreboard();
+            this.initButtons();
             this.initEntities();
             this.initSystems();
         };
@@ -22,8 +24,23 @@ class Minigame {
                 this.rightScoreboard.innerHTML = this.rightScoreboardInner;
             }
         };
+        this.initButtons = () => {
+            this.exitButton.addEventListener('click', (e) => {
+                if (this.game.currentState !== this)
+                    return;
+                this.resetGame();
+                this.game.changeState(MinigameSelectState);
+            });
+            this.replayButton.addEventListener('click', (e) => {
+                if (this.game.currentState !== this)
+                    return;
+                this.resetGame();
+                this.messageBox.style.visibility = 'hidden';
+            });
+        };
         this.pause = () => {
             this.canvasContainer.style.visibility = 'hidden';
+            this.messageBox.style.visibility = 'hidden';
             this.removeFrameElements();
         };
         this.resume = () => {
@@ -59,7 +76,7 @@ class Minigame {
             }
             if (this.winCondition() || this.loseCondition()) {
                 this.messageBox.style.visibility = 'visible';
-                this.gameEndMessage.style.visibility = 'visible';
+                this.stopGame();
             }
         };
         this.game = game;
@@ -68,6 +85,8 @@ class Minigame {
         this.canvas = game.secondaryCanvas;
         this.messageBox = document.getElementById('message-box');
         this.gameEndMessage = document.getElementById('game-end-message');
+        this.replayButton = document.getElementById('restart-button');
+        this.exitButton = document.getElementById('minigame-exit');
     }
 }
 export { Minigame };

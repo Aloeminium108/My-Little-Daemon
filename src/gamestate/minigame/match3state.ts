@@ -20,6 +20,8 @@ import { ScoreKeeper } from "../../ecs/entity/minigame/scorekeeper.js";
 import { Scoreboard, ScoreType } from "../../ecs/component/graphics/scoreboard.js";
 import { ScoreboardSystem } from "../../ecs/system/scoring/scoreboardsystem.js";
 import { Minigame } from "./minigame.js";
+import { System } from "../../ecs/system/system.js";
+import { Entity } from "../../ecs/entity/entity.js";
 
 class Match3State extends Minigame {
 
@@ -69,12 +71,15 @@ class Match3State extends Minigame {
     level = 1
     score = 0
     progress = 0
-    scoreGoal: number
 
     scoreKeeper = new ScoreKeeper(ScoreType.SCORE)
     comboKeeper = new ScoreKeeper(ScoreType.COMBO)
     movesKeeper = new ScoreKeeper(ScoreType.MOVES, this.moves)
     progressKeeper = new ScoreKeeper(ScoreType.PROGESS)
+
+    mouseSystem?: MouseSystem
+    gemGrabSystem?: GemGrabSystem
+    jewelBehavior?: JewelBehavior
 
     constructor(
         public game: Game, 
@@ -82,7 +87,6 @@ class Match3State extends Minigame {
         public canvasContainer: HTMLDivElement
     ) {
         super(game, ctx, canvasContainer)
-        this.scoreGoal = calculateGoal(this.level)
         this.init()
     }
 
@@ -101,10 +105,10 @@ class Match3State extends Minigame {
     initSystems = () => {
         let spatialHashing = new SpatialHashing(160, new Set([Hitbox, JewelType, Automaton]))
         let collisionDetection = new CollisionDetection(spatialHashing)
-        let mouseSystem = new MouseSystem (this.mouse, this.canvas)
-        this.ecs.addSystem(mouseSystem)
-        let gemGrabSystem = new GemGrabSystem(mouseSystem, collisionDetection)
-        this.ecs.addSystem(gemGrabSystem)
+        this.mouseSystem = new MouseSystem (this.mouse, this.canvas)
+        this.ecs.addSystem(this.mouseSystem)
+        this.gemGrabSystem = new GemGrabSystem(this.mouseSystem, collisionDetection)
+        this.ecs.addSystem(this.gemGrabSystem)
         this.ecs.addSystem(new VelocitySystem())
         this.ecs.addSystem(new FrictionSystem())
         this.ecs.addSystem(new BoundarySystem())
@@ -112,9 +116,9 @@ class Match3State extends Minigame {
         this.ecs.addSystem(collisionDetection)
         this.ecs.addSystem(new CollisionResponse(collisionDetection))
         this.ecs.addSystem(new GeneratorSystem(collisionDetection))
-        let jewelBehavior = new JewelBehavior(collisionDetection, gemGrabSystem)
-        this.ecs.addSystem(jewelBehavior)
-        this.ecs.addSystem(new Match3ScoringSystem(jewelBehavior, gemGrabSystem))
+        this.jewelBehavior = new JewelBehavior(collisionDetection, this.gemGrabSystem)
+        this.ecs.addSystem(this.jewelBehavior)
+        this.ecs.addSystem(new Match3ScoringSystem(this.jewelBehavior, this.gemGrabSystem))
         this.ecs.addSystem(new SpriteSystem(this.ctx))
         this.ecs.addSystem(new DrawingSystem(this.ctx))
         this.ecs.addSystem(new ScoreboardSystem(new Map([
@@ -139,6 +143,28 @@ class Match3State extends Minigame {
             }],
             
         ])))
+    }
+
+    resetGame = () => {
+        this.jewelBehavior?.entities.forEach(entity => {
+            this.ecs.removeEntity(entity)
+        })
+
+        this.moves = 10
+        this.level = 1
+        this.score = 0
+        this.progress = 0
+
+        this.scoreKeeper.getComponent(Scoreboard).value = 0
+        this.comboKeeper.getComponent(Scoreboard).value = 0
+        this.movesKeeper.getComponent(Scoreboard).value = 10
+        this.progressKeeper.getComponent(Scoreboard).value = 0
+
+        this.ecs.addSystem(this.mouseSystem!!)
+    }
+
+    stopGame = () => {
+        this.ecs.removeSystem(this.mouseSystem!!)
     }
 
     getProgress = () => {
