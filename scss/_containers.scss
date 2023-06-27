@@ -1,6 +1,13 @@
-@mixin container ($direction) {
+@mixin container-row ($justification) {
   display: flex;
-  flex-direction: $direction;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: $justification;
+  align-items: center;
+}
+
+@mixin container-column ($justification) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justification;
   align-items: center;
 }

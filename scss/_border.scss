@@ -1,0 +1,20 @@
+@import 'spacing';
+@import 'colors';
+
+@mixin border-concave ($radius: 0px) {
+  border: $border-thickness solid;
+  border-top-color: $frame-shadow;
+  border-right-color: $frame-shadow;
+  border-bottom-color: $frame-highlight;
+  border-left-color: $frame-highlight;
+  border-radius: $border-radius;
+}
+
+@mixin border-convex ($radius: 0px) {
+  border: $border-thickness solid;
+  border-top-color: $frame-highlight;
+  border-right-color: $frame-highlight;
+  border-bottom-color: $frame-shadow;
+  border-left-color: $frame-shadow;
+  border-radius: $border-radius;
+}

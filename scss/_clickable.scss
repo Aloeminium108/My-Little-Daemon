@@ -1,0 +1,13 @@
+@mixin clickable ($inactive-opacity: 40%) {
+  * {
+    opacity: $inactive-opacity;
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    * {
+      opacity: 100%;
+    }
+  }
+}

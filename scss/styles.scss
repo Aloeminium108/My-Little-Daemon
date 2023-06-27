@@ -1,3 +1,435 @@
 @import 'colors';
 @import 'fonts';
+@import 'spacing';
+@import 'no-margin';
+@import 'containers';
+@import 'clickable';
+@import 'border';
 
+body {
+  margin: 0; 
+  height: 100%; 
+  overflow: hidden;
+}
+
+h2 {
+  @include no-margin;
+}
+
+h3, h4 {
+  @include no-margin;
+  font-family: 'Coiny', cursive;
+  font-size: 1.4em;
+}
+
+p {
+  @include no-margin;
+
+  &.scorepanel {
+    @include no-margin;
+  }
+}
+
+.fullscreen {
+  @include container-row(center);
+
+  width: 100%;
+  height: 100vh;
+}
+
+.game-screen {
+  @include container-column(center);
+
+  position: relative;
+}
+
+
+.bar {
+  @include container-column(space-around);
+
+  height: 100vh;
+  width: 10vw;
+  background-color: $frame-color;
+}
+
+#bar-left {
+  border-right: 5px solid $frame-highlight;
+}
+
+#bar-right {
+  border-left: 5px solid $frame-shadow;
+}
+
+.button {
+  @include container-column(center);
+  @include border-concave(2vw);
+  @include clickable(40%);
+  
+  height: 7vw;
+  width: 7vw;
+
+  background-color: $button-background;
+
+  img {
+    height: 70%;
+    margin-top: 5%;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+}
+
+.selection-icon {
+  margin: 1%;
+  width: 23%;
+
+  img {
+    margin: 1%;
+    width: 98%;
+  }
+
+  h3 {
+    text-align: center;
+  }
+
+}
+
+#main-canvas {
+  background-image: url("../assets/room/living-room-scaled.png");
+  background-size: cover;
+  z-index: 0;
+}
+
+#main-canvas-container {
+  background-image: url("../assets/room/living-room-blurred.png");
+  background-size: cover;
+  z-index: 0;
+}
+
+#secondary-canvas-container {
+  width: auto;
+  height: auto;
+  @include container-column(center);
+}
+
+.canvas-overlay {
+
+  @include border-convex(50px);
+
+  position: absolute;
+  z-index: 1;
+
+  visibility: hidden;
+
+  min-height: 40vw;
+  min-width: 40vw;
+
+  width: 60vw;
+  height: 80vh;
+
+  max-width: 70vw;
+  max-height: 87.5vh;
+
+  background-color: $frame-color;
+
+  canvas {
+    @include border-concave(15px);
+    background-color: #333;
+  }
+
+}
+
+#game-end-message {
+  font-size: 2.5vw;
+  text-align: center;
+
+  h3 {
+    margin: 3%;
+    width: 100%;
+  }
+
+}
+
+#message-box {
+
+  @include container-column(space-evenly);
+  @include border-convex(2vw);
+
+  position: absolute;
+  z-index: 2;
+
+  visibility: hidden;
+
+  min-width: 30vw;
+  min-height: 20vw;
+  max-width: 30vw;
+  max-height: 20vw;
+
+  background-color: $frame-color;
+
+  p {
+    font-size: 1.5vw;
+  }
+}
+
+.message-button-row {
+  @include container-row(space-evenly);
+  width: 100%;
+}
+
+.message-button {
+
+  @include container-row(center);
+  @include border-concave(50px);
+  @include clickable;
+
+  background-color: $button-background;
+  height: 4vw;
+  width: fit-content;
+
+  img {
+    height: 70%;
+    margin-top: 5%;
+  }
+
+  h3 {
+    line-height: 100%;
+    font-size: 3vw;
+  }
+
+}
+
+#canvas-frame {
+  @include container-row(center);
+}
+
+.canvas-padding {
+  min-width: 3em;
+  max-width: 3em;
+  min-height: 3em;
+  max-height: 3em;
+}
+
+.scoreboard-padding {
+  min-width: 1.5em;
+  max-width: 1.5em;
+  min-height: 1.5em;
+  max-height: 1.5em;
+}
+
+#menu {
+  @include container-column(space-between);
+}
+
+#menu-exit {
+  @include container-column(center);
+  @include clickable(60%);
+  @include border-concave(15px);
+
+  min-width: 4em;
+  max-width: 4em;
+  min-height: 4em;
+  max-height: 4em;
+  margin: 3%;
+  background-color: red;
+
+  img {
+    width: 90%;
+    height: 90%;
+    min-height: 0;
+  }
+}
+
+.panel {
+  @include container-row(space-between);
+
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.stat-panel {
+  @include container-row(start);
+
+  width: 100%;
+}
+
+.scoreboard {
+  height: 100%;
+  max-width: min-content;
+}
+
+.stat-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: start;
+
+  margin-top: 3em;
+  flex-grow: 1;
+
+  &.scorepanel {
+    margin-top: 0%;
+    align-items: center;
+    height: 100%;
+  }
+}
+
+.stat-label {
+  font-family: 'Coiny', cursive;
+  font-size: 1.9em;
+  text-shadow: 0.08em 0.08em white;
+
+  h2 {
+    line-height: 180%;
+  }
+
+  &.scorepanel {
+    margin-right: 0px;
+  }
+}
+
+.stat {
+  @include container-row(space-between);
+  width: 100%;
+}
+
+.pet-image-container {
+  @include container-column(flex-end);
+
+  height: 18em;
+  width: 18em;
+  margin: 5% 5% 0% 5%;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.reaction-container {
+  @include container-column(end);
+
+  flex-grow: 1;
+  margin-top: 15%;
+  width: auto;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+#pet-gender {
+  padding: 0px 0px 0px 0px;
+  width: 6em;
+  height: 6em;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.stat-container {
+  @include border-concave(15px);
+
+  color: white;
+  background-color: #333;
+  padding: 0px 10px 0px 10px;
+}
+
+.fill-overlay {
+  @include container-column(center);
+
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.selection-box {
+  @include container-row(start);
+  @include border-concave(15px);
+
+  flex-wrap: wrap;
+  overflow-y: scroll;
+
+  color: white;
+  background-color: #333;
+  padding: 0px 10px 0px 10px;
+
+  margin: 5%;
+  width: 50vw;
+  height: 70vh;
+}
+
+.stat-info-container {
+  @include container-row(center);
+
+  max-width: 70%;
+  min-width: 50%;
+  height: 2.2em;
+  border-radius: 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.7em;
+
+  &.scorepanel {
+    height: auto;
+    max-width: 100%;
+    min-width: 80%;
+    padding: 5px 10px 5px 10px;
+  }
+
+}
+
+.stat-icon-container {
+  border-radius: 10px;
+  padding: 0px 0px 0px 0px;
+}
+
+.stat-bar-list {
+  margin-top: 0%;
+  min-width: 90%;
+  max-width: 90%;
+  margin-bottom: 3em;
+}
+
+.stat-bar-container {
+  @include container-column(start);
+
+  width: 100%;
+  flex-grow: 1;
+}
+
+.stat-bar {
+  @include container-row(left);
+
+  flex-grow: 1;
+
+  width: 100%;
+  min-height: 4em;
+  max-height: 4em;
+}
+
+.bar-fill {
+  height: 2.8em;
+  border-radius: 10px;
+  background-color: $bar-fill;
+}
+
+.vertical-stat-bar {
+  @include container-column(flex-end);
+
+  flex-grow: 1;
+
+  height: 100%;
+  min-width: 4em;
+  max-width: 4em;
+  padding: 10px 0px 10px 0px;
+}
+
+.vertical-bar-fill {
+  width: 2.8em;
+  border-radius: 10px;
+  background-color: $bar-fill;
+}

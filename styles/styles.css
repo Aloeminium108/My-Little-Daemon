@@ -62,9 +62,12 @@ p {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
     height: 7vw;
     width: 7vw;
+
     background-color: var(--button-background);
+
     border: 5px solid;
     border-top-color: var(--frame-shadow);
     border-right-color: var(--frame-shadow);
