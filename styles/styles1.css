@@ -70,9 +70,11 @@ p.scorepanel {
   border-right-color: #428;
   border-bottom-color: #fff;
   border-left-color: #fff;
-  border-radius: 50px;
-  height: 7vw;
-  width: 7vw;
+  border-radius: 2vw;
+  min-width: 7vw;
+  max-width: 7vw;
+  min-height: 7vw;
+  max-height: 7vw;
   background-color: #a7f;
 }
 .button * {
@@ -94,7 +96,7 @@ p.scorepanel {
 
 .selection-icon {
   margin: 1%;
-  width: 23%;
+  width: 18%;
 }
 .selection-icon img {
   margin: 1%;
@@ -149,12 +151,12 @@ p.scorepanel {
   border-right-color: #428;
   border-bottom-color: #fff;
   border-left-color: #fff;
-  border-radius: 50px;
+  border-radius: 15px;
   background-color: #333;
 }
 
 #game-end-message {
-  font-size: 2.5vw;
+  font-size: 2.5em;
   text-align: center;
 }
 #game-end-message h3 {
@@ -172,7 +174,7 @@ p.scorepanel {
   border-right-color: #fff;
   border-bottom-color: #428;
   border-left-color: #428;
-  border-radius: 50px;
+  border-radius: 2vw;
   position: absolute;
   z-index: 2;
   visibility: hidden;
@@ -183,7 +185,7 @@ p.scorepanel {
   background-color: #70d;
 }
 #message-box p {
-  font-size: 1.5vw;
+  font-size: 1.5em;
 }
 
 .message-button-row {
@@ -224,7 +226,7 @@ p.scorepanel {
 }
 .message-button h3 {
   line-height: 100%;
-  font-size: 3vw;
+  font-size: 3em;
 }
 
 #canvas-frame {
@@ -265,7 +267,7 @@ p.scorepanel {
   border-right-color: #428;
   border-bottom-color: #fff;
   border-left-color: #fff;
-  border-radius: 50px;
+  border-radius: 1em;
   min-width: 4em;
   max-width: 4em;
   min-height: 4em;
@@ -292,7 +294,7 @@ p.scorepanel {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
   min-width: 100%;
   max-width: 100%;
 }
@@ -308,6 +310,10 @@ p.scorepanel {
 .scoreboard {
   height: 100%;
   max-width: min-content;
+}
+
+#left-scoreboard {
+  height: 80vh;
 }
 
 .stat-list {
@@ -388,7 +394,7 @@ p.scorepanel {
   border-right-color: #428;
   border-bottom-color: #fff;
   border-left-color: #fff;
-  border-radius: 50px;
+  border-radius: 15px;
   color: white;
   background-color: #333;
   padding: 0px 10px 0px 10px;
@@ -407,13 +413,13 @@ p.scorepanel {
   display: flex;
   flex-direction: row;
   justify-content: start;
-  align-items: center;
+  align-items: start;
   border: 5px solid;
   border-top-color: #428;
   border-right-color: #428;
   border-bottom-color: #fff;
   border-left-color: #fff;
-  border-radius: 50px;
+  border-radius: 15px;
   flex-wrap: wrap;
   overflow-y: scroll;
   color: white;
@@ -469,8 +475,8 @@ p.scorepanel {
   flex-direction: row;
   justify-content: left;
   align-items: center;
-  flex-grow: 1;
   width: 100%;
+  flex-grow: 1;
   min-height: 4em;
   max-height: 4em;
 }

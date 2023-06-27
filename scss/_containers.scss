@@ -1,13 +1,41 @@
-@mixin container-row ($justification) {
+@mixin container-row ($justification, $align-center: true) {
   display: flex;
   flex-direction: row;
   justify-content: $justification;
-  align-items: center;
+
+  @if $align-center {
+    align-items: center;
+  } @else {
+    align-items: start;
+  }
+  
 }
 
-@mixin container-column ($justification) {
+@mixin container-column ($justification, $align-center: true) {
   display: flex;
   flex-direction: column;
   justify-content: $justification;
-  align-items: center;
+  
+  @if $align-center {
+    align-items: center;
+  } @else {
+    align-items: start;
+  }
+
+}
+
+@mixin force-square ($side-length) {
+  min-width: $side-length;
+  max-width: $side-length;
+  min-height: $side-length;
+  max-height: $side-length;
+}
+
+@mixin snug-inside($margin) {
+  margin: $margin;
+  width: fit-inside($margin);
+}
+
+@function fit-inside($margin) {
+  @return calc(100% - (2* $margin));
 }

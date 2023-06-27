@@ -1,2 +1,34 @@
 $border-thickness: 5px;
 $border-radius: 50px;
+$overlay-height: 80vh;
+$overlay-width: 60vw;
+$stat-thickness: 4em;
+$bar-thickness: fit-within($stat-thickness, 0.7);
+$shadow-offset: 0.08em;
+
+$canvas-padding: 3em;
+$scoreboard-padding: calc($canvas-padding / 2);
+
+$icon-margin: 1%;
+$icon-width: size-icons(5, $icon-margin);
+
+$button-size: 7vw;
+
+@function fit-within($length, $portion) {
+
+  @if unitless($portion) != true {
+    @error "Property #{$portion} must be unitless.";
+  }
+
+  @if $portion > 1 {
+    @error "Property #{$portion} must be less than 1.";
+  }
+
+  @return $length * $portion;
+}
+
+@function size-icons($num-per-row, $margin) {
+
+  @return calc((100% / $num-per-row) - (2 * $margin));
+
+}

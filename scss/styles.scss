@@ -64,9 +64,7 @@ p {
   @include container-column(center);
   @include border-concave(2vw);
   @include clickable(40%);
-  
-  height: 7vw;
-  width: 7vw;
+  @include force-square($button-size);
 
   background-color: $button-background;
 
@@ -82,12 +80,11 @@ p {
 }
 
 .selection-icon {
-  margin: 1%;
-  width: 23%;
+  margin: $icon-margin;
+  width: $icon-width;
 
   img {
-    margin: 1%;
-    width: 98%;
+    @include snug-inside(1%);
   }
 
   h3 {
@@ -126,8 +123,8 @@ p {
   min-height: 40vw;
   min-width: 40vw;
 
-  width: 60vw;
-  height: 80vh;
+  width: $overlay-width;
+  height: $overlay-height;
 
   max-width: 70vw;
   max-height: 87.5vh;
@@ -136,13 +133,13 @@ p {
 
   canvas {
     @include border-concave(15px);
-    background-color: #333;
+    background-color: $empty-background;
   }
 
 }
 
 #game-end-message {
-  font-size: 2.5vw;
+  font-size: 2.5em;
   text-align: center;
 
   h3 {
@@ -170,7 +167,7 @@ p {
   background-color: $frame-color;
 
   p {
-    font-size: 1.5vw;
+    font-size: 1.5em;
   }
 }
 
@@ -196,7 +193,7 @@ p {
 
   h3 {
     line-height: 100%;
-    font-size: 3vw;
+    font-size: 3em;
   }
 
 }
@@ -206,17 +203,11 @@ p {
 }
 
 .canvas-padding {
-  min-width: 3em;
-  max-width: 3em;
-  min-height: 3em;
-  max-height: 3em;
+  @include force-square($canvas-padding);
 }
 
 .scoreboard-padding {
-  min-width: 1.5em;
-  max-width: 1.5em;
-  min-height: 1.5em;
-  max-height: 1.5em;
+  @include force-square($scoreboard-padding);
 }
 
 #menu {
@@ -226,14 +217,11 @@ p {
 #menu-exit {
   @include container-column(center);
   @include clickable(60%);
-  @include border-concave(15px);
+  @include border-concave(1em);
+  @include force-square($stat-thickness);
 
-  min-width: 4em;
-  max-width: 4em;
-  min-height: 4em;
-  max-height: 4em;
   margin: 3%;
-  background-color: red;
+  background-color: $exit-color;
 
   img {
     width: 90%;
@@ -243,7 +231,7 @@ p {
 }
 
 .panel {
-  @include container-row(space-between);
+  @include container-row(space-between, false);
 
   min-width: 100%;
   max-width: 100%;
@@ -260,11 +248,12 @@ p {
   max-width: min-content;
 }
 
+#left-scoreboard {
+  height: $overlay-height;
+}
+
 .stat-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: start;
+  @include container-column(space-between, false);
 
   margin-top: 3em;
   flex-grow: 1;
@@ -279,7 +268,7 @@ p {
 .stat-label {
   font-family: 'Coiny', cursive;
   font-size: 1.9em;
-  text-shadow: 0.08em 0.08em white;
+  text-shadow: $shadow-offset $shadow-offset white;
 
   h2 {
     line-height: 180%;
@@ -336,7 +325,7 @@ p {
   @include border-concave(15px);
 
   color: white;
-  background-color: #333;
+  background-color: $empty-background;
   padding: 0px 10px 0px 10px;
 }
 
@@ -348,14 +337,14 @@ p {
 }
 
 .selection-box {
-  @include container-row(start);
+  @include container-row(start, false);
   @include border-concave(15px);
 
   flex-wrap: wrap;
   overflow-y: scroll;
 
   color: white;
-  background-color: #333;
+  background-color: $empty-background;
   padding: 0px 10px 0px 10px;
 
   margin: 5%;
@@ -404,15 +393,15 @@ p {
 .stat-bar {
   @include container-row(left);
 
+  width: 100%;
   flex-grow: 1;
 
-  width: 100%;
-  min-height: 4em;
-  max-height: 4em;
+  min-height: $stat-thickness;
+  max-height: $stat-thickness;
 }
 
 .bar-fill {
-  height: 2.8em;
+  height: $bar-thickness;
   border-radius: 10px;
   background-color: $bar-fill;
 }
@@ -423,13 +412,13 @@ p {
   flex-grow: 1;
 
   height: 100%;
-  min-width: 4em;
-  max-width: 4em;
+  min-width: $stat-thickness;
+  max-width: $stat-thickness;
   padding: 10px 0px 10px 0px;
 }
 
 .vertical-bar-fill {
-  width: 2.8em;
+  width: $bar-thickness;
   border-radius: 10px;
   background-color: $bar-fill;
 }
